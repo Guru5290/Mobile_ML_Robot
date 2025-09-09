@@ -1,1 +1,0 @@
-/home/d/Finale/pi-code/build/serial_motor_demo_msgs/rosidl_typesupport_introspection_c/serial_motor_demo_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h

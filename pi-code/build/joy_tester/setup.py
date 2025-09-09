@@ -1,1 +1,0 @@
-/home/d/Finale/pi-code/src/joy_tester/setup.py

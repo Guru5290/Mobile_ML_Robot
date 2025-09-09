@@ -1,1 +1,0 @@
-/home/d/Finale/pi-code/build/jkl/ament_cmake_environment_hooks/local_setup.sh
