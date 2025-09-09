@@ -1,0 +1,4 @@
+source;share/jkl/local_setup.bash
+source;share/jkl/local_setup.dsv
+source;share/jkl/local_setup.sh
+source;share/jkl/local_setup.zsh

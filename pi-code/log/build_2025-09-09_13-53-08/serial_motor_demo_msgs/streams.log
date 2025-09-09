@@ -1,0 +1,15 @@
+[0.089s] Invoking command in '/home/d/Finale/pi-code/build/serial_motor_demo_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/d/Finale/pi-code/install/joy_tester:/opt/ros/humble /usr/bin/cmake /home/d/Finale/pi-code/src/serial_motor_demo/serial_motor_demo_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/d/Finale/pi-code/install/serial_motor_demo_msgs
+[0.606s] -- The C compiler identification is GNU 11.4.0
+[0.636s] [31mCMake Error at /usr/share/cmake-3.22/Modules/CMakeDetermineCXXCompiler.cmake:48 (message):
+[0.637s]   Could not find compiler set in environment variable CXX:
+[0.638s] 
+[0.639s]   /usr/bin/g++11.
+[0.640s] 
+[0.640s] Call Stack (most recent call first):
+[0.643s]   CMakeLists.txt:2 (project)
+[0.643s] 
+[0.644s] [0m
+[0.645s] [0mCMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage[0m
+[0.645s] -- Configuring incomplete, errors occurred!
+[0.646s] See also "/home/d/Finale/pi-code/build/serial_motor_demo_msgs/CMakeFiles/CMakeOutput.log".
+[1.729s] Invoked command in '/home/d/Finale/pi-code/build/serial_motor_demo_msgs' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/d/Finale/pi-code/install/joy_tester:/opt/ros/humble /usr/bin/cmake /home/d/Finale/pi-code/src/serial_motor_demo/serial_motor_demo_msgs -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/d/Finale/pi-code/install/serial_motor_demo_msgs

@@ -1,0 +1,8 @@
+source;share/jkl/hook/cmake_prefix_path.ps1
+source;share/jkl/hook/cmake_prefix_path.dsv
+source;share/jkl/hook/cmake_prefix_path.sh
+source;share/jkl/local_setup.bash
+source;share/jkl/local_setup.dsv
+source;share/jkl/local_setup.ps1
+source;share/jkl/local_setup.sh
+source;share/jkl/local_setup.zsh

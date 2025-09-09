@@ -1,0 +1,196 @@
+<?xml version="1.0" ?>
+<robot name="knight" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="materials.xacro" />
+<xacro:include filename="knight.trans" />
+<xacro:include filename="knight.gazebo" />
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="-0.019247214224469626 -0.009218676459717027 -0.0016402160280328" rpy="0 0 0"/>
+    <mass value="1.8335875472772791"/>
+    <inertia ixx="0.006149" iyy="0.014893" izz="0.017874" ixy="0.000425" iyz="6.7e-05" ixz="-0.000694"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="camera_link">
+  <inertial>
+    <origin xyz="0.0022369050920157674 0.01190723740756753 -0.0106640979739921" rpy="0 0 0"/>
+    <mass value="0.0018917728244253016"/>
+    <inertia ixx="0.0" iyy="0.0" izz="0.0" ixy="0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.110529 -0.039646 -0.024004" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/camera_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.110529 -0.039646 -0.024004" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/camera_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="lidar_link">
+  <inertial>
+    <origin xyz="-0.00013026516237509694 0.000607970103502142 0.014307371775280256" rpy="0 0 0"/>
+    <mass value="0.007170751079753124"/>
+    <inertia ixx="3e-06" iyy="3e-06" izz="6e-06" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.044064 0.006954 -0.072354" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/lidar_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.044064 0.006954 -0.072354" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/lidar_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_right">
+  <inertial>
+    <origin xyz="-1.5497830999564033e-06 0.003510779818395135 1.9940828647688202e-06" rpy="0 0 0"/>
+    <mass value="0.13957427599234848"/>
+    <inertia ixx="0.000102" iyy="0.000178" izz="0.000102" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.035729 0.118178 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/front_right.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.035729 0.118178 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/front_right.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="back_right">
+  <inertial>
+    <origin xyz="-1.5497830998106865e-06 0.0035107798183974387 1.994082864907598e-06" rpy="0 0 0"/>
+    <mass value="0.13957427599234848"/>
+    <inertia ixx="0.000102" iyy="0.000178" izz="0.000102" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.104271 0.118178 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/back_right.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.104271 0.118178 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/back_right.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="front_left">
+  <inertial>
+    <origin xyz="-1.5493956658299557e-06 -0.00350998488597927 -1.4996934019281816e-06" rpy="0 0 0"/>
+    <mass value="0.13957427599234848"/>
+    <inertia ixx="0.000102" iyy="0.000178" izz="0.000102" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.035329 -0.104198 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/front_left.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.035329 -0.104198 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/front_left.stl" scale="0.001 0.001 0.001"/> 
+    </geometry>
+  </collision>
+</link>
+
+<link name="back_left">
+  <inertial>
+    <origin xyz="-1.5493956658646502e-06 -0.003509984885977299 -1.4996934019281816e-06" rpy="0 0 0"/>
+    <mass value="0.13957427599234848"/>
+    <inertia ixx="0.000102" iyy="0.000178" izz="0.000102" ixy="0.0" iyz="0.0" ixz="0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.104671 -0.104198 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/back_left.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.104671 -0.104198 0.032546" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://jkl/description/meshes/back_left.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<!-- Joints -->
+<joint name="camera_joint" type="fixed">
+  <origin xyz="0.110529 0.039646 0.024004" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+</joint>
+
+<joint name="lidar_joint" type="fixed">
+  <origin xyz="0.044064 -0.006954 0.072354" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="lidar_link"/>
+</joint>
+
+<joint name="front_right_joint" type="continuous">
+  <origin xyz="0.035729 -0.118178 -0.032546" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="front_right"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+<joint name="back_right_joint" type="continuous">
+  <origin xyz="-0.104271 -0.118178 -0.032546" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="back_right"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+<joint name="front_left_joint" type="continuous">
+  <origin xyz="0.035329 0.104198 -0.032546" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="front_left"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+<joint name="back_left_joint" type="continuous">
+  <origin xyz="-0.104671 0.104198 -0.032546" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="back_left"/>
+  <axis xyz="0.0 1.0 -0.0"/>
+</joint>
+
+</robot>

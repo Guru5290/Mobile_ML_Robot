@@ -1,0 +1,133 @@
+[0.201s] Invoking command in '/home/d/Finale/pi-code/build/diffdrive_arduino': CMAKE_PREFIX_PATH=/home/d/Finale/pi-code/install/serial:/home/d/Finale/pi-code/install/serial_motor_demo_msgs:/home/d/Finale/pi-code/install/jkl:/home/d/Finale/pi-code/install/joy_tester:/opt/ros/humble /usr/bin/cmake /home/d/Finale/pi-code/src/diffdrive_arduino -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/d/Finale/pi-code/install/diffdrive_arduino
+[0.904s] -- The C compiler identification is GNU 11.4.0
+[1.606s] -- The CXX compiler identification is GNU 11.4.0
+[1.734s] -- Detecting C compiler ABI info
+[2.969s] -- Detecting C compiler ABI info - done
+[3.140s] -- Check for working C compiler: /usr/bin/cc - skipped
+[3.149s] -- Detecting C compile features
+[3.156s] -- Detecting C compile features - done
+[3.208s] -- Detecting CXX compiler ABI info
+[4.408s] -- Detecting CXX compiler ABI info - done
+[4.680s] -- Check for working CXX compiler: /usr/bin/gcc-11 - skipped
+[4.686s] -- Detecting CXX compile features
+[4.705s] -- Detecting CXX compile features - done
+[4.795s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[7.928s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[8.819s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[9.098s] -- Found serial: 1.2.1 (/home/d/Finale/pi-code/install/serial/share/serial/cmake)
+[9.117s] -- Found hardware_interface: 2.51.0 (/opt/ros/humble/share/hardware_interface/cmake)
+[9.496s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[9.571s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[9.766s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[10.048s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[10.252s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[12.101s] -- Found rmw_implementation_cmake: 6.1.2 (/opt/ros/humble/share/rmw_implementation_cmake/cmake)
+[12.128s] -- Found rmw_cyclonedds_cpp: 1.3.4 (/opt/ros/humble/share/rmw_cyclonedds_cpp/cmake)
+[12.295s] -- Using RMW implementation 'rmw_cyclonedds_cpp' as default
+[12.362s] -- Looking for pthread.h
+[12.876s] -- Looking for pthread.h - found
+[12.877s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[13.686s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+[13.701s] -- Found Threads: TRUE  
+[14.210s] -- Found controller_manager: 2.51.0 (/opt/ros/humble/share/controller_manager/cmake)
+[16.468s] -- Configuring done
+[17.470s] -- Generating done
+[17.647s] -- Build files have been written to: /home/d/Finale/pi-code/build/diffdrive_arduino
+[17.799s] Invoked command in '/home/d/Finale/pi-code/build/diffdrive_arduino' returned '0': CMAKE_PREFIX_PATH=/home/d/Finale/pi-code/install/serial:/home/d/Finale/pi-code/install/serial_motor_demo_msgs:/home/d/Finale/pi-code/install/jkl:/home/d/Finale/pi-code/install/joy_tester:/opt/ros/humble /usr/bin/cmake /home/d/Finale/pi-code/src/diffdrive_arduino -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/d/Finale/pi-code/install/diffdrive_arduino
+[17.819s] Invoking command in '/home/d/Finale/pi-code/build/diffdrive_arduino': CMAKE_PREFIX_PATH=/home/d/Finale/pi-code/install/serial:/home/d/Finale/pi-code/install/serial_motor_demo_msgs:/home/d/Finale/pi-code/install/jkl:/home/d/Finale/pi-code/install/joy_tester:/opt/ros/humble /usr/bin/cmake --build /home/d/Finale/pi-code/build/diffdrive_arduino -- -j4 -l4
+[18.550s] [ 14%] [32mBuilding CXX object CMakeFiles/diffdrive_arduino.dir/src/diffdrive_arduino.cpp.o[0m
+[45.207s] [ 28%] [32mBuilding CXX object CMakeFiles/diffdrive_arduino.dir/src/arduino_comms.cpp.o[0m
+[63.749s] [ 42%] [32mBuilding CXX object CMakeFiles/diffdrive_arduino.dir/src/wheel.cpp.o[0m
+[66.543s] [ 57%] [32m[1mLinking CXX shared library libdiffdrive_arduino.so[0m
+[67.681s] [ 57%] Built target diffdrive_arduino
+[67.879s] [ 71%] [32mBuilding CXX object CMakeFiles/fake_robot.dir/src/fake_robot.cpp.o[0m
+[88.585s] In file included from [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:1[m[K:
+[88.585s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/include/diffdrive_arduino/fake_robot.h:46:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_left_wheel_name[m[K’ does not name a type
+[88.586s]    46 |   [01;31m[Kfront_left_wheel_name[m[K;
+[88.586s]       |   [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[88.636s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/include/diffdrive_arduino/fake_robot.h:47:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_right_wheel_name[m[K’ does not name a type
+[88.642s]    47 |   [01;31m[Kfront_right_wheel_name[m[K;
+[88.642s]       |   [01;31m[K^~~~~~~~~~~~~~~~~~~~~~[m[K
+[88.675s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/include/diffdrive_arduino/fake_robot.h:48:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_left_wheel_name[m[K’ does not name a type
+[88.675s]    48 |   [01;31m[Kback_left_wheel_name[m[K;
+[88.675s]       |   [01;31m[K^~~~~~~~~~~~~~~~~~~~[m[K
+[88.730s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/include/diffdrive_arduino/fake_robot.h:49:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_right_wheel_name[m[K’ does not name a type
+[88.731s]    49 |   [01;31m[Kback_right_wheel_name[m[K;
+[88.731s]       |   [01;31m[K^~~~~~~~~~~~~~~~~~~~~[m[K
+[88.873s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::CallbackReturn FakeRobot::on_init(const hardware_interface::HardwareInfo&)[m[K’:
+[88.877s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:32:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_l_wheel_[m[K’ was not declared in this scope
+[88.878s]    32 |   [01;31m[Kfront_l_wheel_[m[K.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev); // ** ** back wheels!
+[88.878s]       |   [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.004s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:33:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_r_wheel_[m[K’ was not declared in this scope
+[89.005s]    33 |   [01;31m[Kfront_r_wheel_[m[K.setup(cfg_.front_right_wheel_name, cfg_.enc_counts_per_rev);
+[89.005s]       |   [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.126s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:35:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_l_wheel_[m[K’ was not declared in this scope
+[89.127s]    35 |   [01;31m[Kback_l_wheel_[m[K.setup(cfg_.back_left_wheel_name, cfg_.enc_counts_per_rev); // ** ** back wheels!
+[89.127s]       |   [01;31m[K^~~~~~~~~~~~~[m[K
+[89.240s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:36:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_r_wheel_[m[K’ was not declared in this scope
+[89.241s]    36 |   [01;31m[Kback_r_wheel_[m[K.setup(cfg_.back_right_wheel_name, cfg_.enc_counts_per_rev);
+[89.241s]       |   [01;31m[K^~~~~~~~~~~~~[m[K
+[89.353s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:[m[K In member function ‘[01m[Kvirtual std::vector<hardware_interface::StateInterface> FakeRobot::export_state_interfaces()[m[K’:
+[89.353s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:49:68:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_l_wheel_[m[K’ was not declared in this scope
+[89.354s]    49 | _interfaces.emplace_back(hardware_interface::StateInterface([01;31m[Kfront_l_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &front_l_wheel_.vel));
+[89.357s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.363s] 
+[89.406s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:51:68:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_r_wheel_[m[K’ was not declared in this scope
+[89.407s]    51 | _interfaces.emplace_back(hardware_interface::StateInterface([01;31m[Kfront_r_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &front_r_wheel_.vel));
+[89.407s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.407s] 
+[89.455s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:54:68:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_l_wheel_[m[K’ was not declared in this scope
+[89.456s]    54 | _interfaces.emplace_back(hardware_interface::StateInterface([01;31m[Kback_l_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &back_l_wheel_.vel));
+[89.456s]       |                                                             [01;31m[K^~~~~~~~~~~~~[m[K
+[89.457s] 
+[89.510s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:56:68:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_r_wheel_[m[K’ was not declared in this scope
+[89.511s]    56 | _interfaces.emplace_back(hardware_interface::StateInterface([01;31m[Kback_r_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &back_r_wheel_.vel));
+[89.511s]       |                                                             [01;31m[K^~~~~~~~~~~~~[m[K
+[89.511s] 
+[89.594s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:[m[K In member function ‘[01m[Kvirtual std::vector<hardware_interface::CommandInterface> FakeRobot::export_command_interfaces()[m[K’:
+[89.595s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:68:72:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_l_wheel_[m[K’ was not declared in this scope
+[89.595s]    68 | nterfaces.emplace_back(hardware_interface::CommandInterface([01;31m[Kfront_l_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &front_l_wheel_.cmd));
+[89.595s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.602s] 
+[89.647s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:69:72:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_r_wheel_[m[K’ was not declared in this scope
+[89.647s]    69 | nterfaces.emplace_back(hardware_interface::CommandInterface([01;31m[Kfront_r_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &front_r_wheel_.cmd));
+[89.649s]       |                                                             [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.649s] 
+[89.705s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:71:72:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_l_wheel_[m[K’ was not declared in this scope
+[89.705s]    71 | nterfaces.emplace_back(hardware_interface::CommandInterface([01;31m[Kback_l_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &back_l_wheel_.cmd));
+[89.706s]       |                                                             [01;31m[K^~~~~~~~~~~~~[m[K
+[89.706s] 
+[89.756s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:72:72:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_r_wheel_[m[K’ was not declared in this scope
+[89.757s]    72 | nterfaces.emplace_back(hardware_interface::CommandInterface([01;31m[Kback_r_wheel_[m[K.name, hardware_interface::HW_IF_VELOCITY, &back_r_wheel_.cmd));
+[89.757s]       |                                                             [01;31m[K^~~~~~~~~~~~~[m[K
+[89.757s] 
+[89.830s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type FakeRobot::read(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[89.831s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:105:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_l_wheel_[m[K’ was not declared in this scope
+[89.831s]   105 |   [01;31m[Kfront_l_wheel_[m[K.pos = front_l_wheel_.pos + front_l_wheel_.vel * deltaSeconds;
+[89.832s]       |   [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.892s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:106:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_r_wheel_[m[K’ was not declared in this scope
+[89.892s]   106 |   [01;31m[Kfront_r_wheel_[m[K.pos = front_r_wheel_.pos + front_r_wheel_.vel * deltaSeconds;
+[89.893s]       |   [01;31m[K^~~~~~~~~~~~~~[m[K
+[89.939s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:108:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_l_wheel_[m[K’ was not declared in this scope
+[89.939s]   108 |   [01;31m[Kback_l_wheel_[m[K.pos = back_l_wheel_.pos + back_l_wheel_.vel * deltaSeconds;
+[89.939s]       |   [01;31m[K^~~~~~~~~~~~~[m[K
+[89.986s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:109:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_r_wheel_[m[K’ was not declared in this scope
+[89.987s]   109 |   [01;31m[Kback_r_wheel_[m[K.pos = back_r_wheel_.pos + back_r_wheel_.vel * deltaSeconds;
+[89.987s]       |   [01;31m[K^~~~~~~~~~~~~[m[K
+[90.029s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:[m[K In member function ‘[01m[Kvirtual hardware_interface::return_type FakeRobot::write(const rclcpp::Time&, const rclcpp::Duration&)[m[K’:
+[90.029s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:121:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_l_wheel_[m[K’ was not declared in this scope
+[90.030s]   121 |   [01;31m[Kfront_l_wheel_[m[K.vel = front_l_wheel_.cmd;
+[90.030s]       |   [01;31m[K^~~~~~~~~~~~~~[m[K
+[90.073s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:122:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kfront_r_wheel_[m[K’ was not declared in this scope
+[90.073s]   122 |   [01;31m[Kfront_r_wheel_[m[K.vel = front_r_wheel_.cmd;
+[90.074s]       |   [01;31m[K^~~~~~~~~~~~~~[m[K
+[90.121s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:124:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_l_wheel_[m[K’ was not declared in this scope
+[90.122s]   124 |   [01;31m[Kback_l_wheel_[m[K.vel = back_l_wheel_.cmd;
+[90.122s]       |   [01;31m[K^~~~~~~~~~~~~[m[K
+[90.159s] [01m[K/home/d/Finale/pi-code/src/diffdrive_arduino/src/fake_robot.cpp:125:3:[m[K [01;31m[Kerror: [m[K‘[01m[Kback_r_wheel_[m[K’ was not declared in this scope
+[90.159s]   125 |   [01;31m[Kback_r_wheel_[m[K.vel = back_r_wheel_.cmd;
+[90.160s]       |   [01;31m[K^~~~~~~~~~~~~[m[K
+[94.582s] gmake[2]: *** [CMakeFiles/fake_robot.dir/build.make:76: CMakeFiles/fake_robot.dir/src/fake_robot.cpp.o] Error 1
+[94.583s] gmake[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/fake_robot.dir/all] Error 2
+[94.584s] gmake: *** [Makefile:146: all] Error 2
+[94.607s] Invoked command in '/home/d/Finale/pi-code/build/diffdrive_arduino' returned '2': CMAKE_PREFIX_PATH=/home/d/Finale/pi-code/install/serial:/home/d/Finale/pi-code/install/serial_motor_demo_msgs:/home/d/Finale/pi-code/install/jkl:/home/d/Finale/pi-code/install/joy_tester:/opt/ros/humble /usr/bin/cmake --build /home/d/Finale/pi-code/build/diffdrive_arduino -- -j4 -l4

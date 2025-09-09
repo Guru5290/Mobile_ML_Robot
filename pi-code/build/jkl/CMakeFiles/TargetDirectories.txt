@@ -1,0 +1,9 @@
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/uninstall.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/jkl_uninstall.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/test.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/edit_cache.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/rebuild_cache.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/list_install_components.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/install.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/install/local.dir
+/home/d/Finale/pi-code/build/jkl/CMakeFiles/install/strip.dir
