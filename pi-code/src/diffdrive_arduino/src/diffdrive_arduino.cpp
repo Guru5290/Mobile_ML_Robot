@@ -88,7 +88,8 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_activate(const rclcpp_li
   arduino_.sendEmptyMsg();
   // arduino.setPidValues(9,7,0,100);
   // arduino.setPidValues(14,7,0,100);
-  arduino_.setPidValues(30, 20, 0, 100);
+  // arduino_.setPidValues(30, 20, 0, 100);
+  arduino_.setPidValues(200, 120, 1, 50); //currently in use
 
   return CallbackReturn::SUCCESS;
 }
@@ -118,8 +119,7 @@ hardware_interface::return_type DiffDriveArduino::read(
     return return_type::ERROR;
   }
 
-  arduino_.readEncoderValues(front_l_wheel_.enc, front_r_wheel_.enc);
-  arduino_.readEncoderValues(back_l_wheel_.enc, back_r_wheel_.enc);
+  arduino_.readEncoderValues(front_l_wheel_.enc, front_r_wheel_.enc, back_l_wheel_.enc, back_r_wheel_.enc);
 
   double front_pos_prev = front_l_wheel_.pos;
   front_l_wheel_.pos = front_l_wheel_.calcEncAngle();
@@ -153,8 +153,8 @@ hardware_interface::return_type DiffDriveArduino::write(
     return return_type::ERROR;
   }
 
-  arduino_.setMotorValues(front_l_wheel_.cmd / front_l_wheel_.rads_per_count / cfg_.loop_rate, front_r_wheel_.cmd / front_r_wheel_.rads_per_count / cfg_.loop_rate);
-  arduino_.setMotorValues(back_l_wheel_.cmd / back_l_wheel_.rads_per_count / cfg_.loop_rate, back_r_wheel_.cmd / back_r_wheel_.rads_per_count / cfg_.loop_rate);
+  arduino_.setMotorValues(front_l_wheel_.cmd / front_l_wheel_.rads_per_count / cfg_.loop_rate, front_r_wheel_.cmd / front_r_wheel_.rads_per_count / cfg_.loop_rate, back_l_wheel_.cmd / back_l_wheel_.rads_per_count / cfg_.loop_rate, back_r_wheel_.cmd / back_r_wheel_.rads_per_count / cfg_.loop_rate);
+
 
 
 
