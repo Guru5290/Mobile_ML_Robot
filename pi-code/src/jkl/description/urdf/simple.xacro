@@ -32,7 +32,12 @@
     <xacro:property name="lidar_offset_z"
         value="${chassis_height + head_height + front_wheel_offset_z}" />
 
-        
+    <xacro:property name="imu_length" value="0.030" />
+    <xacro:property name="imu_width" value="0.015" />
+    <xacro:property name="imu_offset_x" value="${chassis_length}" />
+    <xacro:property name="imu_offset_y" value="0.0" />
+    <xacro:property name="imu_offset_z" value="${chassis_height + head_height + 0.02}" />
+
     <xacro:property name="mu1" value="0.25" />
     <xacro:property name="mu2" value="0.25" />
     <xacro:property name="sl1" value="5.0" />
@@ -321,7 +326,6 @@
         </xacro:inertial_cylinder>
     </link>
 
-
     <gazebo reference="laser_frame">
         <material>Gazebo/White</material>
 
@@ -351,5 +355,54 @@
             </plugin>
         </sensor>
     </gazebo>
+
+
+    <joint name="imu_joint" type="fixed">
+        <parent link="chassis" />
+        <child link="imu_link" />
+        <origin xyz="${imu_offset_x} ${imu_offset_y} ${imu_offset_z}" rpy="0 0 0" />
+    </joint>
+
+    <link name="imu_link">
+        <visual>
+            <geometry>
+                <box size="${imu_length} ${imu_width} 0.01" />
+            </geometry>
+            <material name="white" />
+        </visual>
+        <visual>
+            <geometry>
+                <box size="${imu_length} ${imu_width} 0.01" />
+            </geometry>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="${imu_length} ${imu_width} 0.01" />
+            </geometry>
+        </collision>
+        <xacro:inertial_box mass="0." x="${imu_length}" y="${imu_length}" z="0.01">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+        </xacro:inertial_box>
+    </link>
+
+    <gazebo reference="imu_link">
+        <material>Gazebo/White</material>
+
+        <sensor name="my_imu" type="imu">
+            <!-- ensure the sensor is active (required) -->
+            <always_on>true</always_on>
+            <update_rate>30</update_rate>
+            <!-- <gaussian_noise>0.001</gaussian_noise> -->
+            <plugin name="imu_controller" filename="libgazebo_ros_imu_sensor.so">
+                <ros>
+                    <!-- publish to /imu/data -->
+                    <namespace>/imu</namespace>
+                    <remapping>~/out:=data</remapping>
+                </ros>
+            </plugin>
+        </sensor>
+
+    </gazebo>
+
 
 </robot>
