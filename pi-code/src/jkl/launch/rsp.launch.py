@@ -7,11 +7,6 @@ from launch.substitutions import LaunchConfiguration, Command
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
 
-import xacro
-# wheel1 front_left
-# wheel2 back_left
-# wheel3 back_right
-# wheel4 front_right
 
 def generate_launch_description():
 

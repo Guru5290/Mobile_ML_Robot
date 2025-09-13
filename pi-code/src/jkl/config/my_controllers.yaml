@@ -23,6 +23,9 @@ diff_cont:
 
     use_stamped_vel: false
 
+    odom_frame_id: odom
+    enable_odom_tf: true
+
 
     # wheels_per_side: x
     # wheel_separation_multiplier: x
