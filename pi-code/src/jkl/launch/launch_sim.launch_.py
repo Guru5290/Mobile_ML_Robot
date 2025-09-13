@@ -12,7 +12,7 @@ def generate_launch_description():
 
     # Load your ROS-2 control controllers YAML
     controllers_yaml = os.path.join(
-        '/home/d/Finale/robotics-dojo-2024-main/pi-code/src/jkl/config',
+        get_package_share_directory(package_name), 'config',
         'my_controllers.yaml'
     )
 
