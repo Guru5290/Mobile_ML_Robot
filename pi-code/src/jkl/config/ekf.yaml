@@ -133,17 +133,31 @@ ekf_filter_node:
         #         x_vel   , y_vel    , z_vel,
         #         roll_vel, pitch_vel, yaw_vel,
         #         x_accel , y_accel  , z_accel]
-        # odom0_config: [false, false, false,
+
+        # odom0_config: [false, false, false, # Adisson
         #                false, false, false,
         #                true, false, false,
         #                false, false, true,
         #                false, false, false]
 
-        odom0_config: [true, true, false, # GPT
+        # odom0_config: [true, true, false, # GPT
+        #        false, false, true,
+        #        false, false, false,
+        #        false, false, false,
+        #        false, false, false]
+
+        # odom0_config: [false, false, false, # Husky ROSCon 2015
+        #        false, false, false,
+        #        true, true, true,
+        #        false, false, false,
+        #        false, false, false]
+
+        odom0_config: [false, false, false, # https://blog.abdurrosyid.com/2021/07/21/fusing-wheel-odometry-and-imu-data-using-robot_localization-in-ros/
+               false, false, false,
+               true,  true,  false,
                false, false, true,
-               false, false, false,
-               false, false, false,
-               false, false, false]
+               false, false, false,]
+
 
         # odom0_differential: false
         # odom0_relative: true
@@ -153,11 +167,23 @@ ekf_filter_node:
         # odom0_nodelay: false
 
         imu0: /imu/data
-        imu0_config: [false, false, false,
-                      false,  false,  false,
-                      false, false, false,
-                      false,  false,  true,
-                      true,  true,  false]
+        # imu0_config: [false, false, false, # Adisson
+        #               false,  false,  false,
+        #               false, false, false,
+        #               false,  false,  true,
+        #               true,  true,  false]
+
+        # imu0_config: [false, false, false, # Husky ROSCon 2015
+        #               true,  true, true,
+        #               false, false, false,
+        #               true,  true,  false,
+        #               true,  true,  true]
+
+        imu0_config: [false, false, false, # https://blog.abdurrosyid.com/2021/07/21/fusing-wheel-odometry-and-imu-data-using-robot_localization-in-ros/
+              false, false, false,
+              false, false, false,
+              false, false, true,
+              true,  false, false,]
 
         # imu0_nodelay: false
         # imu0_differential: false
