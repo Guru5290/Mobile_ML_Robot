@@ -59,7 +59,7 @@ def generate_launch_description():
             os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
         ),
         launch_arguments={
-            'gz_args': ['-r -s -v4 ', world],
+            'gz_args': ['-r -s -v 4 ', world],
             'on_exit_shutdown': 'true'
         }.items()
     )
@@ -68,7 +68,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-g -v4 '}.items()
+        launch_arguments={'gz_args': '-g -v 4 '}.items()
     )
 
     # Controller Manager node with YAML parameters
@@ -109,8 +109,7 @@ def generate_launch_description():
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-        arguments=['--ros-args', '-p',
-                   f'config_file:={os.path.join(get_package_share_directory(package_name), "config", "gz_bridge.yaml")}'],
+        parameters=[{'config_file':os.path.join(get_package_share_directory(package_name), "config", "gz_bridge.yaml")}],
         output='screen'
     )
     ros_gz_image_bridge = Node(
@@ -125,7 +124,7 @@ def generate_launch_description():
         executable='ekf_node',
         name='ekf_filter_node',
         output='screen',
-        parameters=[os.path.join(get_package_share_directory(package_name), "config", "ekf.yaml")]
+        parameters=['/home/g/Mobile_ML_Robot/pi-code/src/jkl/config/ekf.yaml'] #  os.path.join(get_package_share_directory(package_name), "config", "ekf.yaml")
     )
 
     return LaunchDescription([
