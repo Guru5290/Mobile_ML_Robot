@@ -70,10 +70,10 @@ std::vector<hardware_interface::StateInterface> DiffDriveArduino::export_state_i
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.y", &gy_));
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.z", &gz_));
 
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.w", &ow_));
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.x", &ox_));
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.y", &oy_));
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.z", &oz_));
-  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.w", &ow_));
 
 
   return state_interfaces;
@@ -134,7 +134,7 @@ hardware_interface::return_type DiffDriveArduino::read(
   }
 
   arduino_.readEncoderValues(front_l_wheel_.enc, front_r_wheel_.enc, back_l_wheel_.enc, back_r_wheel_.enc);
-  arduino_.readIMUValues(ax_, ay_, az_, gx_, gy_, gz_, ox_, oy_, oz_, ow_);
+  arduino_.readIMUValues(ax_, ay_, az_, gx_, gy_, gz_, ow_, ox_, oy_, oz_);
 
   double front_pos_prev = front_l_wheel_.pos;
   front_l_wheel_.pos = front_l_wheel_.calcEncAngle();

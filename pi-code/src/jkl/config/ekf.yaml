@@ -204,19 +204,20 @@ ekf_filter_node:
         #                 false, false, true,
         #                 true,  false, false,]
 
-        imu0_config: [false, false, false, # docs
+        imu0_config:   [false, false, false, # docs
                         false, false, true,
                         false, false, false,
                         false, false, true,
                         true, false, false]
 
         # imu0_nodelay: false
-        imu0_differential: false
-        # imu0_relative: true
+        # imu0_differential: false
+        imu0_relative: true
         # imu0_queue_size: 5
         # imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
-        # imu0_twist_rejection_threshold: 0.8                #
-        # imu0_linear_acceleration_rejection_threshold: 0.8  #
+        # imu0_twist_rejection_threshold: 0.08                #
+        # imu0_linear_acceleration_rejection_threshold: 0.2  #
+
 
 # [ADVANCED] Some IMUs automatically remove acceleration due to gravity, and others don't. If yours doesn't, please set
 # this to true, and *make sure* your data conforms to REP-103, specifically, that the data is in ENU frame.
@@ -237,7 +238,7 @@ ekf_filter_node:
         use_control: true
 # Whether the input (assumed to be cmd_vel) is a geometry_msgs/Twist or geometry_msgs/TwistStamped message. Defaults to
 # false.
-        stamped_control: false
+        stamped_control: true
 # The last issued control command will be used in prediction for this period. Defaults to 0.2.
         control_timeout: 0.2
 # Which velocities are being controlled. Order is vx, vy, vz, vroll, vpitch, vyaw.

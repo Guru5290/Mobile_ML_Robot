@@ -46,14 +46,9 @@ void ArduinoComms::readIMUValues(double &val_1, double &val_2, double &val_3, do
 {
     std::string response = sendMsg("I\r");
 
-    // Expecting: "Acc.X Acc.Y Acc.Z Gyro.X Gyro.Y Gyro.Z 
-    // truncating Orient.X Orient.Y Orient.Z Orient.W"
+    // Expecting: Acc.X Acc.Y Acc.Z Gyro.X Gyro.Y Gyro.Z Orient.W Orient.X Orient.Y Orient.Z
     std::stringstream ss(response);
-    val_7 = 0;
-    val_8 = 0;
-    val_9 = 0;
-    val_10 = 0;
-    ss >> val_1 >> val_2 >> val_3 >> val_4 >> val_5 >> val_6;
+    ss >> val_1 >> val_2 >> val_3 >> val_4 >> val_5 >> val_6 >> val_7 >> val_8 >> val_9 >> val_10;
 }
 
 std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_output)
