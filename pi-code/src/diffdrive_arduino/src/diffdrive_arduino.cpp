@@ -62,6 +62,20 @@ std::vector<hardware_interface::StateInterface> DiffDriveArduino::export_state_i
   state_interfaces.emplace_back(hardware_interface::StateInterface(back_r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &back_r_wheel_.vel));
   state_interfaces.emplace_back(hardware_interface::StateInterface(back_r_wheel_.name, hardware_interface::HW_IF_POSITION, &back_r_wheel_.pos));
 
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "linear_acceleration.x", &ax_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "linear_acceleration.y", &ay_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "linear_acceleration.z", &az_));
+
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.x", &gx_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.y", &gy_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.z", &gz_));
+
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.x", &ox_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.y", &oy_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.z", &oz_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.w", &ow_));
+
+
   return state_interfaces;
 }
 
@@ -120,6 +134,7 @@ hardware_interface::return_type DiffDriveArduino::read(
   }
 
   arduino_.readEncoderValues(front_l_wheel_.enc, front_r_wheel_.enc, back_l_wheel_.enc, back_r_wheel_.enc);
+  arduino_.readIMUValues(ax_, ay_, az_, gx_, gy_, gz_, ox_, oy_, oz_, ow_);
 
   double front_pos_prev = front_l_wheel_.pos;
   front_l_wheel_.pos = front_l_wheel_.calcEncAngle();
@@ -137,11 +152,8 @@ hardware_interface::return_type DiffDriveArduino::read(
   back_r_wheel_.pos = back_r_wheel_.calcEncAngle();
   back_r_wheel_.vel = (back_r_wheel_.pos - back_pos_prev) / deltaSeconds;
 
-
-
   return return_type::OK;
-
-  
+ 
 }
 
 hardware_interface::return_type DiffDriveArduino::write(
@@ -155,13 +167,7 @@ hardware_interface::return_type DiffDriveArduino::write(
 
   arduino_.setMotorValues(front_l_wheel_.cmd / front_l_wheel_.rads_per_count / cfg_.loop_rate, front_r_wheel_.cmd / front_r_wheel_.rads_per_count / cfg_.loop_rate, back_l_wheel_.cmd / back_l_wheel_.rads_per_count / cfg_.loop_rate, back_r_wheel_.cmd / back_r_wheel_.rads_per_count / cfg_.loop_rate);
 
-
-
-
-
   return return_type::OK;
-
-
   
 }
 

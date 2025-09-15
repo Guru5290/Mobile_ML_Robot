@@ -47,6 +47,10 @@ private:
   Wheel back_l_wheel_;
   Wheel back_r_wheel_;
 
+  double ax_, ay_, az_;
+  double gx_, gy_, gz_;
+  double ox_, oy_, oz_, ow_;
+
   rclcpp::Logger logger_{rclcpp::get_logger("DiffDriveArduino")};
 
   std::chrono::time_point<std::chrono::system_clock> time_;

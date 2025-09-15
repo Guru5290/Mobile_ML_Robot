@@ -398,8 +398,8 @@
             <!-- <gaussian_noise>0.001</gaussian_noise> -->
             <plugin name="imu_controller" filename="libgazebo_ros_imu_sensor.so">
                 <ros>
-                    <namespace>/imu</namespace>
-                    <remapping>~/out:=data</remapping>
+                    <namespace>/imu_broadcaster</namespace>
+                    <remapping>~/out:=imu</remapping>
                 </ros>
             </plugin>
         </sensor>

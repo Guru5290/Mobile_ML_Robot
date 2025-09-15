@@ -24,6 +24,8 @@ public:
 
   void setPidValues(float k_p, float k_d, float k_i, float k_o);
 
+  void readIMUValues(double &val_1, double &val_2, double &val_3, double &val_4, double &val_5, double &val_6, double &val_7, double &val_8, double &val_9, double &val_10);
+
   bool connected() const { return serial_conn_.isOpen(); }
 
   std::string sendMsg(const std::string &msg_to_send, bool print_output = false);

@@ -51,7 +51,7 @@ def generate_launch_description():
     # Run the spawner node from the gazebo_ros package. The entity name doesn't really matter if you only have a single robot.
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', 'robot_description',
-                                   '-entity', 'jkl'],
+                                   '-entity', package_name],
                         output='screen')
 
 
@@ -72,7 +72,7 @@ def generate_launch_description():
             executable="ekf_node",
             name="ekf_filter_node",
             output="screen",
-            parameters=[os.path.join(get_package_share_directory('jkl'), 'config', 'ekf.yaml')],
+            parameters=[os.path.join(get_package_share_directory(package_name), 'config', 'ekf.yaml')],
     )
 
 

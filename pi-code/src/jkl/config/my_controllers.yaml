@@ -6,6 +6,26 @@ controller_manager:
     joint_broad:
       type: joint_state_broadcaster/JointStateBroadcaster
       joints: ['front_left_joint', 'front_right_joint', 'back_left_joint', 'back_right_joint']
+    
+    imu_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+
+imu_broadcaster:
+  ros__parameters:
+    sensor_name: imu_sensor
+    frame_id: imu_link
+    # use_ros_time: true
+
+    # Optional: covariance
+    # linear_acceleration_covariance: [0.1, 0.0, 0.0,
+    #                                  0.0, 0.1, 0.0,
+    #                                  0.0, 0.0, 0.1]
+    # angular_velocity_covariance: [0.1, 0.0, 0.0,
+    #                               0.0, 0.1, 0.0,
+    #                               0.0, 0.0, 0.1]
+    # orientation_covariance: [-1.0, 0.0, 0.0,
+    #                           0.0, -1.0, 0.0,
+    #                           0.0, 0.0, -1.0]
 
 
 diff_cont:
