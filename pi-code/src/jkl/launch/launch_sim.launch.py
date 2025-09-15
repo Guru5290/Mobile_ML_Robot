@@ -12,7 +12,7 @@ def generate_launch_description():
 
     # Load your ROS-2 control controllers YAML
     controllers_yaml = os.path.join(
-        '/home/d/Finale/robotics-dojo-2024-main/pi-code/src/jkl/config',
+        '/home/g/Mobile_ML_Robot/pi-code/src/jkl/config',
         'my_controllers.yaml'
     )
 
@@ -119,6 +119,14 @@ def generate_launch_description():
         arguments=["/camera/image_raw"],
         output='screen'
     )
+        # Specify the actions
+    ekf_localization = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[os.path.join(get_package_share_directory(package_name), "config", "ekf.yaml")]
+    )
 
     return LaunchDescription([
         rsp,
@@ -134,4 +142,5 @@ def generate_launch_description():
         delayed_joint_spawner,
         ros_gz_bridge,
         ros_gz_image_bridge,
+        ekf_localization
     ])
