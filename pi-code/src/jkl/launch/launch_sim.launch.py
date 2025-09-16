@@ -59,7 +59,7 @@ def generate_launch_description():
             os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
         ),
         launch_arguments={
-            'gz_args': ['-r -s -v 4 ', world],
+            'gz_args': ['-r -s -v4 ', world],
             'on_exit_shutdown': 'true'
         }.items()
     )
@@ -68,7 +68,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-g -v 4 '}.items()
+        launch_arguments={'gz_args': '-g -v4 '}.items()
     )
 
     # Controller Manager node with YAML parameters

@@ -174,13 +174,13 @@
 
     <gazebo reference="front_left">
         <material>Gazebo/Red</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <mu1>${mu1}</mu1>       
+        <mu2>${mu2}</mu2>       
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1> 
+        <slip2>${sl2}</slip2>    
     </gazebo>
 
 
@@ -212,13 +212,13 @@
 
     <gazebo reference="front_right">
         <material>Gazebo/Red</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <mu1>${mu1}</mu1>       
+        <mu2>${mu2}</mu2>       
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1> 
+        <slip2>${sl2}</slip2>    
     </gazebo>
 
 
@@ -249,13 +249,13 @@
 
     <gazebo reference="back_left">
         <material>Gazebo/Blue</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <mu1>${mu1}</mu1>       
+        <mu2>${mu2}</mu2>       
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1> 
+        <slip2>${sl2}</slip2>    
     </gazebo>
 
 
@@ -286,13 +286,13 @@
 
     <gazebo reference="back_right">
         <material>Gazebo/Blue</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <mu1>${mu1}</mu1>       
+        <mu2>${mu2}</mu2>       
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1> 
+        <slip2>${sl2}</slip2>    
     </gazebo>
 
 
