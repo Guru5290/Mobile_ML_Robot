@@ -1,6 +1,7 @@
 controller_manager:
   ros__parameters:
     update_rate: 30
+
     diff_cont:
       type: diff_drive_controller/DiffDriveController
     joint_broad:
@@ -14,27 +15,23 @@ imu_broadcaster:
   ros__parameters:
     sensor_name: imu_sensor
     frame_id: imu_link
-    # use_ros_time: true
 
-    # Optional: covariance
-    # linear_acceleration_covariance: [0.1, 0.0, 0.0,
-    #                                  0.0, 0.1, 0.0,
-    #                                  0.0, 0.0, 0.1]
-    # angular_velocity_covariance: [0.1, 0.0, 0.0,
-    #                               0.0, 0.1, 0.0,
-    #                               0.0, 0.0, 0.1]
-    # orientation_covariance: [-1.0, 0.0, 0.0,
-    #                           0.0, -1.0, 0.0,
-    #                           0.0, 0.0, -1.0]
+    # static_covariance_linear_acceleration: [0.1, 0.0, 0.0,
+    #                                         0.0, 0.1, 0.0,
+    #                                         0.0, 0.0, 0.1]
+    # static_covariance_angular_velocity: [0.1, 0.0, 0.0,
+    #                                     0.0, 0.1, 0.0,
+    #                                     0.0, 0.0, 0.1]
+    # static_covariance_orientation: [-1.0, 0.0, 0.0,
+    #                                 0.0, -1.0, 0.0,
+    #                                 0.0, 0.0, -1.0]
 
 
 diff_cont:
   ros__parameters:
-
     publish_rate: 50.0
 
     base_frame_id: base_link
-
     left_wheel_names: ['front_left_joint','back_left_joint']
     right_wheel_names: ['front_right_joint','back_right_joint']
     wheel_separation: 0.207
