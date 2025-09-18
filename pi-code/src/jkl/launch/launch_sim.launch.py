@@ -75,6 +75,14 @@ def generate_launch_description():
             parameters=[os.path.join(get_package_share_directory(package_name), 'config', 'ekf.yaml')],
     )
 
+    rviz_node = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        output='screen',
+        arguments=['-d', './src/comp.rviz'],
+    )
+
 
     # Code for delaying a node (I haven't tested how effective it is)
     # 
@@ -103,5 +111,6 @@ def generate_launch_description():
         spawn_entity,
         diff_drive_spawner,
         joint_broad_spawner,
-        ekf_localization
+        ekf_localization,
+        rviz_node
     ])

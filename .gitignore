@@ -4,5 +4,4 @@ log/
 *.o
 *.pyc
 pi-code/map*
-pi-code/*.pdf
-pi-code/*.gv
+pi-code/m2.*

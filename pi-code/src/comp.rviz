@@ -6,6 +6,7 @@ Panels:
       Expanded:
         - /Global Options1
         - /Map1
+        - /Polygon1
       Splitter Ratio: 0.529411792755127
     Tree Height: 461
   - Class: rviz_common/Selection
@@ -81,8 +82,6 @@ Visualization Manager:
           Value: false
         laser_frame:
           Value: false
-        map:
-          Value: true
         odom:
           Value: true
       Marker Scale: 1
@@ -91,26 +90,25 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        map:
-          odom:
-            base_link:
-              back_left:
+        odom:
+          base_link:
+            back_left:
+              {}
+            back_right:
+              {}
+            base_footprint:
+              {}
+            chassis:
+              head:
                 {}
-              back_right:
+              imu_link:
                 {}
-              base_footprint:
+              laser_frame:
                 {}
-              chassis:
-                head:
-                  {}
-                imu_link:
-                  {}
-                laser_frame:
-                  {}
-              front_left:
-                {}
-              front_right:
-                {}
+            front_left:
+              {}
+            front_right:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -458,10 +456,23 @@ Visualization Manager:
         Reliability Policy: Reliable
         Value: /diff_cont/odom
       Value: false
+    - Alpha: 1
+      Class: rviz_default_plugins/Polygon
+      Color: 25; 255; 0
+      Enabled: true
+      Name: Polygon
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        Filter size: 10
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /local_costmap/published_footprint
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: map
+    Fixed Frame: odom
     Frame Rate: 30
   Name: root
   Tools:
@@ -506,11 +517,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 48.183502197265625
+      Scale: 55.32110595703125
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
-      X: 0.9444836974143982
-      Y: 0.1361418217420578
+      X: 2.243648052215576
+      Y: 1.0504335165023804
     Saved:
       - Class: rviz_default_plugins/Orbit
         Distance: 2.058964490890503
