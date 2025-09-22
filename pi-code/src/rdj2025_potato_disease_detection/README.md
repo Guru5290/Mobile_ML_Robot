@@ -61,7 +61,20 @@ This will start the potato disease detection node. It will wait for images on `/
 On receiving an image it will run an inference displaying a text on the terminal. 
 An annotated image will also be published to the '/inference_image' topic which can be view in RVIZ2 under the 'Image' display plugin
 
-### 2. Publish a Test Image
+
+### 2. To start the feed stream from raspberry PiCamera2
+open a script and run the following script: 
+'''bash
+rpicam-vid -t 0 --nopreview --inline --codec mjpeg \
+  --width 1280 --height 720 --framerate 15 \
+  --hflip --vflip \
+  -o - | ffmpeg -f mjpeg -i - -c:v copy \
+  -f rtsp -rtsp_flags listen rtsp://0.0.0.0:8554/cam
+
+  '''
+
+
+### 3. Publish a Test Image
 
 In a new terminal (with workspace sourced):
 
