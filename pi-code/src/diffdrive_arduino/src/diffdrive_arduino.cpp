@@ -106,7 +106,7 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_activate(const rclcpp_li
   // arduino.setPidValues(9,7,0,100);
   // arduino.setPidValues(14,7,0,100);
   // arduino_.setPidValues(30, 20, 0, 100);
-  arduino_.setPidValues(200, 120, 1, 50); //currently in use
+  arduino_.setPidValues(200, 120, 1, 50); // currently in use
 
   return CallbackReturn::SUCCESS;
 }
@@ -174,12 +174,12 @@ hardware_interface::return_type DiffDriveArduino::write(
     arduino_.setServoAngle(0, static_cast<int>(servo_angle_cmd_));
     arduino_.setServoAngle(1, static_cast<int>(servo_angle_cmd_));
     servo_angle_state_ = servo_angle_cmd_;
+    RCLCPP_INFO(logger_, "Set servo to %.1f degrees", servo_angle_cmd_);
   }
 
   return return_type::OK;
   
 }
-
 
 
 #include "pluginlib/class_list_macros.hpp"

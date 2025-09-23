@@ -22,8 +22,7 @@
   <depend>pluginlib</depend>
   <depend>rclcpp</depend>
   <depend>serial</depend>
-  <depend>std_srvs</depend>
-
+  
 
 
   <export>

@@ -100,13 +100,7 @@ def generate_launch_description():
             parameters=[os.path.join(get_package_share_directory(package_name), 'config', 'ekf.yaml')],
     )
 
-    servo_service_node = Node(
-        package="diffdrive_arduino",
-        executable="servo_service",
-        # parameters=[{"device": "/dev/ttyACM0", "baud_rate": 57600, "timeout_ms": 1000}]
-    )
-
-    servo_HW_interface = Node(
+    servo_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["servo_controller"],
@@ -141,6 +135,5 @@ def generate_launch_description():
         delayed_joint_broad_spawner,
         ekf_localization,
         imu_broadcaster_spawner, 
-        servo_service_node,
-        servo_HW_interface, 
+        servo_spawner
     ])

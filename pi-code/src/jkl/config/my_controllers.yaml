@@ -9,10 +9,10 @@ controller_manager:
       joints: ['front_left_joint', 'front_right_joint', 'back_left_joint', 'back_right_joint']
     
     imu_broadcaster:
-      type: imu_sensor_broadcaster/IMUSensorBroadcaster
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster # https://control.ros.org/humble/doc/ros2_controllers/imu_sensor_broadcaster/doc/userdoc.html
 
     servo_controller:
-      type: position_controllers/JointGroupPositionController
+      type: position_controllers/JointGroupPositionController # https://control.ros.org/humble/doc/ros2_controllers/position_controllers/doc/userdoc.html
 
 imu_broadcaster:
   ros__parameters:
