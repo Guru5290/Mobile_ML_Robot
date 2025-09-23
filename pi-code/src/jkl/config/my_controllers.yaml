@@ -17,20 +17,25 @@ diff_cont:
 
     left_wheel_names: ['front_left_joint','back_left_joint']
     right_wheel_names: ['front_right_joint','back_right_joint']
+<<<<<<< Updated upstream
     wheel_separation: 0.207
     wheel_radius: 0.0425
     wheels_per_side: 2
+=======
+    wheel_separation: 0.35
+    wheel_radius: 0.0485
+>>>>>>> Stashed changes
 
     use_stamped_vel: false
 
-    # open_loop: false    
+    open_loop: false    
 
-    # wheels_per_side: x
-    # wheel_separation_multiplier: x
+    # wheels_per_side: 2
+    # wheel_separation_multiplier: 2
     # left_wheel_radius_multiplier: x
     # right_wheel_radius_multiplier: x
 
-    # odom_frame_id: x
+    # odom_frame_id: odom 
     # pose_covariance_diagonal: x
     # twist_covariance_diagonal: x
     # open_loop: x

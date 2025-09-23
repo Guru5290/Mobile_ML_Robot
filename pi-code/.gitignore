@@ -1,0 +1,4 @@
+install/*
+log/*
+build/*
+build/diffdrive_arduino/cmake_args.last

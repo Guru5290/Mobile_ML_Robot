@@ -6,7 +6,7 @@ import cv2
 import os
 from datetime import datetime
 
-SAVE_DIR = "./src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection"  # directory to save images
+SAVE_DIR = "./src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection/Captured_Images"  # directory to save images
 os.makedirs(SAVE_DIR, exist_ok=True)
 
 class RTSPImagePublisher(Node):
@@ -14,8 +14,8 @@ class RTSPImagePublisher(Node):
         super().__init__('rtsp_image_publisher')
 
         # Declare parameter with default value
-        self.declare_parameter('pi_ip', '192.168.1.100')
-        pi_ip = self.get_parameter('pi_ip').get_parameter_value().string_value
+        self.declare_parameter('IP', '192.168.1.100')
+        pi_ip = self.get_parameter('IP').get_parameter_value().string_value
 
         rtsp_url = f"rtsp://{pi_ip}:8554/cam"
         self.get_logger().info(f"Connecting to {rtsp_url}")
