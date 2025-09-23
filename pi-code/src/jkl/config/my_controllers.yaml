@@ -11,9 +11,12 @@ controller_manager:
     imu_broadcaster:
       type: imu_sensor_broadcaster/IMUSensorBroadcaster
 
+    servo_controller:
+      type: position_controllers/JointGroupPositionController
+
 imu_broadcaster:
   ros__parameters:
-    sensor_name: imu_sensor
+    sensor_name: imu_sensor # specified in HW interface
     frame_id: imu_link
 
     # static_covariance_linear_acceleration: [0.1, 0.0, 0.0,
@@ -25,6 +28,11 @@ imu_broadcaster:
     # static_covariance_orientation: [-1.0, 0.0, 0.0,
     #                                 0.0, -1.0, 0.0,
     #                                 0.0, 0.0, -1.0]
+
+servo_controller:
+  ros__parameters:
+    joints:
+      - servo # specified in HW interface
 
 
 diff_cont:

@@ -1,51 +1,48 @@
 #include <rclcpp/rclcpp.hpp>
 #include <std_srvs/srv/set_bool.hpp>
-#include "arduino_comms.h"  
+#include <std_msgs/msg/float64_multi_array.hpp>
 
 class ServoServiceNode : public rclcpp::Node
 {
 public:
-  ServoServiceNode()
-  : Node("servo_service")
+  ServoServiceNode() : Node("servo_service_node")
   {
-    this->declare_parameter<std::string>("device", "/dev/ttyACM0");
-    this->declare_parameter<int>("baud_rate", 57600);
-    this->declare_parameter<int>("timeout_ms", 1000);
-
-    std::string port = this->get_parameter("device").as_string();
-    int baud = this->get_parameter("baud_rate").as_int();
-    int timeout_ms = this->get_parameter("timeout_ms").as_int();
-
-    RCLCPP_INFO(this->get_logger(), "Connecting to %s @ %d baud %d timeout", port.c_str(), baud, timeout_ms);
-
-    comms_ = std::make_shared<ArduinoComms>(port, baud, timeout_ms);
-
     service_ = this->create_service<std_srvs::srv::SetBool>(
       "door_command",
-      std::bind(&ServoServiceNode::handle_command, this, std::placeholders::_1, std::placeholders::_2)
-    );
+      std::bind(&ServoServiceNode::handle_service, this,
+                std::placeholders::_1, std::placeholders::_2));
 
-    RCLCPP_INFO(this->get_logger(), "Servo service ready on /door_command");
+    servo_pub_ = this->create_publisher<std_msgs::msg::Float64MultiArray>("/servo_controller/commands", 10);
+
+    RCLCPP_INFO(this->get_logger(), "Servo service ready!");
   }
 
 private:
-  void handle_command(
+  void handle_service(
     const std::shared_ptr<std_srvs::srv::SetBool::Request> request,
     std::shared_ptr<std_srvs::srv::SetBool::Response> response)
   {
+    std_msgs::msg::Float64MultiArray cmd;
+    // double angle_radians;
+    cmd.data.resize(1); // one servo channel
     if (request->data) {
-      comms_->setServoAngle(0, 90);
-      response->success = true;
+      // cmd.data[0] = angle_radians; 
+      cmd.data[0] = 90.0; 
       response->message = "Door opened";
+      
     } else {
-      comms_->setServoAngle(0, 170);
-      response->success = true;
+      // cmd.data[0] = angle_radians; 
+      cmd.data[0] = 170.0; 
       response->message = "Door closed";
     }
+
+    servo_pub_->publish(cmd);
+
+    response->success = true;
   }
 
-  std::shared_ptr<ArduinoComms> comms_;
   rclcpp::Service<std_srvs::srv::SetBool>::SharedPtr service_;
+  rclcpp::Publisher<std_msgs::msg::Float64MultiArray>::SharedPtr servo_pub_;
 };
 
 int main(int argc, char **argv)

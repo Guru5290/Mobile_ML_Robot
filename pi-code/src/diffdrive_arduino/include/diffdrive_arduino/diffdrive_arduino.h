@@ -51,6 +51,9 @@ private:
   double gx_, gy_, gz_;
   double ox_, oy_, oz_, ow_;
 
+  double servo_angle_cmd_{170.0};  // 170 degrees is closed position
+  double servo_angle_state_{170.0};  // track last set position
+
   rclcpp::Logger logger_{rclcpp::get_logger("DiffDriveArduino")};
 
   std::chrono::time_point<std::chrono::system_clock> time_;

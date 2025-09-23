@@ -75,6 +75,7 @@ std::vector<hardware_interface::StateInterface> DiffDriveArduino::export_state_i
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.y", &oy_));
   state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.z", &oz_));
 
+  state_interfaces.emplace_back(hardware_interface::StateInterface("servo", "position", &servo_angle_state_));
 
   return state_interfaces;
 }
@@ -90,6 +91,8 @@ std::vector<hardware_interface::CommandInterface> DiffDriveArduino::export_comma
 
   command_interfaces.emplace_back(hardware_interface::CommandInterface(back_l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &back_l_wheel_.cmd));
   command_interfaces.emplace_back(hardware_interface::CommandInterface(back_r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &back_r_wheel_.cmd));
+
+  command_interfaces.emplace_back(hardware_interface::CommandInterface("servo", "position", &servo_angle_cmd_));
 
   return command_interfaces;
 }
@@ -166,6 +169,12 @@ hardware_interface::return_type DiffDriveArduino::write(
   }
 
   arduino_.setMotorValues(front_l_wheel_.cmd / front_l_wheel_.rads_per_count / cfg_.loop_rate, front_r_wheel_.cmd / front_r_wheel_.rads_per_count / cfg_.loop_rate, back_l_wheel_.cmd / back_l_wheel_.rads_per_count / cfg_.loop_rate, back_r_wheel_.cmd / back_r_wheel_.rads_per_count / cfg_.loop_rate);
+
+  if (servo_angle_state_ != servo_angle_cmd_){ // only update if there is a change
+    arduino_.setServoAngle(0, static_cast<int>(servo_angle_cmd_));
+    arduino_.setServoAngle(1, static_cast<int>(servo_angle_cmd_));
+    servo_angle_state_ = servo_angle_cmd_;
+  }
 
   return return_type::OK;
   
