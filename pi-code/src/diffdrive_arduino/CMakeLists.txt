@@ -17,8 +17,7 @@ find_package(hardware_interface REQUIRED)
 find_package(controller_manager REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(pluginlib REQUIRED)
-
-
+find_package(std_srvs REQUIRED)
 
 
 
@@ -37,11 +36,18 @@ ament_target_dependencies(
   serial
   rclcpp
   pluginlib
+  std_srvs
 )
 
 pluginlib_export_plugin_description_file(hardware_interface robot_hardware.xml)
 
+add_executable(servo_service src/servo_service.cpp)
+ament_target_dependencies(servo_service rclcpp std_srvs)
+target_link_libraries(servo_service diffdrive_arduino)  
 
+install(TARGETS
+  servo_service
+  DESTINATION lib/${PROJECT_NAME})
 
 add_library(fake_robot SHARED src/fake_robot.cpp src/wheel.cpp)
 set_property(TARGET fake_robot PROPERTY POSITION_INDEPENDENT_CODE ON)

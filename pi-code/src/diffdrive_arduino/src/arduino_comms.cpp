@@ -51,6 +51,13 @@ void ArduinoComms::readIMUValues(double &val_1, double &val_2, double &val_3, do
     ss >> val_1 >> val_2 >> val_3 >> val_4 >> val_5 >> val_6 >> val_7 >> val_8 >> val_9 >> val_10;
 }
 
+void ArduinoComms::setServoAngle(int servo, int angle)
+{
+    std::stringstream ss;
+    ss << "s " << servo << " " << angle << "\r";
+    sendMsg(ss.str());
+}
+
 std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_output)
 {
     serial_conn_.write(msg_to_send);
