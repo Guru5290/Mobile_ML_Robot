@@ -155,7 +155,7 @@ import numpy as np
 import cv2 
 
 # Capturing video through RTSP stream 
-rtsp_url = f"rtsp://10.21.16.67:8554/cam"
+rtsp_url = f"rtsp://10.122.180.67:8554/cam"
 webcam = cv2.VideoCapture(rtsp_url) 
 
 # Start a while loop 
@@ -205,26 +205,14 @@ while True:
     blue_mask = cv2.dilate(blue_mask, kernel) 
 
     # ---- Draw contours for each color ----
-
-    # max_contours = [red_mask, green_mask,yellow_mask, blue_mask]
-    # area_contoours = [0,0,0,0]
-    area_contoours = {"Red":0,"Green":0, "Yellow":0, "Blue":0,  }
-    # print(max_contours)
+    area_contours = {"Red":0,"Green":0, "Yellow":0, "Blue":0,  }
 
     def detect_and_draw(mask, color_bgr, label):
         contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
         for contour in contours: 
             area = cv2.contourArea(contour) 
             if area > 30000: 
-                # if label=="Red" and area>area_contoours["Red"]:
-                #     area_contoours["Red"]=area
-                # elif label=="Green" and area>area_contoours["Green"]:
-                #     area_contoours["Green"]=area
-                if label=="Yellow" and area>area_contoours["Yellow"]:
-                    area_contoours["Yellow"]=area
-                elif label=="Blue" and area>area_contoours["Blue"]:
-                    area_contoours["Blue"]=area
-                
+                area_contours[label]=area
 
                 x, y, w, h = cv2.boundingRect(contour) 
                 cv2.rectangle(imageFrame, (x, y), (x + w, y + h), color_bgr, 2) 
@@ -235,9 +223,9 @@ while True:
     # detect_and_draw(green_mask, (0, 255, 0), "Green")
     detect_and_draw(yellow_mask,(0, 255, 255), "Yellow")
     detect_and_draw(blue_mask,  (255, 0, 0), "Blue")
-    # print(area_contoours)
+    # print(area_contours)
 
-    print(max(area_contoours, key=area_contoours.get), area_contoours)
+    print(max(area_contours, key=area_contours.get), area_contours)
 
     # Show result 
     cv2.imshow("Multiple Color Detection in Real-Time", imageFrame) 

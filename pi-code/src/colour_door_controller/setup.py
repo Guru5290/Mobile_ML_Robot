@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'colour_to_door_service = colour_door_controller.colour_to_door_service:main',
-            'colour_publisher = colour_door_controller.colour_publisher:main',
+            'test_colour_publisher = colour_door_controller.test_colour_publisher:main',
+            'colour_detector = colour_door_controller.colour_detector:main',
         ],
     },
 )
