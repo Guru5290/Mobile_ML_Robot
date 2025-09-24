@@ -32,7 +32,7 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_init(const hardware_inte
   cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
 
   // Set up the wheels
-  front_l_wheel_.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev); // ** ** back wheels!
+  front_l_wheel_.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev); 
   front_r_wheel_.setup(cfg_.front_right_wheel_name, cfg_.enc_counts_per_rev);
   back_l_wheel_.setup(cfg_.back_left_wheel_name, cfg_.enc_counts_per_rev); 
   back_r_wheel_.setup(cfg_.back_right_wheel_name, cfg_.enc_counts_per_rev);
