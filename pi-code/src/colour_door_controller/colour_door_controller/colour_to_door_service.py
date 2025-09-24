@@ -19,6 +19,7 @@ class ColourToDoorPublisher(Node):
         )
 
         self.get_logger().info("Node started: listening to /detected_colour")
+        self.lastcolour = ""
 
     def listener_callback(self, msg: String):
         colour = msg.data.strip().lower()
@@ -26,16 +27,27 @@ class ColourToDoorPublisher(Node):
 
         command = Float64MultiArray()
 
+        # if colour == "red":
+        #     command.data = [90.0]
+        #     self.publisher.publish(command)
+        #     self.get_logger().info("Published [90.0] to /servo_controller/commands (OPEN)")
+        # elif colour == "blue":
+        #     command.data = [170.0]
+        #     self.publisher.publish(command)
+        #     self.get_logger().info("Published [170.0] to /servo_controller/commands (CLOSE)")
+        # else:
+        #     self.get_logger().warn("Unknown colour received, ignoring")
+        
         if colour == "red":
-            command.data = [90.0]
-            self.publisher.publish(command)
-            self.get_logger().info("Published [90.0] to /servo_controller/commands (OPEN)")
-        elif colour == "blue":
-            command.data = [170.0]
-            self.publisher.publish(command)
-            self.get_logger().info("Published [170.0] to /servo_controller/commands (CLOSE)")
+            if self.lastcolour == "red":
+                command.data = [90.0]  # OPEN
+                self.publisher.publish(command)
+                self.get_logger().info("Published [90.0] to /servo_controller/commands (OPEN)")
+                self.lastcolour="None"
         else:
             self.get_logger().warn("Unknown colour received, ignoring")
+
+        self.lastcolour=colour
 
 
 def main(args=None):

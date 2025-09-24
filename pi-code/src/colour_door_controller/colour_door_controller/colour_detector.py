@@ -14,7 +14,7 @@ class RTSPImagePublisher(Node):
         super().__init__('rtsp_image_publisher')
 
         # Declare parameter with default value
-        self.declare_parameter('IP', '10.122.180.67')
+        self.declare_parameter('IP', '192.168.4.1')
         pi_ip = self.get_parameter('IP').get_parameter_value().string_value
 
         rtsp_url = f"rtsp://{pi_ip}:8554/cam"
@@ -29,7 +29,11 @@ class RTSPImagePublisher(Node):
             rclpy.shutdown()
             return
 
+        self.detected_colour = ""
+        self.area_contours = {"Red":0,"Green":0, "Yellow":0, "Blue":0,}
+
         self.get_logger().info("Press 'd' to capture and detect, 'q' to quit.")
+        
     
     def detect_colour(self, imageFrame):
         # Convert BGR to HSV 
@@ -69,47 +73,56 @@ class RTSPImagePublisher(Node):
         green_mask = cv2.dilate(green_mask, kernel) 
         blue_mask = cv2.dilate(blue_mask, kernel) 
 
-        # ---- Draw contours for each color ----
-        area_contours = {"Red":0,"Green":0, "Yellow":0, "Blue":0,  }
+        area_thresh = 30000
+
     
         def detect_and_draw(mask, color_bgr, label):
             contours, _ = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE) 
             for contour in contours: 
                 area = cv2.contourArea(contour) 
-                if area > 30000: 
-                    area_contours[label]=area
-
+                self.area_contours[label]=area
+                if area > area_thresh: 
                     x, y, w, h = cv2.boundingRect(contour) 
                     cv2.rectangle(imageFrame, (x, y), (x + w, y + h), color_bgr, 2) 
                     cv2.putText(imageFrame, label, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 
                                 1.0, color_bgr, 2)
                     
         
-        detect_and_draw(red_mask,   (0, 0, 255), "Red")
-        detect_and_draw(green_mask, (0, 255, 0), "Green")
+        detect_and_draw(red_mask,   (0, 0, 255), "Red") # comment this later
+        detect_and_draw(green_mask, (0, 255, 0), "Green") # comment this later
         detect_and_draw(yellow_mask, (0, 255, 255), "Yellow")
         detect_and_draw(blue_mask,  (255, 0, 0), "Blue")
+        
+        if max(self.area_contours.values()) < area_thresh:
+            self.detected_colour = "None"
+        else:
+            self.detected_colour = max(self.area_contours, key=self.area_contours.get)
 
-        detected_colour = max(area_contours, key=area_contours.get)
+
+    def pub_colour(self):
         msg = String()
-        msg.data = detected_colour
+        msg.data = self.detected_colour
         self.publisher_.publish(msg)
-        self.get_logger().info(f"{detected_colour} {area_contours}")
+        self.get_logger().info(f"{self.detected_colour} {self.area_contours}")
 
 
     def spin_loop(self):
+        window_name = "Colour detector preview"
+        cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+        cv2.resizeWindow(window_name, 960, 540)
         while rclpy.ok():
             ret, imageFrame = self.cap.read()
             if not ret:
                 self.get_logger().error("Failed to grab frame")
                 break
 
-            cv2.imshow("Colour detector preview", imageFrame)
+            self.detect_colour(imageFrame)
+            cv2.imshow(window_name, imageFrame)
             key = cv2.waitKey(1) & 0xFF
 
             if key == ord('d'):
-                self.detect_colour(imageFrame)
-                cv2.imshow("Colour detector preview", imageFrame)
+                self.pub_colour()
+                cv2.imshow(window_name, imageFrame)
                 cv2.waitKey(3000) # show preview for 3 seconds
 
             elif key == ord('q'):
