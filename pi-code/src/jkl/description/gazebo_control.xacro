@@ -11,12 +11,17 @@
       <front_right_joint>front_right_joint</front_right_joint>
       <back_left_joint>back_left_joint</back_left_joint>
       <back_right_joint>back_right_joint</back_right_joint>
+<!-- <<<<<<< g
+      <wheel_separation>0.207</wheel_separation>
+      <wheel_radius>0.085</wheel_radius>
+======= -->
 
 
       <wheel_separation>0.35</wheel_separation>
       <wheel_separation>0.35</wheel_separation>
       <wheel_radius>0.0485</wheel_radius>
       <wheel_radius>0.0485</wheel_radius>
+
 
       <!-- Limits -->
       <!-- <max_wheel_torque>200</max_wheel_torque> -->

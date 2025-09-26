@@ -17,8 +17,12 @@ def generate_launch_description():
 
     # Controller parameters file (referenced by gz_ros2_control via your robot URDF/xacro)
     controllers_yaml = os.path.join(
+# <<<<<<< g
+#         '/home/g/Mobile_ML_Robot/pi-code/src/jkl/config',
+# =======
         get_package_share_directory(package_name),
         'config',
+# >>>>>>> main
         'my_controllers.yaml'
     )
 
@@ -137,10 +141,14 @@ def generate_launch_description():
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
+# <<<<<<< g
+#         parameters=[{'config_file':os.path.join(get_package_share_directory(package_name), "config", "gz_bridge.yaml")}],
+# =======
         arguments=[
             '--ros-args', '-p',
             f'config_file:={os.path.join(get_package_share_directory(package_name), "config", "gz_bridge.yaml")}'
         ],
+# >>>>>>> main
         output='screen'
     )
 
@@ -149,6 +157,14 @@ def generate_launch_description():
         executable="image_bridge",
         arguments=["/camera/image_raw"],
         output='screen'
+    )
+        # Specify the actions
+    ekf_localization = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=['/home/g/Mobile_ML_Robot/pi-code/src/jkl/config/ekf.yaml'] #  os.path.join(get_package_share_directory(package_name), "config", "ekf.yaml")
     )
 
     return LaunchDescription([
@@ -164,4 +180,5 @@ def generate_launch_description():
         diff_drive_spawner,
         ros_gz_bridge,
         ros_gz_image_bridge,
+        ekf_localization
     ])

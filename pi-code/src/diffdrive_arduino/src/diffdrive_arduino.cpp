@@ -83,7 +83,7 @@ std::vector<hardware_interface::CommandInterface> DiffDriveArduino::export_comma
 
 hardware_interface::CallbackReturn DiffDriveArduino::on_activate(const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  RCLCPP_INFO(logger_, "Starting Controller...");
+  RCLCPP_INFO(logger_, "Starting Controller..."); 
 
   arduino_.sendEmptyMsg();
   // arduino.setPidValues(9,7,0,100);
