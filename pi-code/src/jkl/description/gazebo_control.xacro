@@ -4,26 +4,36 @@
     <gazebo>
         <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
 
-            <front_left_joint>front_left_joint</front_left_joint>
-            <front_right_joint>front_right_joint</front_right_joint>
-            <back_left_joint>back_left_joint</back_left_joint>
-            <back_right_joint>back_right_joint</back_right_joint>
-            <wheel_separation>0.207</wheel_separation>
-            <wheel_diameter>0.085</wheel_diameter>
+      <!-- Wheel Information -->
+      
+      <num_wheel_pairs>2</num_wheel_pairs>
+      <front_left_joint>front_left_joint</front_left_joint>
+      <front_right_joint>front_right_joint</front_right_joint>
+      <back_left_joint>back_left_joint</back_left_joint>
+      <back_right_joint>back_right_joint</back_right_joint>
+<!-- <<<<<<< g
+      <wheel_separation>0.207</wheel_separation>
+      <wheel_radius>0.085</wheel_radius>
+======= -->
 
 
-            <!-- Limits -->
-            <max_wheel_torque>200</max_wheel_torque>
-            <max_wheel_acceleration>10.0</max_wheel_acceleration>
+      <wheel_separation>0.35</wheel_separation>
+      <wheel_separation>0.35</wheel_separation>
+      <wheel_radius>0.0485</wheel_radius>
+      <wheel_radius>0.0485</wheel_radius>
 
-            
-            <!-- Output -->
-            <odometry_frame>odom</odometry_frame>
-            <robot_base_frame>base_link</robot_base_frame>
 
-            <publish_odom>true</publish_odom>
-            <publish_odom_tf>true</publish_odom_tf>
-            <publish_wheel_tf>true</publish_wheel_tf>
+      <!-- Limits -->
+      <!-- <max_wheel_torque>200</max_wheel_torque> -->
+      <max_linear_acceleration>1.0</max_linear_acceleration>
+
+      <!-- Output -->
+      <frame_id>odom</frame_id>
+      <child_frame_id>base_link</child_frame_id>
+      <odom_topic>/odom</odom_topic>
+      <odom_publisher_frequency>30</odom_publisher_frequency>
+
+      <tf_topic>/tf</tf_topic>
 
         </plugin>
     </gazebo>

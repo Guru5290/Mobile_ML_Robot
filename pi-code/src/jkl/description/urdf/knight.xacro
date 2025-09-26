@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <robot name="knight" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
 <xacro:include filename="materials.xacro" />
@@ -30,14 +30,14 @@
   <visual>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0 0 0" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -51,14 +51,14 @@
   <visual>
     <origin xyz="-0.110529 -0.039646 -0.024004" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/camera_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/camera_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="-0.110529 -0.039646 -0.024004" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/camera_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/camera_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -72,14 +72,14 @@
   <visual>
     <origin xyz="-0.044064 0.006954 -0.072354" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/lidar_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/lidar_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="-0.044064 0.006954 -0.072354" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/lidar_link.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/lidar_link.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -93,14 +93,14 @@
   <visual>
     <origin xyz="-0.035729 0.118178 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/front_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/front_right.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="-0.035729 0.118178 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/front_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/front_right.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -114,14 +114,14 @@
   <visual>
     <origin xyz="0.104271 0.118178 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/back_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/back_right.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.104271 0.118178 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/back_right.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/back_right.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
@@ -135,14 +135,14 @@
   <visual>
     <origin xyz="-0.035329 -0.104198 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/front_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/front_left.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="-0.035329 -0.104198 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/front_left.stl" scale="0.001 0.001 0.001"/> 
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/front_left.stl" scale="0.001 0.001 0.001"/> 
     </geometry>
   </collision>
 </link>
@@ -156,14 +156,14 @@
   <visual>
     <origin xyz="0.104671 -0.104198 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/back_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/back_left.stl" scale="0.001 0.001 0.001"/>
     </geometry>
     <material name="silver"/>
   </visual>
   <collision>
     <origin xyz="0.104671 -0.104198 0.032546" rpy="0 0 0"/>
     <geometry>
-      <mesh filename="package://jkl/description/meshes/back_left.stl" scale="0.001 0.001 0.001"/>
+      <mesh filename="/home/g/Mobile_ML_Robot/pi-code/src/jkl/description/meshes/back_left.stl" scale="0.001 0.001 0.001"/>
     </geometry>
   </collision>
 </link>
