@@ -2,58 +2,88 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String, Float64MultiArray
+import time
 
 
 class ColourToDoorPublisher(Node):
     def __init__(self):
         super().__init__("colour_to_door_publisher")
 
+        # Declare parameter for delay
+        self.declare_parameter('delay_seconds', 30.0)
+        self.delay_seconds = self.get_parameter('delay_seconds').get_parameter_value().double_value
+
         # Publisher for servo commands
-        self.publisher = self.create_publisher(
-            Float64MultiArray, "/servo_controller/commands", 10
-        )
+        self.publisher = self.create_publisher(Float64MultiArray, "/servo_controller/commands", 10)
 
         # Subscriber for detected colours
         self.subscription = self.create_subscription(
             String, "detected_colour", self.listener_callback, 10
         )
 
-        self.get_logger().info("Node started: listening to /detected_colour")
-        self.lastcolour = ""
+        # Track last detection times and counts for each color
+        self.last_time = {"red": 0.0, "blue": 0.0}
+        self.counts = {"red": 0, "blue": 0}
+
+        # Ensure servo starts closed
+        self._close_servo()
+
+        self.get_logger().info(
+            f"Node started: listening to /detected_colour with delay={self.delay_seconds}s"
+        )
 
     def listener_callback(self, msg: String):
         colour = msg.data.strip().lower()
-        self.get_logger().info(f"Received colour: {colour}")
+        now = time.time()
 
-        command = Float64MultiArray()
+        if colour not in ["red", "blue"]:
+            self.get_logger().info(f"Ignoring non-target colour: {colour}")
+            return
 
-        # if colour == "red":
-        #     command.data = [90.0]
-        #     self.publisher.publish(command)
-        #     self.get_logger().info("Published [90.0] to /servo_controller/commands (OPEN)")
-        # elif colour == "blue":
-        #     command.data = [170.0]
-        #     self.publisher.publish(command)
-        #     self.get_logger().info("Published [170.0] to /servo_controller/commands (CLOSE)")
-        # else:
-        #     self.get_logger().warn("Unknown colour received, ignoring")
-        
-        if colour == "red":
-            if self.lastcolour == "red":
-                command.data = [90.0]  # OPEN
-                self.publisher.publish(command)
-                self.get_logger().info("Published [90.0] to /servo_controller/commands (OPEN)")
-                self.lastcolour="None"
+        # Increment counter only if delay has passed
+        if (now - self.last_time[colour]) >= self.delay_seconds:
+            self.counts[colour] += 1
+            self.last_time[colour] = now
+            self.get_logger().info(f"Confirmed {colour.upper()} count={self.counts[colour]}")
         else:
-            self.get_logger().warn("Unknown colour received, ignoring")
+            self.get_logger().info(f"{colour.upper()} detected again too soon, servo remains CLOSED")
+            return
 
-        self.lastcolour=colour
+        # Check conditions for each color separately
+        if self.counts["red"] >= 2:
+            self._open_servo("red")
+        elif self.counts["blue"] >= 2:
+            self._open_servo("blue")
+        else:
+            self._close_servo()
+
+    def _open_servo(self, colour: str):
+        command = Float64MultiArray()
+        command.data = [90.0]  # OPEN
+        self.publisher.publish(command)
+
+        if colour == "red":
+            self.get_logger().info("RED confirmed twice -> OPEN (deposit red cube)")
+        elif colour == "blue":
+            self.get_logger().info("BLUE confirmed twice -> OPEN (deposit blue cube)")
+
+        # Reset after action
+        self.counts = {"red": 0, "blue": 0}
+        self.last_time = {"red": 0.0, "blue": 0.0}
+
+    def _close_servo(self):
+        """Publish a closed command to ensure servo stays closed by default."""
+        command = Float64MultiArray()
+        command.data = [170.0]  # CLOSED position
+        self.publisher.publish(command)
+        self.get_logger().info("Servo explicitly set to CLOSED")
 
 
 def main(args=None):
     rclpy.init(args=args)
     node = ColourToDoorPublisher()
     rclpy.spin(node)
+    node.destroy_node()
     rclpy.shutdown()
 
 
