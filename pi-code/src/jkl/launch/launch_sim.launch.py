@@ -112,5 +112,5 @@ def generate_launch_description():
         diff_drive_spawner,
         joint_broad_spawner,
         ekf_localization,
-        rviz_node
+        # rviz_node
     ])
