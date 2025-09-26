@@ -77,13 +77,17 @@ def generate_launch_description():
         executable="spawner",
         arguments=["joint_broad"],
     )
-
+    
+    
     delayed_joint_broad_spawner = RegisterEventHandler(
         event_handler=OnProcessStart(
             target_action=controller_manager,
             on_start=[joint_broad_spawner],
         )
     )
+    
+
+    
 
 
     # Code for delaying a node (I haven't tested how effective it is)
