@@ -1,5 +1,8 @@
 import os
+
 from ament_index_python.packages import get_package_share_directory
+
+
 from launch import LaunchDescription
 from launch.actions import (
     IncludeLaunchDescription,
@@ -8,7 +11,7 @@ from launch.actions import (
     TimerAction
 )
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
+
 from launch_ros.actions import Node
 
 
@@ -28,31 +31,25 @@ def generate_launch_description():
 
     # Robot State Publisher (publishes robot_description and TF)
     rsp = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory(package_name), 'launch', 'rsp.launch.py')
-        ]),
-        launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','rsp.launch.py'
+                )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
     )
 
     # Joystick teleop
     joystick = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource([
-            os.path.join(get_package_share_directory(package_name), 'launch', 'joystick.launch.py')
-        ]),
-        launch_arguments={'use_sim_time': 'true'}.items()
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','joystick.launch.py'
+                )]), launch_arguments={'use_sim_time': 'true'}.items()
     )
 
     # Twist mux
     twist_mux = Node(
-        package="twist_mux",
-        executable="twist_mux",
-        parameters=[
-            os.path.join(get_package_share_directory(package_name), 'config', 'twist_mux.yaml'),
-            {'use_sim_time': True}
-        ],
-        remappings=[('/cmd_vel_out', '/diff_cont/cmd_vel_unstamped')],
-        output='screen'
-    )
+            package="twist_mux",
+            executable="twist_mux",
+            parameters=[twist_mux_params, {'use_sim_time': True}],
+            remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
+        )
 
     # World file
     default_world = os.path.join(get_package_share_directory(package_name), 'worlds', 'GF.sdf')

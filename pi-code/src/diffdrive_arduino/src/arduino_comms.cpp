@@ -42,6 +42,22 @@ void ArduinoComms::setPidValues(float k_p, float k_d, float k_i, float k_o)
     sendMsg(ss.str());
 }
 
+void ArduinoComms::readIMUValues(double &val_1, double &val_2, double &val_3, double &val_4, double &val_5, double &val_6, double &val_7, double &val_8, double &val_9, double &val_10)
+{
+    std::string response = sendMsg("I\r");
+
+    // Expecting: Acc.X Acc.Y Acc.Z Gyro.X Gyro.Y Gyro.Z Orient.W Orient.X Orient.Y Orient.Z
+    std::stringstream ss(response);
+    ss >> val_1 >> val_2 >> val_3 >> val_4 >> val_5 >> val_6 >> val_7 >> val_8 >> val_9 >> val_10;
+}
+
+void ArduinoComms::setServoAngle(int servo, int angle)
+{
+    std::stringstream ss;
+    ss << "s " << servo << " " << angle << "\r";
+    sendMsg(ss.str());
+}
+
 std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_output)
 {
     serial_conn_.write(msg_to_send);

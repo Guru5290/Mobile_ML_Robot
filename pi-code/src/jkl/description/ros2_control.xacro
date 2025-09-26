@@ -5,6 +5,7 @@
         <ros2_control name="RealRobot" type="system">
             <hardware>
                 <plugin>diffdrive_arduino/DiffDriveArduino</plugin>
+                <plugin>imu_sensor_broadcaster/ImuSensorBroadcaster</plugin>
                 <param name="front_left_wheel_name">front_left_joint</param>
                 <param name="front_right_wheel_name">front_right_joint</param>
                 <param name="back_left_wheel_name">back_left_joint</param>
@@ -55,7 +56,7 @@
     <xacro:if value="$(arg sim_mode)">
         <ros2_control name="GazeboSystem" type="system">
             <hardware>
-                <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+                <plugin>gazebo_ros2_control/GazeboSystem</plugin>
             </hardware>
             <joint name="front_left_joint">
                 <command_interface name="velocity">
@@ -93,7 +94,7 @@
     </xacro:if>
 
     <gazebo>
-        <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
+        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
             <parameters>$(find jkl)/config/my_controllers.yaml</parameters>
             <parameters>$(find jkl)/config/gaz_ros2_ctl_use_sim.yaml</parameters>
         </plugin>

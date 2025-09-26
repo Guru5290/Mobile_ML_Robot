@@ -32,7 +32,7 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_init(const hardware_inte
   cfg_.enc_counts_per_rev = std::stoi(info_.hardware_parameters["enc_counts_per_rev"]);
 
   // Set up the wheels
-  front_l_wheel_.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev); // ** ** back wheels!
+  front_l_wheel_.setup(cfg_.front_left_wheel_name, cfg_.enc_counts_per_rev); 
   front_r_wheel_.setup(cfg_.front_right_wheel_name, cfg_.enc_counts_per_rev);
   back_l_wheel_.setup(cfg_.back_left_wheel_name, cfg_.enc_counts_per_rev); 
   back_r_wheel_.setup(cfg_.back_right_wheel_name, cfg_.enc_counts_per_rev);
@@ -62,6 +62,21 @@ std::vector<hardware_interface::StateInterface> DiffDriveArduino::export_state_i
   state_interfaces.emplace_back(hardware_interface::StateInterface(back_r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &back_r_wheel_.vel));
   state_interfaces.emplace_back(hardware_interface::StateInterface(back_r_wheel_.name, hardware_interface::HW_IF_POSITION, &back_r_wheel_.pos));
 
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "linear_acceleration.x", &ax_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "linear_acceleration.y", &ay_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "linear_acceleration.z", &az_));
+
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.x", &gx_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.y", &gy_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "angular_velocity.z", &gz_));
+
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.w", &ow_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.x", &ox_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.y", &oy_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface("imu_sensor", "orientation.z", &oz_));
+
+  state_interfaces.emplace_back(hardware_interface::StateInterface("servo", "position", &servo_angle_state_));
+
   return state_interfaces;
 }
 
@@ -77,6 +92,8 @@ std::vector<hardware_interface::CommandInterface> DiffDriveArduino::export_comma
   command_interfaces.emplace_back(hardware_interface::CommandInterface(back_l_wheel_.name, hardware_interface::HW_IF_VELOCITY, &back_l_wheel_.cmd));
   command_interfaces.emplace_back(hardware_interface::CommandInterface(back_r_wheel_.name, hardware_interface::HW_IF_VELOCITY, &back_r_wheel_.cmd));
 
+  command_interfaces.emplace_back(hardware_interface::CommandInterface("servo", "position", &servo_angle_cmd_));
+
   return command_interfaces;
 }
 
@@ -89,7 +106,7 @@ hardware_interface::CallbackReturn DiffDriveArduino::on_activate(const rclcpp_li
   // arduino.setPidValues(9,7,0,100);
   // arduino.setPidValues(14,7,0,100);
   // arduino_.setPidValues(30, 20, 0, 100);
-  arduino_.setPidValues(200, 120, 1, 50); //currently in use
+  arduino_.setPidValues(200, 120, 1, 50); // currently in use
 
   return CallbackReturn::SUCCESS;
 }
@@ -120,6 +137,7 @@ hardware_interface::return_type DiffDriveArduino::read(
   }
 
   arduino_.readEncoderValues(front_l_wheel_.enc, front_r_wheel_.enc, back_l_wheel_.enc, back_r_wheel_.enc);
+  arduino_.readIMUValues(ax_, ay_, az_, gx_, gy_, gz_, ow_, ox_, oy_, oz_);
 
   double front_pos_prev = front_l_wheel_.pos;
   front_l_wheel_.pos = front_l_wheel_.calcEncAngle();
@@ -137,11 +155,8 @@ hardware_interface::return_type DiffDriveArduino::read(
   back_r_wheel_.pos = back_r_wheel_.calcEncAngle();
   back_r_wheel_.vel = (back_r_wheel_.pos - back_pos_prev) / deltaSeconds;
 
-
-
   return return_type::OK;
-
-  
+ 
 }
 
 hardware_interface::return_type DiffDriveArduino::write(
@@ -155,16 +170,16 @@ hardware_interface::return_type DiffDriveArduino::write(
 
   arduino_.setMotorValues(front_l_wheel_.cmd / front_l_wheel_.rads_per_count / cfg_.loop_rate, front_r_wheel_.cmd / front_r_wheel_.rads_per_count / cfg_.loop_rate, back_l_wheel_.cmd / back_l_wheel_.rads_per_count / cfg_.loop_rate, back_r_wheel_.cmd / back_r_wheel_.rads_per_count / cfg_.loop_rate);
 
-
-
-
+  if (servo_angle_state_ != servo_angle_cmd_){ // only update if there is a change
+    arduino_.setServoAngle(0, static_cast<int>(servo_angle_cmd_));
+    arduino_.setServoAngle(1, static_cast<int>(servo_angle_cmd_));
+    servo_angle_state_ = servo_angle_cmd_;
+    RCLCPP_INFO(logger_, "Set servo to %.1f degrees", servo_angle_cmd_);
+  }
 
   return return_type::OK;
-
-
   
 }
-
 
 
 #include "pluginlib/class_list_macros.hpp"

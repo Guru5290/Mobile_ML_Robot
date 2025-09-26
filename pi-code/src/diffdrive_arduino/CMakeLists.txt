@@ -21,8 +21,6 @@ find_package(pluginlib REQUIRED)
 
 
 
-
-
 add_library(diffdrive_arduino SHARED src/diffdrive_arduino.cpp src/wheel.cpp src/arduino_comms.cpp)
 
 target_include_directories(
@@ -40,8 +38,6 @@ ament_target_dependencies(
 )
 
 pluginlib_export_plugin_description_file(hardware_interface robot_hardware.xml)
-
-
 
 add_library(fake_robot SHARED src/fake_robot.cpp src/wheel.cpp)
 set_property(TARGET fake_robot PROPERTY POSITION_INDEPENDENT_CODE ON)
@@ -62,14 +58,10 @@ ament_target_dependencies(
 pluginlib_export_plugin_description_file(hardware_interface fake_robot_hardware.xml)
 
 
-
-
 install(
   TARGETS diffdrive_arduino fake_robot
   DESTINATION lib
 )
-
-
 
 
 install(
