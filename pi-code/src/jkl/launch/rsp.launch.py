@@ -17,6 +17,7 @@ def generate_launch_description():
     xacro_file = os.path.join(pkg_path, 'description', 'robot.urdf.xacro')
 
     # Run xacro and wrap in ParameterValue so it's treated as a string
+    # robot_description_config = Command(['xacro ', xacro_file, ' use_ros2_control:=', use_ros2_control, ' sim_mode:=', use_sim_time])
     robot_description_config = ParameterValue(
         Command([
             'xacro ', xacro_file,

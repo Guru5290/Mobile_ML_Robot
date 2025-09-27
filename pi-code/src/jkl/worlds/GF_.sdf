@@ -24,40 +24,10 @@
       <shadows>true</shadows>
     </scene>
 
-    <model name="ground_plane">
-      <static>true</static>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>0.7</mu>
-                <mu2>0.7</mu2>
-              </ode>
-            </friction>
-          </surface>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
-          </geometry>
-          <material>
-            <ambient>0.8 0.8 0.8 1</ambient>
-            <diffuse>0.8 0.8 0.8 1</diffuse>
-            <specular>0.8 0.8 0.8 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
+    <!-- Ground plane (already included in second, keep it) -->
+    <!-- <include> -->
+      <!-- <uri>model://ground_plane</uri> -->
+    <!-- </include> -->
 
     <!-- Game field from second -->
     <model name="game_field">
@@ -115,12 +85,16 @@
       </spot>
     </light>
 
-    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <!-- ✅ Added from first file: Ignition system plugins -->
+    <!-- <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/> -->
     <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
-    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
-    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
-    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"></plugin>
+    <!-- <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/> -->
+    <!-- <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin> -->
     <!-- <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/> -->
 
+    <plugin filename="ignition-gazebo-physics-system" name="ignition::gazebo::systems::Physics"></plugin>
+    <plugin filename="ignition-gazebo-scene-broadcaster-system" name="ignition::gazebo::systems::SceneBroadcaster"></plugin>
+    <plugin filename="libignition-gazebo-imu-system.so" name="ignition::gazebo::systems::Imu"></plugin>
+    <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
   </world>
 </sdf>

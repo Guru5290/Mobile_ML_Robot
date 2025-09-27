@@ -13,36 +13,31 @@ from launch.actions import (
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
     package_name = 'jkl'
 
-    # Controller parameters file (referenced by gz_ros2_control via your robot URDF/xacro)
     controllers_yaml = os.path.join(
-# <<<<<<< g
-#         '/home/g/Mobile_ML_Robot/pi-code/src/jkl/config',
-# =======
         get_package_share_directory(package_name),
         'config',
-# >>>>>>> main
         'my_controllers.yaml'
     )
 
-    # Robot State Publisher (publishes robot_description and TF)
     rsp = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','rsp.launch.py'
                 )]), launch_arguments={'use_sim_time': 'true', 'use_ros2_control': 'true'}.items()
     )
 
-    # Joystick teleop
     joystick = IncludeLaunchDescription(
                 PythonLaunchDescriptionSource([os.path.join(
                     get_package_share_directory(package_name),'launch','joystick.launch.py'
                 )]), launch_arguments={'use_sim_time': 'true'}.items()
     )
 
+    twist_mux_params = os.path.join(get_package_share_directory(package_name),'config','twist_mux.yaml')
     # Twist mux
     twist_mux = Node(
             package="twist_mux",
@@ -71,8 +66,7 @@ def generate_launch_description():
             os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
         ),
         launch_arguments={
-            'gz_args': LaunchConfiguration('world'),
-            'paused': 'false',              # ensure simulation runs
+            'gz_args': ['-r -s -v4 ', world],
             'on_exit_shutdown': 'true'
         }.items()
     )
@@ -81,10 +75,20 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(ros_gz_sim_share, 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': '-g'}.items()
+        launch_arguments={
+            'gz_args': '-g -v4 ', 
+            'on_exit_shutdown': 'true'
+            }.items()
     )
 
-    # Spawn robot (delay to let Gazebo start)
+    # Controller Manager node with YAML parameters
+    ros2_control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[controllers_yaml],
+        output='screen'
+    )
+
     spawn_entity = Node(
         package='ros_gz_sim',
         executable='create',
@@ -92,7 +96,7 @@ def generate_launch_description():
         output='screen',
         arguments=[
             '-topic', 'robot_description',
-            '-entity', 'jkl',
+            '-entity', 'knight',
             '-x', '-2.5',
             '-y', '1.0',
             '-z', '0.1',
@@ -101,11 +105,11 @@ def generate_launch_description():
             '-Y', '0.0'
         ]
     )
-    delayed_spawn = TimerAction(period=20.0, actions=[spawn_entity])
+    delayed_spawn = TimerAction(period=1.0, actions=[spawn_entity])
 
     # Controller spawners (explicit controller_manager, staggered, longer timeout)
     joint_broad_spawner = TimerAction(
-        period=22.0,
+        period=1.0,
         actions=[Node(
             package="controller_manager",
             executable="spawner",
@@ -120,7 +124,7 @@ def generate_launch_description():
     )
 
     diff_drive_spawner = TimerAction(
-        period=25.0,
+        period=1.0,
         actions=[Node(
             package="controller_manager",
             executable="spawner",
@@ -138,14 +142,10 @@ def generate_launch_description():
     ros_gz_bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
-# <<<<<<< g
-#         parameters=[{'config_file':os.path.join(get_package_share_directory(package_name), "config", "gz_bridge.yaml")}],
-# =======
         arguments=[
             '--ros-args', '-p',
             f'config_file:={os.path.join(get_package_share_directory(package_name), "config", "gz_bridge.yaml")}'
         ],
-# >>>>>>> main
         output='screen'
     )
 
@@ -155,23 +155,25 @@ def generate_launch_description():
         arguments=["/camera/image_raw"],
         output='screen'
     )
-        # Specify the actions
+    
     ekf_localization = Node(
         package='robot_localization',
         executable='ekf_node',
         name='ekf_filter_node',
         output='screen',
-        parameters=['/home/g/Mobile_ML_Robot/pi-code/src/jkl/config/ekf.yaml'] #  os.path.join(get_package_share_directory(package_name), "config", "ekf.yaml")
+        parameters=[os.path.join(get_package_share_directory(package_name), "config", "ekf.yaml"),
+                    {'use_sim_time': True}]   
     )
 
     return LaunchDescription([
         world_arg,
         set_gz_resources,
         rsp,
-        joystick,
+        # joystick,
         twist_mux,
         gzserver_cmd,
         gzclient_cmd,
+        ros2_control_node,
         delayed_spawn,
         joint_broad_spawner,
         diff_drive_spawner,

@@ -28,11 +28,11 @@ def generate_launch_description():
                 )]), launch_arguments={'use_sim_time': 'false', 'use_ros2_control': 'true'}.items()
     )
 
-    # joystick = IncludeLaunchDescription(
-    #             PythonLaunchDescriptionSource([os.path.join(
-    #                 get_package_share_directory(package_name),'launch','joystick.launch.py'
-    #             )])
-    # )
+    joystick = IncludeLaunchDescription(
+                PythonLaunchDescriptionSource([os.path.join(
+                    get_package_share_directory(package_name),'launch','joystick.launch.py'
+                )])
+    )
 
 
     twist_mux_params = os.path.join(get_package_share_directory(package_name),'config','twist_mux.yaml')
@@ -42,8 +42,6 @@ def generate_launch_description():
             parameters=[twist_mux_params],
             remappings=[('/cmd_vel_out','/diff_cont/cmd_vel_unstamped')]
         )
-
-    
 
 
     robot_description = Command(['ros2 param get --hide-type /robot_state_publisher robot_description'])
@@ -79,10 +77,9 @@ def generate_launch_description():
     )
 
     imu_broadcaster_spawner = Node(
-    package="controller_manager",
-    executable="spawner",
-    arguments=["imu_broadcaster"],
-    # remappings=[("/imu_broadcaster/imu", "/imu/data")],
+        package="controller_manager",
+        executable="spawner",
+        arguments=["imu_broadcaster"],
     )
 
     delayed_joint_broad_spawner = RegisterEventHandler(

@@ -12,11 +12,8 @@
     <xacro:property name="head_width" value="${chassis_width*1.4}" />
     <xacro:property name="head_height" value="0.0448" />
 
-    <xacro:property name="chassis_mass" value="1.0" />
-
     <xacro:property name="wheel_radius" value="0.0425" />
     <xacro:property name="wheel_thickness" value="0.038" />
-    <xacro:property name="wheel_mass" value="0.05" />
 
     <xacro:property name="front_wheel_offset_x" value="0.2148" />
     <xacro:property name="front_wheel_offset_y" value="${0.1024}" />
@@ -37,6 +34,12 @@
     <xacro:property name="imu_offset_x" value="${chassis_length}" />
     <xacro:property name="imu_offset_y" value="0.0" />
     <xacro:property name="imu_offset_z" value="${chassis_height + head_height + 0.02}" />
+
+    <xacro:property name="chassis_mass" value="1.0" />
+    <xacro:property name="lidar_mass" value="0.01" />
+    <xacro:property name="head_mass" value="0.01" />
+    <xacro:property name="imu_mass" value="0.001" />
+    <xacro:property name="wheel_mass" value="0.05" />
 
     <xacro:property name="mu1" value="0.25" />
     <xacro:property name="mu2" value="0.25" />
@@ -104,7 +107,7 @@
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}" />
             </geometry>
         </collision>
-        <xacro:inertial_box mass="0.5" x="${chassis_length}" y="${chassis_width}"
+        <xacro:inertial_box mass="${chassis_mass}" x="${chassis_length}" y="${chassis_width}"
             z="${chassis_height}">
             <origin xyz="${chassis_length/2} 0 ${chassis_height/2  + front_wheel_offset_z}"
                 rpy="0 0 0" />
@@ -136,7 +139,7 @@
                 <box size="${head_length} ${head_width} ${head_height}" />
             </geometry>
         </collision>
-        <xacro:inertial_box mass="0.5" x="${head_length}" y="${head_width}" z="${head_height}">
+        <xacro:inertial_box mass="${head_mass}" x="${head_length}" y="${head_width}" z="${head_height}">
             <origin xyz="0 0 ${head_height}" rpy="0 0 0" />
         </xacro:inertial_box>
     </link>
@@ -174,13 +177,13 @@
 
     <gazebo reference="front_left">
         <material>Gazebo/Red</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <!-- <mu1>${mu1}</mu1>        
+        <mu2>${mu2}</mu2>        
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1>    
+        <slip2>${sl2}</slip2>     -->
     </gazebo>
 
 
@@ -212,13 +215,13 @@
 
     <gazebo reference="front_right">
         <material>Gazebo/Red</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <!-- <mu1>${mu1}</mu1>        
+        <mu2>${mu2}</mu2>        
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1>    
+        <slip2>${sl2}</slip2>     -->
     </gazebo>
 
 
@@ -249,13 +252,13 @@
 
     <gazebo reference="back_left">
         <material>Gazebo/Blue</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <!-- <mu1>${mu1}</mu1>        
+        <mu2>${mu2}</mu2>        
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1>    
+        <slip2>${sl2}</slip2>     -->
     </gazebo>
 
 
@@ -286,13 +289,13 @@
 
     <gazebo reference="back_right">
         <material>Gazebo/Blue</material>
-        <mu1>${mu1}</mu1>        <!-- friction coefficient in one direction -->
-        <mu2>${mu2}</mu2>        <!-- friction coefficient in the perpendicular direction -->
-        <kp>1e5</kp>          <!-- contact stiffness -->
-        <kd>1.0</kd>          <!-- contact damping -->
-        <fdir1>1 0 0</fdir1>  <!-- primary friction direction -->
-        <slip1>${sl1}</slip1>    <!-- slip in primary direction -->
-        <slip2>${sl2}</slip2>    <!-- slip in perpendicular direction -->
+        <!-- <mu1>${mu1}</mu1>        
+        <mu2>${mu2}</mu2>        
+        <kp>1e5</kp>          
+        <kd>1.0</kd>          
+        <fdir1>1 0 0</fdir1>  
+        <slip1>${sl1}</slip1>    
+        <slip2>${sl2}</slip2>     -->
     </gazebo>
 
 
@@ -321,7 +324,7 @@
                 <cylinder radius="0.05" length="${lidar_height}" />
             </geometry>
         </collision>
-        <xacro:inertial_cylinder mass="0.1" length="0.04" radius="0.05">
+        <xacro:inertial_cylinder mass="${lidar_mass}" length="0.04" radius="0.05">
             <origin xyz="0 0 0" rpy="0 0 0" />
         </xacro:inertial_cylinder>
     </link>
@@ -329,14 +332,16 @@
     <gazebo reference="laser_frame">
         <material>Gazebo/White</material>
 
-        <sensor name="laser" type="ray">
-            <pose> 0 0 0 0 0 0 </pose>
-            <visualize>false</visualize>
+        <sensor name="laser" type="gpu_lidar">
+            <pose relative_to='laser_frame'> 0 0 0 0 0 0 </pose>
+            <topic>scan</topic>
             <update_rate>10</update_rate>
-            <ray>
+            <gz_frame_id>laser_frame</gz_frame_id>
+            <lidar>
                 <scan>
                     <horizontal>
                         <samples>360</samples>
+                        <resolution>1</resolution>
                         <min_angle>-3.14</min_angle>
                         <max_angle>3.14</max_angle>
                     </horizontal>
@@ -345,17 +350,11 @@
                     <min>0.3</min>
                     <max>12</max>
                 </range>
-            </ray>
-            <plugin name="laser_controller" filename="libgazebo_ros_ray_sensor.so">
-                <ros>
-                    <argument>~/out:=scan</argument>
-                </ros>
-                <output_type>sensor_msgs/LaserScan</output_type>
-                <frame_name>laser_frame</frame_name>
-            </plugin>
+             </lidar>
+            <always_on>true</always_on>
+            <visualize>true</visualize>
         </sensor>
     </gazebo>
-
 
     <joint name="imu_joint" type="fixed">
         <parent link="chassis" />
@@ -380,7 +379,7 @@
                 <box size="${imu_length} ${imu_width} 0.01" />
             </geometry>
         </collision>
-        <xacro:inertial_box mass="0." x="${imu_length}" y="${imu_length}" z="0.01">
+        <xacro:inertial_box mass="${imu_mass}" x="${imu_length}" y="${imu_length}" z="0.01">
             <origin xyz="0 0 0" rpy="0 0 0" />
         </xacro:inertial_box>
     </link>
@@ -389,19 +388,14 @@
         <material>Gazebo/White</material>
         <gravity>true</gravity>
 
-        <sensor name="my_imu" type="imu">
-            <!-- ensure the sensor is active (required) -->
+        <sensor name="imu_sensor" type="imu">
             <always_on>true</always_on>
             <update_rate>30</update_rate>
-            <visualize>true</visualize>
+            <visualize>false</visualize>
             <initialOrientationAsReference>true</initialOrientationAsReference>
             <!-- <gaussian_noise>0.001</gaussian_noise> -->
-            <plugin name="imu_controller" filename="libgazebo_ros_imu_sensor.so">
-                <ros>
-                    <namespace>/imu_broadcaster</namespace>
-                    <remapping>~/out:=imu</remapping>
-                </ros>
-            </plugin>
+            <topic>imu_broadcaster/imu</topic>
+            <gz_frame_id>imu_link</gz_frame_id>
         </sensor>
 
     </gazebo>
