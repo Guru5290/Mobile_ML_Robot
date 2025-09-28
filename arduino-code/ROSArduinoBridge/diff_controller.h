@@ -1,8 +1,4 @@
 #include "HardwareSerial.h"
-// #define Kp 70
-// #define Kd 150
-// #define Ki 0
-// #define Ko 50
 /* Functions and type-defs for PID control.
 
    Taken mostly from Mike Ferguson's ArbotiX code which lives at:
@@ -35,7 +31,7 @@ typedef struct
   long output;  // last motor setting
 } SetPointInfo;
 
-SetPointInfo leftPID, rightPID;
+SetPointInfo leftPID, rightPID, rearLeftPID, rearRightPID;
 
 /* PID Parameters */
 // default
@@ -44,11 +40,18 @@ SetPointInfo leftPID, rightPID;
 // int Ki = 0;
 // int Ko = 50;
 
-// ours
-byte Kp = 70;
-byte Kd = 150;
-byte Ki = 0;
-byte Ko = 50;
+// ours, MAX_PWM = 255
+// int Kp = 70;
+// int Kd = 150;
+// int Ki = 0;
+// int Ko = 50;
+
+// ours, MAX_PWM = 1023
+int Kp = 200;
+int Kd = 120;
+int Ki = 1;
+int Ko = 50;
+
 
 unsigned char moving = 0;  // is the base in motion?
 
@@ -74,6 +77,20 @@ void resetPID() {
   rightPID.output = 0;
   rightPID.PrevInput = 0;
   rightPID.ITerm = 0;
+
+  rearLeftPID.TargetTicksPerFrame = 0.0;
+  rearLeftPID.Encoder = readEncoder(REAR_LEFT);
+  rearLeftPID.PrevEnc = rearLeftPID.Encoder;
+  rearLeftPID.output = 0;
+  rearLeftPID.PrevInput = 0;
+  rearLeftPID.ITerm = 0;
+
+  rearRightPID.TargetTicksPerFrame = 0.0;
+  rearRightPID.Encoder = readEncoder(REAR_RIGHT);
+  rearRightPID.PrevEnc = rearRightPID.Encoder;
+  rearRightPID.output = 0;
+  rearRightPID.PrevInput = 0;
+  rearRightPID.ITerm = 0;
 }
 
 /* PID routine to compute the next motor commands */
@@ -95,8 +112,8 @@ void doPID(SetPointInfo *p) {
 
   // p->PrevErr = Perror;
   output = (Kp * Perror - Kd * (input - p->PrevInput) + p->ITerm) / Ko;
-  p->PrevEnc = p->Encoder;
 
+  p->PrevEnc = p->Encoder;
   output += p->output;
   // Accumulate Integral error *or* Limit output.
   // Stop accumulating when output saturates
@@ -112,20 +129,6 @@ void doPID(SetPointInfo *p) {
 
   p->output = output;
   p->PrevInput = input;
-
-
-  // if (p == &leftPID) {
-  //   Serial.print(0);
-  //   Serial.print(" ");
-  //   Serial.print(input);
-  //   Serial.print(" ");
-  //   Serial.print((int)p->TargetTicksPerFrame);
-  //   Serial.print(" ");
-  //   Serial.print(100);
-  //   // Serial.print(", ");
-  //   // Serial.print(p->output);
-  //   Serial.println();
-  // }
 }
 
 /* Read the encoder values and call the PID routine */
@@ -133,14 +136,8 @@ void updatePID() {
   /* Read the encoders */
   leftPID.Encoder = readEncoder(LEFT);
   rightPID.Encoder = readEncoder(RIGHT);
-
-  // leftPID.Encoder = readEncoder(LEFT);
-  // rightPID.Encoder = readEncoder(RIGHT);
-
-  // Serial.print(leftPID.Encoder);
-  // Serial.print(" ");
-  // Serial.print(rightPID.Encoder);
-  // Serial.println();
+  rearLeftPID.Encoder = readEncoder(REAR_LEFT);
+  rearRightPID.Encoder = readEncoder(REAR_RIGHT);
 
   /* If we're not moving there is nothing more to do */
   if (!moving) {
@@ -150,7 +147,7 @@ void updatePID() {
      * PrevInput is considered a good proxy to detect
      * whether reset has already happened
      */
-    if (leftPID.PrevInput != 0 || rightPID.PrevInput != 0)
+    if (leftPID.PrevInput != 0 || rightPID.PrevInput != 0 || rearLeftPID.PrevInput != 0 || rearRightPID.PrevInput != 0)
       resetPID();
     return;
   }
@@ -158,14 +155,17 @@ void updatePID() {
   /* Compute PID update for each motor */
   doPID(&leftPID);
   doPID(&rightPID);
-
+  doPID(&rearLeftPID);
+  doPID(&rearRightPID);
 
   /* Set the motor speeds accordingly */
-  setMotorSpeeds(leftPID.output, rightPID.output);
+  setMotorSpeeds(leftPID.output, rightPID.output, rearLeftPID.output, rearRightPID.output);
 }
 
-void setMotorSpeedsFeedback(int leftWheelTarget, int rightWheelTarget) {
+void setMotorSpeedsFeedback(int leftWheelTarget, int rightWheelTarget, int rearLeftWheelTarget, int rearRightWheelTarget) {
   moving = 1;
   leftPID.TargetTicksPerFrame = leftWheelTarget;
   rightPID.TargetTicksPerFrame = rightWheelTarget;
+  rearLeftPID.TargetTicksPerFrame = rearLeftWheelTarget;
+  rearRightPID.TargetTicksPerFrame = rearRightWheelTarget;
 }

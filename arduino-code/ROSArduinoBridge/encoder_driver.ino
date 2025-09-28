@@ -2,73 +2,116 @@
 
 #ifdef OURENCODER
 
-volatile bool acR = 0;
-volatile bool bcR = 0;
-volatile bool acL = 0;
-volatile bool bcL = 0;
 
-volatile long revCountR = 0;
-volatile long revCountL = 0;
+volatile long revCountFrontL = 0;
+volatile long revCountFrontR = 0;
+volatile long revCountRearL = 0;
+volatile long revCountRearR = 0;
 
-void countRShort() {
-  acR = digitalRead(RIGHT_ENC_PIN_A);
-  bcR = digitalRead(RIGHT_ENC_PIN_B);
-//   Serial.print(readEncoder(LEFT));
-//   Serial.print(" ");
-//   Serial.println(readEncoder(RIGHT));
-  if (bcR == LOW) {
-    if (acR == HIGH)
-      revCountR++;
+void countFrontLShort() {
+  bool a1 = digitalRead(FRONT_LEFT_ENC_PIN_A);
+  bool a2 = digitalRead(FRONT_LEFT_ENC_PIN_B);
+
+  if (a2 == LOW) {
+    if (a1 == HIGH)
+      revCountFrontL++;
     else
-      revCountR--;
+      revCountFrontL--;
   } else {
-    if (acR == HIGH)
-      revCountR--;
+    if (a1 == HIGH)
+      revCountFrontL--;
     else
-      revCountR++;
+      revCountFrontL++;
   }
 }
 
-void countLShort() {
-  acL = digitalRead(LEFT_ENC_PIN_A);
-  bcL = digitalRead(LEFT_ENC_PIN_B);
-//   Serial.print(readEncoder(LEFT));
-//   Serial.print(" ");
-//   Serial.println(readEncoder(RIGHT));
-  if (bcL == LOW) {
-    if (acL == HIGH)
-      revCountL--;
+void countFrontRShort() {
+  bool a1 = digitalRead(FRONT_RIGHT_ENC_PIN_A);
+  bool a2 = digitalRead(FRONT_RIGHT_ENC_PIN_B);
+
+  if (a2 == LOW) {
+    if (a1 == HIGH)
+      revCountFrontR++;
     else
-      revCountL++;
+      revCountFrontR--;
   } else {
-    if (acL == HIGH)
-      revCountL++;
+    if (a1 == HIGH)
+      revCountFrontR--;
     else
-      revCountL--;
+      revCountFrontR++;
   }
 }
 
+void countRearLShort() {
+  bool a1 = digitalRead(REAR_LEFT_ENC_PIN_A);
+  bool a2 = digitalRead(REAR_LEFT_ENC_PIN_B);
+
+  if (a2 == LOW) {
+    if (a1 == HIGH)
+      revCountRearL++;
+    else
+      revCountRearL--;
+  } else {
+    if (a1 == HIGH)
+      revCountRearL--;
+    else
+      revCountRearL++;
+  }
+}
+
+void countRearRShort() {
+  bool a1 = digitalRead(REAR_RIGHT_ENC_PIN_A);
+  bool a2 = digitalRead(REAR_RIGHT_ENC_PIN_B);
+
+  if (a2 == LOW) {
+    if (a1 == HIGH)
+      revCountRearR++;
+    else
+      revCountRearR--;
+  } else {
+    if (a1 == HIGH)
+      revCountRearR--;
+    else
+      revCountRearR++;
+  }
+}
 
 void resetEncoder(int wheel) {
 
   if (wheel == LEFT) {
-    revCountR = 0;
+    revCountFrontL = 0;
   }
 
   else if (wheel == RIGHT) {
-    revCountL = 0;
+    revCountFrontR = 0;
+  }
+
+  else if (wheel == REAR_LEFT) {
+    revCountRearL = 0;
+  }
+
+  else if (wheel == REAR_RIGHT) {
+    revCountRearR = 0;
   }
 }
 
-
 long readEncoder(int wheel) {
   if (wheel == RIGHT) {
-    return revCountR;
+    return revCountFrontR;
   }
 
-  else /* if (wheel == LEFT) */ {
-    return revCountL;
+  else if (wheel == LEFT) {
+    return revCountFrontL;
   }
+
+  else if (wheel == REAR_RIGHT) {
+    return revCountRearR;
+  }
+
+  else if (wheel == REAR_LEFT) {
+    return revCountRearL;
+  }
+  return 0;
 }
 
 
@@ -80,6 +123,8 @@ long readEncoder(int wheel) {
 void resetEncoders() {
   resetEncoder(LEFT);
   resetEncoder(RIGHT);
+  resetEncoder(REAR_LEFT);
+  resetEncoder(REAR_RIGHT);
 }
 
 #endif

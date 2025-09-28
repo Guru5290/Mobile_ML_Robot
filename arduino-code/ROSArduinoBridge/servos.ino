@@ -13,8 +13,7 @@
 
 
 // Constructor
-SweepServo::SweepServo()
-{
+SweepServo::SweepServo() {
   this->currentPositionDegrees = 0;
   this->targetPositionDegrees = 0;
   this->lastSweepCommand = 0;
@@ -23,11 +22,11 @@ SweepServo::SweepServo()
 
 // Init
 void SweepServo::initServo(
-    int servoPin,
-    int stepDelayMs,
-    int initPosition)
-{
+  int servoPin,
+  int stepDelayMs,
+  int initPosition) {
   this->servo.attach(servoPin);
+  this->servo.write(initPosition);  // to make sure it starts at initial position
   this->stepDelayMs = stepDelayMs;
   this->currentPositionDegrees = initPosition;
   this->targetPositionDegrees = initPosition;
@@ -36,8 +35,7 @@ void SweepServo::initServo(
 
 
 // Perform Sweep
-void SweepServo::doSweep()
-{
+void SweepServo::doSweep() {
 
   // Get ellapsed time
   int delta = millis() - this->lastSweepCommand;
@@ -48,8 +46,7 @@ void SweepServo::doSweep()
     if (this->targetPositionDegrees > this->currentPositionDegrees) {
       this->currentPositionDegrees++;
       this->servo.write(this->currentPositionDegrees);
-    }
-    else if (this->targetPositionDegrees < this->currentPositionDegrees) {
+    } else if (this->targetPositionDegrees < this->currentPositionDegrees) {
       this->currentPositionDegrees--;
       this->servo.write(this->currentPositionDegrees);
     }
@@ -62,15 +59,13 @@ void SweepServo::doSweep()
 
 
 // Set a new target position
-void SweepServo::setTargetPosition(int position)
-{
+void SweepServo::setTargetPosition(int position) {
   this->targetPositionDegrees = position;
 }
 
 
 // Accessor for servo object
-Servo SweepServo::getServo()
-{
+Servo SweepServo::getServo() {
   return this->servo;
 }
 

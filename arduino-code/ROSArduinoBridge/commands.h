@@ -21,13 +21,15 @@
 #define DIGITAL_WRITE 'w'
 #define ANALOG_WRITE 'x'
 #define GET_CURRENT_PID 'g'
-#define LEFT 0
-#define RIGHT 1
 #define TURN_LEFT 'L'
 #define TURN_RIGHT 'R'
 #define GO_FORWARD 'F'
 #define GO_BACKWARD 'B'
-#define IMU_DATA 'i'
-#define STOP_IMU 'z'
+#define READ_IMU 'I'
+
+#define LEFT 0
+#define RIGHT 1
+#define REAR_LEFT 2
+#define REAR_RIGHT 3
 
 #endif
