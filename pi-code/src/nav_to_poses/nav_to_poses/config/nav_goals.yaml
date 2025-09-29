@@ -1,16 +1,16 @@
 goals:
   - name: point1
-    x: 0.0
+    x: -0.5
     y: -2.1
-    yaw: 0.0
+    yaw: -1.57
   - name: point2
-    x: 1.0
-    y: -2.1
+    x: 1.3
+    y: -2.0
     yaw: 0.0
   - name: point3
-    x: 1.3
+    x: 1.2
     y: 0.0
-    yaw: 0.0
+    yaw: -1.57
   - name: point4
     x: 2.5
     y: 0.2

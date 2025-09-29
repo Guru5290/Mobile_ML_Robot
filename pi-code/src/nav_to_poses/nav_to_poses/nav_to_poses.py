@@ -122,7 +122,13 @@ def make_pose(x, y, yaw=0.0, frame="map"):
 
 
 # ---- YAML Loader ----
-def load_goals_from_yaml(file_path):    
+def load_goals_from_yaml(filename="nav_goals.yaml"):
+    # Path of this file (app.py)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Go up one level to gazebo_ignition_fortress/
+    project_root = os.path.dirname(current_dir)
+    # Build path to src/ppp_bot/config/nav_goals.yaml
+    file_path = os.path.join(project_root, "config", filename)
 
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"YAML file not found at: {file_path}")
