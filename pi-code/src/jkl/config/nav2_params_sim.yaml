@@ -492,7 +492,7 @@ local_costmap:
       resolution: 0.025
       # robot_radius: 0.155
       # footprint: "[ [0.235, 0.135], [0.235, -0.135], [-0.095, -0.135], [-0.095, 0.135] ]"
-      footprint: "[ [0.215, 0.135], [0.215, -0.135], [-0.075, -0.135], [-0.075, 0.135] ]"
+      footprint: "[ [0.125, 0.135], [0.125, -0.135], [-0.165, -0.135], [-0.165, 0.135] ]"
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
