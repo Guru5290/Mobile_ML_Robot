@@ -172,7 +172,7 @@ def generate_launch_description():
         # joystick,
         twist_mux,
         gzserver_cmd,
-        # gzclient_cmd,
+        gzclient_cmd,
         ros2_control_node,
         delayed_spawn,
         joint_broad_spawner,
