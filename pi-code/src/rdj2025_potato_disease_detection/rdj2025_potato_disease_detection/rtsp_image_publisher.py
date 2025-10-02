@@ -5,6 +5,7 @@ from cv_bridge import CvBridge
 import cv2
 import os
 from datetime import datetime
+import time
 
 SAVE_DIR = "./src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection/Captured_Images"  # directory to save images
 os.makedirs(SAVE_DIR, exist_ok=True)
@@ -29,7 +30,7 @@ class RTSPImagePublisher(Node):
             rclpy.shutdown()
             return
 
-        self.get_logger().info("Press 'd' to capture and publish, 'q' to quit.")
+        # self.get_logger().info("Press 'd' to capture and publish, 'q' to quit.")
 
     def spin_loop(self):
         while rclpy.ok():
@@ -41,17 +42,18 @@ class RTSPImagePublisher(Node):
             cv2.imshow("Potato Leaf Preview", frame)
             key = cv2.waitKey(1) & 0xFF
 
-            if key == ord('d'):
-                filename = f"potato_leaf_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
-                filepath = os.path.join(SAVE_DIR, filename)
-                cv2.imwrite(filepath, frame)
-                self.get_logger().info(f"Saved image to {filepath}")
+            
+            filename = f"potato_leaf_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jpg"
+            filepath = os.path.join(SAVE_DIR, filename)
+            cv2.imwrite(filepath, frame)
+            self.get_logger().info(f"Saved image to {filepath}")
 
-                msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
-                self.publisher_.publish(msg)
-                self.get_logger().info("Published captured frame to /image")
+            msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
+            # time.sleep(5.0)
+            self.publisher_.publish(msg)
+            self.get_logger().info("Published captured frame to /image")
 
-            elif key == ord('q'):
+            if key == ord('q'):
                 break
 
         self.cap.release()
