@@ -13,7 +13,9 @@ class RTSPImagePublisher(Node):
         super().__init__('rtsp_image_publisher')
 
         # Declare parameters
-        self.declare_parameter('IP', '10.122.180.67')
+        # self.declare_parameter('IP', '10.122.180.67') #b - Fundi
+        self.declare_parameter('IP', '10.226.56.67') #Kabbage - Gareth
+        # self.declare_parameter('IP', '192.168.0.112') #Gamefield
         self.declare_parameter('min_area', 3000)
         self.declare_parameter('delay_seconds', 20.0)
 

@@ -155,7 +155,9 @@ import numpy as np
 import cv2 
 
 # Capturing video through RTSP stream 
-rtsp_url = f"rtsp://10.122.180.67:8554/cam"
+# rtsp_url = f"rtsp://10.122.180.67:8554/cam" #b - Fundi
+rtsp_url = f"rtsp://10.226.56.67:8554/cam" #Kabbage - Gareth
+# rtsp_url = f"rtsp://192.168.0.112:8554/cam" #Gamefield
 webcam = cv2.VideoCapture(rtsp_url) 
 
 # Start a while loop 
