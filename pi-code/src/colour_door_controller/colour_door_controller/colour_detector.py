@@ -16,7 +16,7 @@ class RTSPImagePublisher(Node):
         # self.declare_parameter('IP', '10.122.180.67') #b - Fundi
         self.declare_parameter('IP', '10.226.56.67') #Kabbage - Gareth
         # self.declare_parameter('IP', '192.168.0.112') #Gamefield
-        self.declare_parameter('min_area', 3000)
+        self.declare_parameter('min_area', 1500)
         self.declare_parameter('delay_seconds', 20.0)
 
         pi_ip = self.get_parameter('IP').get_parameter_value().string_value
@@ -50,16 +50,35 @@ class RTSPImagePublisher(Node):
         red_lower2 = np.array([170, 120, 70])
         red_upper2 = np.array([180, 255, 255])
         red_mask = cv2.inRange(hsvFrame, red_lower1, red_upper1) + cv2.inRange(hsvFrame, red_lower2, red_upper2)
+        
+        # red_lower = np.array([136, 87, 111], np.uint8) 
+        # red_upper = np.array([180, 255, 255], np.uint8) 
+        # red_mask = cv2.inRange(hsvFrame, red_lower, red_upper) 
+
 
         # ---- BLUE ----
-        blue_lower = np.array([90, 80, 40])
-        blue_upper = np.array([130, 255, 255])
-        blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
+        # blue_lower = np.array([90, 80, 40])
+        # blue_upper = np.array([130, 255, 255])
+        # blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
 
+        # blue_lower = np.array([94, 80, 2], np.uint8) 
+        # blue_upper = np.array([120, 255, 255], np.uint8) 
+        # blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
+        
+        blue_lower = np.array([100, 150, 50], np.uint8)
+        blue_upper = np.array([130, 255, 255], np.uint8)
+        blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
+        
+        
         # Kernel for dilation
         kernel = np.ones((5, 5), "uint8")
         red_mask = cv2.dilate(red_mask, kernel)
         blue_mask = cv2.dilate(blue_mask, kernel)
+        
+        # thresh_preview_window_name = "Red thresh"
+        # cv2.namedWindow(thresh_preview_window_name, cv2.WINDOW_NORMAL)
+        # cv2.resizeWindow(thresh_preview_window_name, 960, 540)
+        # cv2.imshow(thresh_preview_window_name, red_mask)
 
         # Count contours for each colour
         counts = {"Red": 0, "Blue": 0}
