@@ -24,8 +24,8 @@ setup(
     entry_points={
         'console_scripts': [
             'potato_disease_detection_node = rdj2025_potato_disease_detection.potato_disease_detection_node:main',
-            'publish_test_image = rdj2025_potato_disease_detection.test_image_publisher:main',
-            # 'publish_test_image = rdj2025_potato_disease_detection.rtsp_image_publisher:main',
+            # 'publish_test_image = rdj2025_potato_disease_detection.test_image_publisher:main',
+            'publish_test_image = rdj2025_potato_disease_detection.rtsp_image_publisher:main',
         ],
     },
 )
