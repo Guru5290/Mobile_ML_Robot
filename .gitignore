@@ -19,3 +19,7 @@ pi-code/*.posegraph
 pi-code/Kinights map2.zip
 pi-code/src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection/Captured_Images/
 
+pi-code/src/nav_to_poses/nav_to_poses/config/nav_goals_old.yaml
+pi-code/src/jkl/launch/launch_sim.launch.py
+pi-code/src/nav_to_poses/nav_to_poses/nav_to_poses_bak.py
+pi-code/src/nav_to_poses/nav_to_poses/nav_to_poses_sim.py
