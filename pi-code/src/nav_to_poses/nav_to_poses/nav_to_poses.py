@@ -142,10 +142,10 @@ class OffLoading(py_trees.behaviour.Behaviour):
             self.executed = True
             return py_trees.common.Status.SUCCESS
 
-        if expected_colour and loaded_colour == expected_colour:
+        if expected_colour and (loaded_colour == expected_colour):
             print(f"{self.name}: Match found ({loaded_colour}), opening servo...")
             self._publish_servo(90.0)  # OPEN
-            time.sleep(10)  # keep open
+            time.sleep(5)  # keep open
             print(f"{self.name}: Closing servo after 20s")
             self._publish_servo(170.0)  # CLOSE
         else:
@@ -228,7 +228,7 @@ class MoveToPosition(py_trees.behaviour.Behaviour):
         if node:
             self.node = node
             self.action_client = ActionClient(node, NavigateToPose, 'navigate_to_pose')
-            print(f"{self.name}: Setup completed")
+            # print(f"{self.name}: Setup completed")
 
     def update(self):
         if self.completed:
@@ -243,7 +243,7 @@ class MoveToPosition(py_trees.behaviour.Behaviour):
             goal_msg = NavigateToPose.Goal()
             goal_msg.pose = make_pose(self.target_x, self.target_y, self.target_yaw)
 
-            print(f"{self.name}: Sending NavigateToPose goal ({self.target_x}, {self.target_y}, yaw={self.target_yaw})")
+            # print(f"{self.name}: Sending NavigateToPose goal ({self.target_x}, {self.target_y}, yaw={self.target_yaw})")
             self.goal_future = self.action_client.send_goal_async(goal_msg)
 
             def goal_response_cb(future):
@@ -283,7 +283,7 @@ def make_pose(x, y, yaw=0.0, frame="map"):
     pose.pose.orientation.z = math.sin(yaw / 2.0)
     pose.pose.orientation.w = math.cos(yaw / 2.0)
 
-    print(f"Goal created: x={x}, y={y}, yaw={yaw}, frame={frame}")
+    print(f"\nGoal created: x={x}, y={y}, yaw={yaw}, frame={frame}")
     return pose
 
 
@@ -324,16 +324,20 @@ def create_root():
         
         children.append(move)
 
-        # Example: add a hello/hi task after each move
         if "potato" in g["name"].lower():
             children.append(Potato_Detector(f"Image_detection_in_{g['name']}"))
         elif "loading_zone" in g["name"].lower():
             children.append(Loading(f"Loading_in_{g['name']}"))
         elif "offloading" in g["name"].lower():
-            children.append(OffLoading(f"Offloading_in__{g['name']}"))
-        else:
+            if loaded_colour and (loaded_colour in g["name"].lower()): # only append offloading if colours match
+                children.append(OffLoading(f"Offloading_in__{g['name']}"))
+            else:
+                children.pop() # remove the MoveToPosition to offloading if colours don't match
+            
+
+        # else:
             #children.append(Waypoint(f"Reached_{g['name']}"))
-            print(f"Reached_{g['name']}")
+            # print(f"Loaded_{g['name']}")
 
     root.add_children(children)
     return root
@@ -344,41 +348,41 @@ def main():
     rclpy.init()
 
     root = create_root()
-    node = py_trees_ros.trees.BehaviourTree(root)
+    tree = py_trees_ros.trees.BehaviourTree(root)
 
     try:
-        node.setup(timeout=10.0, node=node.node)  # Pass the ROS node to behaviors
+        tree.setup(timeout=10.0, node=tree.node)  # Pass the ROS node to behaviors
 
         print("Behavior tree starting...")
         tree_completed = False
 
-        def tick_tree():
+        def check_tree_status():
             nonlocal tree_completed
             if tree_completed:
                 return
-            node.tick_tock(period_ms=100)
             # for i, child in enumerate(node.root.children):
             #     if child.status in (py_trees.common.Status.SUCCESS,
             #                         py_trees.common.Status.RUNNING):
             #         print(f"  Child {i} ({child.name}): {child.status.name}")
-            if node.root.status == py_trees.common.Status.SUCCESS:
+            if tree.root.status == py_trees.common.Status.SUCCESS:
                 print("Behavior tree completed successfully!")
                 tree_completed = True
-            elif node.root.status == py_trees.common.Status.FAILURE:
+            elif tree.root.status == py_trees.common.Status.FAILURE:
                 print("Behavior tree failed!")
                 tree_completed = True
 
-        timer = node.node.create_timer(0.5, tick_tree)
+        tree.tick_tock(period_ms=100)
+        timer = tree.node.create_timer(0.5, check_tree_status)
         print("Behavior tree is running...")
-        rclpy.spin(node.node)
+        rclpy.spin(tree.node)
     except RuntimeError as e:
         print(f"Setup failed: {e}")
         print("Make sure Nav2 is running: ros2 launch nav2_bringup navigation_launch.py")
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, rclpy.executors.ExternalShutdownException):
         pass
     finally:
-        node.shutdown()
-        rclpy.shutdown()
+        tree.shutdown()
+        rclpy.try_shutdown()
 
 
 if __name__ == "__main__":
