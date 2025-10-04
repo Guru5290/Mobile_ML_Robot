@@ -48,7 +48,7 @@ ekf_filter_node:
                         false, false, true,
                         false, false, false,
                         false, false, true,
-                        true, false, false]
+                        false, true, false] # X and Y accel are swapped on the IMU, so use these settings
 
         # imu0_nodelay: false
         imu0_differential: false

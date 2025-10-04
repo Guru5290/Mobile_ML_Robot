@@ -29,7 +29,7 @@
 
     <xacro:property name="imu_length" value="0.030" />
     <xacro:property name="imu_width" value="0.015" />
-    <xacro:property name="imu_offset_x" value="${chassis_length/2}" />
+    <xacro:property name="imu_offset_x" value="${front_wheel_offset_x + centre_of_rot_offset_x + imu_length/2 + 0.04}" />
     <xacro:property name="imu_offset_y" value="0.0" />
     <xacro:property name="imu_offset_z" value="${chassis_height + head_height + 0.02}" />
 
