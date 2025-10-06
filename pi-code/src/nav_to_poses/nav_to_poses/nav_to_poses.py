@@ -60,7 +60,7 @@ class Loading(py_trees.behaviour.Behaviour):
             # )
             self.start_time = time.time()
             print(f"{self.name}: Started colour detector for loading...")
-            # time.sleep(5)
+            time.sleep(20)
             
             return py_trees.common.Status.RUNNING
 
@@ -149,7 +149,7 @@ class OffLoading(py_trees.behaviour.Behaviour):
             print(f"{self.name}: Closing servo after 20s")
             self._publish_servo(170.0)  # CLOSE
         else:
-            print(f"{self.name}: Mismatch (loading={loaded_colour}, expected={expected_colour}), no action")
+            print(f"Skipping loading at: {self.name} -> loaded = {loaded_colour}, expected={expected_colour}), no action")
 
         self.executed = True
         return py_trees.common.Status.SUCCESS
@@ -244,6 +244,12 @@ class MoveToPosition(py_trees.behaviour.Behaviour):
             goal_msg.pose = make_pose(self.target_x, self.target_y, self.target_yaw)
 
             # print(f"{self.name}: Sending NavigateToPose goal ({self.target_x}, {self.target_y}, yaw={self.target_yaw})")
+            if "offloading" in self.name.lower():
+                if not (loaded_colour and (loaded_colour in self.name.lower())): # only append offloading if colours match
+                    print(f"Skipped: {self.name}")
+                    self.completed = True
+                    return py_trees.common.Status.RUNNING
+
             self.goal_future = self.action_client.send_goal_async(goal_msg)
 
             def goal_response_cb(future):
@@ -329,10 +335,7 @@ def create_root():
         elif "loading_zone" in g["name"].lower():
             children.append(Loading(f"Loading_in_{g['name']}"))
         elif "offloading" in g["name"].lower():
-            if loaded_colour and (loaded_colour in g["name"].lower()): # only append offloading if colours match
-                children.append(OffLoading(f"Offloading_in__{g['name']}"))
-            else:
-                children.pop() # remove the MoveToPosition to offloading if colours don't match
+            children.append(OffLoading(f"Offloading_in__{g['name']}"))            
             
 
         # else:

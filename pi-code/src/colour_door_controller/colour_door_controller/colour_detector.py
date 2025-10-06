@@ -17,7 +17,7 @@ class RTSPImagePublisher(Node):
         self.declare_parameter('IP', '10.226.56.67') #Kabbage - Gareth
         # self.declare_parameter('IP', '192.168.0.112') #Gamefield
         self.declare_parameter('min_area', 1500)
-        self.declare_parameter('delay_seconds', 20.0)
+        self.declare_parameter('delay_seconds', 3.0)
 
         pi_ip = self.get_parameter('IP').get_parameter_value().string_value
         self.min_area = self.get_parameter('min_area').get_parameter_value().integer_value
