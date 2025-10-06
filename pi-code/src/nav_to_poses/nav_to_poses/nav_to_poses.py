@@ -371,7 +371,7 @@ def main():
                 print("Behavior tree failed!")
                 tree_completed = True
 
-        tree.tick_tock(period_ms=100)
+        tree.tick_tock(period_ms=1000.0)
         timer = tree.node.create_timer(0.5, check_tree_status)
         print("Behavior tree is running...")
         rclpy.spin(tree.node)
