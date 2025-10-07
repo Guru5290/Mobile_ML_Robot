@@ -50,14 +50,14 @@ class Loading(py_trees.behaviour.Behaviour):
             #     ["ros2", "run", "colour_door_controller", "colour_detector","--ros-args","-p","IP:=10.122.180.67"], #b - Fundi
             #     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, preexec_fn=os.setsid #start new process group
             # )
-            self.process = subprocess.Popen(
-                ["ros2", "run", "colour_door_controller", "colour_detector","--ros-args","-p","IP:=10.226.56.67"], #Kabbage - Gareth 
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, preexec_fn=os.setsid #start new process group
-            )
             # self.process = subprocess.Popen(
-            #     ["ros2", "run", "colour_door_controller", "colour_detector","--ros-args","-p","IP:=192.168.0.112"], #Gamefield
+            #     ["ros2", "run", "colour_door_controller", "colour_detector","--ros-args","-p","IP:=10.226.56.67"], #Kabbage - Gareth 
             #     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, preexec_fn=os.setsid #start new process group
             # )
+            self.process = subprocess.Popen(
+                ["ros2", "run", "colour_door_controller", "colour_detector","--ros-args","-p","IP:=192.168.0.112"], #Gamefield
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, preexec_fn=os.setsid #start new process group
+            )
             self.start_time = time.time()
             print(f"{self.name}: Started colour detector for loading...")
             # time.sleep(20)
