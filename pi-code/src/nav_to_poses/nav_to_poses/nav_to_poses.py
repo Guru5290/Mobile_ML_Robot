@@ -60,7 +60,7 @@ class Loading(py_trees.behaviour.Behaviour):
             # )
             self.start_time = time.time()
             print(f"{self.name}: Started colour detector for loading...")
-            time.sleep(20)
+            # time.sleep(20)
             
             return py_trees.common.Status.RUNNING
 
@@ -82,7 +82,8 @@ class Loading(py_trees.behaviour.Behaviour):
         else:
             print(f"{self.name}: No colour detected, defaulting to None")
         
-        self.executed = True     
+        self.executed = True   
+        time.sleep(15) #wait a bit before next action  
         return py_trees.common.Status.SUCCESS
 
     def setup(self, **kwargs):
