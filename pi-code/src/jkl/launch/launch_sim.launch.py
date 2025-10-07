@@ -97,12 +97,12 @@ def generate_launch_description():
         arguments=[
             '-topic', 'robot_description',
             '-entity', 'knight',
-            '-x', '-2.5',
-            '-y', '1.0',
+            '-x', '-3.1',
+            '-y', '1.1',
             '-z', '0.1',
             '-R', '0.0',
             '-P', '0.0',
-            '-Y', '0.0'
+            '-Y', '29.90'
         ]
     )
     delayed_spawn = TimerAction(period=1.0, actions=[spawn_entity])
