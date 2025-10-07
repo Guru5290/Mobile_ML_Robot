@@ -71,7 +71,7 @@
 goals:
   - name: Potato_disease_detection_pose
     x: 0.37
-    y: 0.95
+    y: 0.75
     yaw: 1.57
   - name: point1
     x: 0.0
@@ -90,9 +90,9 @@ goals:
   #   y: -2.7
   #   yaw: 1.57
   - name: point4
-    x: 1.07
-    y: 1.92
-    yaw: -1.27
+    x: 1.19
+    y: 2.19
+    yaw: -1.60
   - name: loading_zone
     x: 1.4
     y: 0.98
@@ -130,6 +130,6 @@ goals:
     y: 3.50
     yaw: -3.06
   - name: final_position
-    x: 1.77
-    y: 5.39
-    yaw: -0.95
+    x: 2.00
+    y: 4.96
+    yaw: -0.67
