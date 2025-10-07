@@ -489,7 +489,7 @@ local_costmap:
       rolling_window: true
       width: 3
       height: 3
-      resolution: 0.01
+      resolution: 0.02
       footprint: "[ [0.125, 0.145], [0.125, -0.145], [-0.165, -0.145], [-0.165, 0.145] ]"
       plugins: ["voxel_layer", "inflation_layer"]
       inflation_layer:
@@ -530,7 +530,7 @@ global_costmap:
       robot_base_frame: base_link
       use_sim_time: False
       robot_radius: 0.1
-      resolution: 0.01
+      resolution: 0.02
       track_unknown_space: true
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       obstacle_layer:
@@ -578,7 +578,7 @@ planner_server:
     planner_plugins: ["GridBased"]
     GridBased:
       plugin: "nav2_navfn_planner/NavfnPlanner"
-      tolerance: 0.5
+      tolerance: 0.05
       use_astar: false
       allow_unknown: true
 
