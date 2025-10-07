@@ -144,9 +144,11 @@ class OffLoading(py_trees.behaviour.Behaviour):
 
         if expected_colour and (loaded_colour == expected_colour):
             print(f"{self.name}: Match found ({loaded_colour}), opening servo...")
-            self._publish_servo(90.0)  # OPEN
-            time.sleep(5)  # keep open
-            print(f"{self.name}: Closing servo after 20s")
+            for _ in range(5):
+                self._publish_servo(90.0)  # OPEN
+                time.sleep(0.5)
+            time.sleep(2.5)  # keep open
+            print(f"{self.name}: Closing servo")
             self._publish_servo(170.0)  # CLOSE
         else:
             print(f"Skipping loading at: {self.name} -> loaded = {loaded_colour}, expected={expected_colour}), no action")
