@@ -1,4 +1,73 @@
-#new orientation
+# #new orientation gazebo
+# goals:
+#   - name: Potato_disease_detection_pose
+#     x: 0.37
+#     y: 0.95
+#     yaw: 1.57
+#   - name: point1
+#     x: 0.0
+#     y: 0.0
+#     yaw: 0.0
+#   - name: ramp1
+#     x: 0.84
+#     y: 0.0
+#     yaw: 0.0 
+#   - name: point2
+#     x: 1.85
+#     y: -0.22
+#     yaw: 0.84
+#   # - name: point3
+#   #   x: 1.3
+#   #   y: -2.7
+#   #   yaw: 1.57
+#   - name: point4
+#     x: 1.48
+#     y: 1.82
+#     yaw: -2.09
+#   - name: loading_zone
+#     x: 1.42
+#     y: 0.53
+#     yaw: 1.57
+#   # - name: point5
+#   #   x: 1.3
+#   #   y: -0.3
+#   #   yaw: 0.0
+#   - name: point6
+#     x: 0.06
+#     y: 3.17
+#     yaw: 1.75
+#   - name: point7
+#     x: 1.6
+#     y: 5.05
+#     yaw: -1.5
+#   # - name: point8
+#   #   x: 4.5
+#   #   y: -1.5
+#   #   yaw: 3.14
+#   - name: point9
+#     x: 1.62
+#     y: 2.33
+#     yaw: 0.98
+#   - name: offloading_blue
+#     x: 2.59
+#     y: 2.48
+#     yaw: 3.14
+#   - name: point10
+#     x: 2.02    
+#     y: 2.71
+#     yaw: 1.50
+#   - name: offloading_red
+#     x: 2.62
+#     y: 3.25
+#     yaw: 3.14
+#   - name: final_position
+#     x: 2.46
+#     y: 5.0
+#     yaw: -1.6
+
+
+
+#new orientation rd
 goals:
   - name: Potato_disease_detection_pose
     x: 0.37
@@ -13,54 +82,54 @@ goals:
     y: 0.0
     yaw: 0.0 
   - name: point2
-    x: 1.85
-    y: -0.22
-    yaw: 0.84
+    x: 1.98
+    y: 0.02
+    yaw: 0.74
   # - name: point3
   #   x: 1.3
   #   y: -2.7
   #   yaw: 1.57
   - name: point4
-    x: 1.48
-    y: 1.82
-    yaw: -2.09
+    x: 1.07
+    y: 1.92
+    yaw: -1.27
   - name: loading_zone
-    x: 1.42
-    y: 0.53
-    yaw: 1.57
+    x: 1.4
+    y: 0.98
+    yaw: 1.54
   # - name: point5
   #   x: 1.3
   #   y: -0.3
   #   yaw: 0.0
   - name: point6
-    x: 0.06
-    y: 3.17
-    yaw: 1.75
+    x: -0.02
+    y: 3.15
+    yaw: 1.86
   - name: point7
-    x: 1.6
-    y: 5.05
-    yaw: -1.5
+    x: 1.16
+    y: 5.25
+    yaw: -1.52
   # - name: point8
   #   x: 4.5
   #   y: -1.5
   #   yaw: 3.14
   - name: point9
-    x: 1.62
-    y: 2.33
-    yaw: 0.98
+    x: 1.25
+    y: 2.66
+    yaw: -0.01
   - name: offloading_blue
-    x: 2.59
-    y: 2.48
-    yaw: 3.14
+    x: 2.34
+    y: 2.77
+    yaw: -3.14
   - name: point10
-    x: 2.02    
-    y: 2.71
-    yaw: 1.50
+    x: 1.88    
+    y: 2.97
+    yaw: 1.84
   - name: offloading_red
-    x: 2.62
-    y: 3.25
-    yaw: 3.14
+    x: 2.26
+    y: 3.50
+    yaw: -3.06
   - name: final_position
-    x: 2.46
-    y: 5.0
-    yaw: -1.6
+    x: 1.77
+    y: 5.39
+    yaw: -0.95
