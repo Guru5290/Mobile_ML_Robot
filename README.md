@@ -30,35 +30,38 @@ Our [technical design paper](Technical_Design_Paper_Joint_Team_3_Knights_and_Pen
 # Hardware Configuration
 - Raspberry Pi running Ubuntu 22.04, dev machine running Ubuntu 22.04
 - RPLidar A1 M8 connected to Pi via USB
-- Arduino Mega running [ROSArduinoBridge.ino](arduino-code/ROSArduinoBridge/ROSArduinoBridge.ino), connected to Pi USB
-- 200 RPM motors with built-in encoders, with the encoders connected as shown in [encoder_driver.h](arduino-code/ROSArduinoBridge/encoder_driver.h)
-- L298N motor driver, with motor controls connected as shown in [motor_driver.h](arduino-code/ROSArduinoBridge/motor_driver.h)
+- STM32F401 running [ROSArduinoBridge.ino](arduino-code/ROSArduinoBridge/ROSArduinoBridge.ino), connected to Pi USB
+- 4 200 RPM motors with built-in encoders, with the encoders connected as shown in [encoder_driver.h](arduino-code/ROSArduinoBridge/encoder_driver.h)
+- DRV8833 motor driver, with motor controls connected as shown in [motor_driver.h](arduino-code/ROSArduinoBridge/motor_driver.h)
+- MPU6050 over I2C. The arduino sketch enables the DMP for great IMU performance. Also, a calibration sketch is provided by the [electronic cats library](https://github.com/ElectronicCats/mpu6050/wiki).
 
 Here's the bot [here](our-robot1.png), [here](our-robot2.png)
 
 
 # Software Dependencies
 - Ubuntu 22.04 - ROS2 Humble pair was used here. Docker on windows is not recommended by us because of network woes. The WSL network is isolated from the system network, so ROS on Pi does not communicate with ROS on Docker by default. We were not able to get it working in time. Apart from that, native Ubuntu has way higher performance.
-- twist-mux, ros-humble-teleop-twist-keyboard, ros-humble-teleop-twist-joy, slam-toolbox, ros-humble-navigation2, ros-humble-nav2-bringup, ros-humble-gazebo-ros-pkgs, ros-humble-xacro, ros2 control, [rplidar ros](https://docs.ros.org/en/humble/p/rplidar_ros/)
+- twist-mux, ros-humble-teleop-twist-keyboard, ros-humble-teleop-twist-joy, slam-toolbox, ros-humble-navigation2, ros-humble-nav2-bringup, ros-humble-gazebo-ros-pkgs, ros-humble-xacro, ros-humble-ros2-control, ros-humble-rplidar-ros, ros-humble-robot-localization
 <!-- - ros-humble-gazebo on pc -->
-- tmux (or similar) is recommended because you'll need to have multiple terminals at any given moment
+- tmux is not recommended, it was laggy on the Pi over SSH over wifi
 
 
 # Modified Parameters
 ## src/jkl/description
-### robot_core.xacro and robot.urdf.xacro
-It's mostly Josh's code only that some elements are removed and others are modified
+### robot.urdf.xacro
+The URDF was built using simple shapes. URDF using meshes was attempted [see knight.xacro](pi-code/src/jkl/description/urdf/knight.xacro). The benefit was the mesh was derived from the actual CAD of the robot. However, it was too laggy to update pose, etc. It was suspected that computing collisions using meshes was the cause, hence the creation of the [current URDF](pi-code/src/jkl/description/urdf/simple.xacro). 
 
-### gazebo_control.xacro
-```htm
-<wheel_separation>0.275</wheel_separation>
-<wheel_diameter>0.085</wheel_diameter>
+Important to note is that the IMU on the actual robot was mounted such that X and Y axes did not match the X and Y axes of the robot. So in the URDF, the IMU was rotated about the Z axis to fix this. This also has implications for the [EKF configuration file](#ekfyaml)
+
+### gazebo_control.xacro (although not used)
+```xml
+<wheel_separation>0.207</wheel_separation>
+<wheel_radius>0.0425</wheel_radius>
 ```
 
 ### ros2_control.xacro
 ```xml
-<!-- arduino mega -->
-<param name="device">/dev/serial/by-id/usb-Arduino__www.arduino.cc__Arduino_Mega_2560_12148509806232150650-if00</param> 
+<!-- stm32 -->
+<param name="device">/dev/serial/by-id/usb-STMicroelectronics_BLACKPILL_F401CC_CDC_in_FS_Mode_206734803156-if00</param> 
 <param name="baud_rate">57600</param>
 <param name="enc_counts_per_rev">988</param>
 ```
@@ -67,13 +70,13 @@ It's mostly Josh's code only that some elements are removed and others are modif
 ## src/jkl/config/
 ### mapper_params_online_async.yaml
 ```yaml
-resolution: 0.025 # (0.05 is default) 
 loop_search_maximum_distance: 6.0 # (default is 3.0). The default value causes the robot to "teleport" during mapping, ruining a good map
 ```
 
 ### nav2_params.yaml
 - initial_pose (not defined by default). Helps save time when using localization. A new pose can be given using rviz. Use it by having the odom reset (relaunching launch_robot) then launching online_async.launch.py. Then set the initial pose as 0 0 0
 - controller_server: [mppi controller server](https://docs.nav2.org/configuration/packages/configuring-mppic.html) was used (dwb is default). rpp, teb and grace might have worked better, but mppi worked best out of the box
+- controller server loop rate 15 Hz to minimize console spamming "control loop missed its 30Hz update rate"
 - local_costmap & global_costmap: resolution: 0.025 (0.05 is default). Seems to get robot get stuck less frequently
 - local_costmap & global_costmap: robot_radius: 0.025 (0.05 is default). Seems to get robot get stuck less frequently
 - amcl laser_max_range and min_range 12.0 and 0.3 respectively (default is )
@@ -81,27 +84,79 @@ loop_search_maximum_distance: 6.0 # (default is 3.0). The default value causes t
 - velocity smoother velocities and accelerations: [0.35, 0.0, -0] and [12.5, 0.0, 8.2] (default are something else) The accelerations are very large. Something better should be identified and used
 
 ### my_controllers.yaml
+For diff_cont
 ```yaml
-wheel_separation: 0.275
+wheel_separation: 0.207
 wheel_radius: 0.0425
+wheels_per_side: 2
+odom_frame_id: odom
+enable_odom_tf: false # crucial for EKF
 ```
-Explore the other params in this file
+
+These fields were added to provide hardware interfaces to the servo and IMU and 2 more wheels
+```yaml
+controller_manager:
+  ros__parameters:
+    # existing diff_cont
+
+    # joints doubled for joint_broad
+    joint_broad:
+      type: joint_state_broadcaster/JointStateBroadcaster
+      joints: ['front_left_joint', 'front_right_joint', 'back_left_joint', 'back_right_joint']
+    
+    imu_broadcaster:
+      type: imu_sensor_broadcaster/IMUSensorBroadcaster # https://control.ros.org/humble/doc/ros2_controllers/imu_sensor_broadcaster/doc/userdoc.html
+
+    servo_controller:
+      type: position_controllers/JointGroupPositionController # https://control.ros.org/humble/doc/ros2_controllers/position_controllers/doc/userdoc.html
+
+
+imu_broadcaster:
+  ros__parameters:
+    sensor_name: imu_sensor # specified in HW interface
+    frame_id: imu_link
+
+
+servo_controller:
+  ros__parameters:
+    joints:
+      - servo # specified in HW interface
+```
+
+It is critical that enable_odom_tf in diff_cont should be false because ros2_control should not publish the odom->base_link transform. That role should be done by the EKF node. 
+
+### ekf.yaml
+[This config file](pi-code/src/jkl/config/ekf.yaml) is for sensor fusion using the [robot_localization](https://docs.ros.org/en/noetic/api/robot_localization/html/configuring_robot_localization.html) package. The configuration was largely based on the DOCS with one difference: The IMU on the robot was rotated 90 degrees about X axis wrt to the robot axes. So in order to fuse the acceleration along X axis, we actually fuse the reported acceleration of Y axis. 
+#### Notes
+* `publish_tf` is true. This is because ros2_control is no longer publishing the tf. 
+* `imu0_relative` is true. We are only interested in the change in angular rotation about Z, not absolute change. Otherwise the orientation in RVIZ will be inconsistent per-run
+* `imu0_remove_gravitational_acceleration` is true. The IMU reports absolute accelerations without subtracting gravity
 
 ## src/jkl/launch/
 ### rplidar.launch.py
-```json 
-"serial_port": "/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0"
+The rplidar_ros launch file for A1 was copied and these fields were modified
+```python
+serial_port = LaunchConfiguration('serial_port', default='/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0') # was '/dev/ttyUSB0'
+serial_baudrate = LaunchConfiguration('serial_baudrate', default='115200')
+frame_id = LaunchConfiguration('frame_id', default='laser_frame') # was 'laser'
 ```
 
-## all files in src/sllidar_ros2/launch and src/rplidar_ros/launch
-```python 
-serial_port = LaunchConfiguration('serial_port', default='/dev/serial/by-id/usb-Silicon_Labs_CP2102_USB_to_UART_Bridge_Controller_0001-if00-port0') # rplidar
-```
+## [diffdrive_arduino](pi-code/src/diffdrive_arduino/)
+Hardware interfaces for 2 additional wheels, servo and IMU were added. The serial commands for the latter two were added both in this package and in ROSArduinoBridge. Check out [arduino comms](/pi-code/src/diffdrive_arduino/src/arduino_comms.cpp), [arduino_comms.cpp](/pi-code/src/diffdrive_arduino/src/arduino_comms.cpp), [diffdrive_arduino.cpp](/pi-code/src/diffdrive_arduino/src/diffdrive_arduino.cpp), and their .h files for more info. 
+
+Note that the state interface for the servo is not implemnted based on the reported servo angle. Instead, it is reported using the previously commanded angle. Although the command is provided in the arduino sketch, at the time, it was more important to prevent frequent checks on the servo position rather than prioritizing fetching the wheel encoder data. So the command interface only sent commands to the MCU if a different angle command was sent. 
+
+This choice created some buggy behaviour with the servo. If launch_robot was executed while the servo was in the open position, publishing [170.0] to the servo_controller/commands topic would not close it. So you would have to "open it" using [90.0] first then it would close. There was also a bug where publishing the open command only once would have no effect. As of yet, unclear if this is also related. 
+
+A future implementation would definitely update state variable as it should be. 
+
+Check out [diffdrive_arduino.cpp](pi-code/src/diffdrive_arduino/src/diffdrive_arduino.cpp) and its .h file
 
 ## Note
 - Josh goes over how to obtain wheel diameter, wheel separation and encoder counts per revolution in [this video](https://www.youtube.com/watch?v=4VVrTCnxvSw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT)
 - **online_async_launch.py** **localization_launch.py**, **navigation_launch.py**, **mapper_params_online_async.yaml**, **nav2_params.yaml** were copied from the default slam-toolbox and nav2_bringup directories (/opt/ros/humble/share/nav2-or slam-toolbox...) then slightly modified (for example in localization_launch.py instead of `get_package_share_directory('nav2_bringup')` use `get_package_share_directory('jkl')`) This is the recommended way to do it because, Josh's articubot_one repo uses ROS foxy. Apart from fewer parameters in nav2 and mapper yaml, some problems might come up like failing to launch navigation. Some elements were renamed in ROS Humble, like recoveries->behaviors
 - all instances of serial ports use `dev/serial/by-id` path. This was preferred over `dev/serial/by-path` and `dev/tty*` because it depends on the device ID rather than the port used or connection order
+- Electronic cats provides a [calibration sketch](https://github.com/ElectronicCats/mpu6050/wiki/4.-Examples#zero) for the IMU. This improved accuracy greatly. 
 
 # Usage
 ## 
@@ -119,8 +174,8 @@ sudo apt install ros-humble-xacro && \
 sudo apt install ros-humble-twist-mux && \
 sudo apt install ros-humble-slam-toolbox && \
 sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup && \
-curl -sSL http://get.gazebosim.org | sh && \
-sudo apt install ros-humble-gazebo-ros
+sudo apt install ros-humble-robot-localization && \
+sudo apt install ros-humble-rplidar-ros && \
 ```
 - disable brltty service. This service always takes serial port devices to be braille device, preventing you from accessing your microcontroller. Disable the service
 ```bash 
