@@ -152,6 +152,9 @@ A future implementation would definitely update state variable as it should be.
 
 Check out [diffdrive_arduino.cpp](pi-code/src/diffdrive_arduino/src/diffdrive_arduino.cpp) and its .h file
 
+## Computer Vision
+## [rdj2025_potato_disease_detection](pi-code/src/rdj2025_potato_disease_detection/).
+
 ## Note
 - Josh goes over how to obtain wheel diameter, wheel separation and encoder counts per revolution in [this video](https://www.youtube.com/watch?v=4VVrTCnxvSw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT)
 - **online_async_launch.py** **localization_launch.py**, **navigation_launch.py**, **mapper_params_online_async.yaml**, **nav2_params.yaml** were copied from the default slam-toolbox and nav2_bringup directories (/opt/ros/humble/share/nav2-or slam-toolbox...) then slightly modified (for example in localization_launch.py instead of `get_package_share_directory('nav2_bringup')` use `get_package_share_directory('jkl')`) This is the recommended way to do it because, Josh's articubot_one repo uses ROS foxy. Apart from fewer parameters in nav2 and mapper yaml, some problems might come up like failing to launch navigation. Some elements were renamed in ROS Humble, like recoveries->behaviors
@@ -249,4 +252,5 @@ All else is as below
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
