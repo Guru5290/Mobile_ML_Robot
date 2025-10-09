@@ -77,11 +77,15 @@ loop_search_maximum_distance: 6.0 # (default is 3.0). The default value causes t
 - initial_pose (not defined by default). Helps save time when using localization. A new pose can be given using rviz. Use it by having the odom reset (relaunching launch_robot) then launching online_async.launch.py. Then set the initial pose as 0 0 0
 - controller_server: [mppi controller server](https://docs.nav2.org/configuration/packages/configuring-mppic.html) was used (dwb is default). rpp, teb and grace might have worked better, but mppi worked best out of the box
 - controller server loop rate 15 Hz to minimize console spamming "control loop missed its 30Hz update rate"
-- local_costmap & global_costmap: resolution: 0.025 (0.05 is default). Seems to get robot get stuck less frequently
-- local_costmap & global_costmap: robot_radius: 0.025 (0.05 is default). Seems to get robot get stuck less frequently
+- local_costmap & global_costmap: resolution: 0.02 (0.05 is default). Seems to get robot get stuck less frequently
+- local_costmap: footprint used instead of radius, coz the robot is a polygon. Sized just over the robot's size
+- global_costmap: radius retained, perhaps less compute intensive than footprint?
 - amcl laser_max_range and min_range 12.0 and 0.3 respectively (default is )
 - velocity smoother feedback: "CLOSED_LOOP" (default is OPEN_LOOP)
 - velocity smoother velocities and accelerations: [0.35, 0.0, -0] and [12.5, 0.0, 8.2] (default are something else) The accelerations are very large. Something better should be identified and used
+- [The docs](https://docs.nav2.org/tuning/index.html#inflation-potential-fields) recommends inflation radii that create **smooth** potential fields in the global and local costmaps. However, in testing, it was observed that having overlapping potentials (such as on corridors and parking spots) would cause the robot to fail passing as expected, even though a path had been planned. So the inflation radii were reduced until there was a little empty space in both costmaps at the narrowest corridor of the gamefield. 
+
+We tried using the [theta-star planner](https://docs.nav2.org/configuration/packages/configuring-thetastar.html) instead of the default navfn. The robot plans are shorter and straighter, fixing the weaving issue we had last year. However, the plans hug the inflation radius too closely, causing navigation around simple corners to fail in a manner similar to that observed when the potential fields overlap. With time, perhaps that can be tuned out?
 
 ### my_controllers.yaml
 For diff_cont
@@ -146,7 +150,7 @@ Hardware interfaces for 2 additional wheels, servo and IMU were added. The seria
 
 Note that the state interface for the servo is not implemnted based on the reported servo angle. Instead, it is reported using the previously commanded angle. Although the command is provided in the arduino sketch, at the time, it was more important to prevent frequent checks on the servo position rather than prioritizing fetching the wheel encoder data. So the command interface only sent commands to the MCU if a different angle command was sent. 
 
-This choice created some buggy behaviour with the servo. If launch_robot was executed while the servo was in the open position, publishing [170.0] to the servo_controller/commands topic would not close it. So you would have to "open it" using [90.0] first then it would close. There was also a bug where publishing the open command only once would have no effect. As of yet, unclear if this is also related. 
+This choice created some buggy behaviour with the servo. If launch_robot was executed while the servo was in the open position, publishing [170.0] to the `servo_controller/commands` topic would not close it. So you would have to "open it" using [90.0] first then it would close. There was also a bug where publishing an angle command to the topic only once would have no effect. As of yet, unclear if this is also related. 
 
 A future implementation would definitely update state variable as it should be. 
 
