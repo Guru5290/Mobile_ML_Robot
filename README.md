@@ -216,6 +216,42 @@ All else is as below
 ### For navigation phase
 - (on pc or pi, but pc is more powerful) You may use slam_toolbox or localization_launch for localization. slam_toolbox is not recommended since it (currently) overwrites (or updates) the existing map with new scans. If you wish to proceed anyway, this is how you do it: change `mode: mapping` to `mode: localization` and uncomment `map_file_name:` followed by path to the **serialized** map file (i.e. the file that has .data or .posegraph extension), without extension, in src/jkl/config/mapper_params_online_async.yaml. Then run same command as when mapping `ros2 launch jkl online_async_launch.py slam_params_file:=./src/jkl/config/mapper_params_online_async.yaml`.
 - To use localization_launch, kill online_async if it was running then run  `ros2 launch jkl localization_launch.py map:=path_to_map.yaml use_sim_time:=false`. To set/change pose estimate, you can use rviz
+- To use jie_ware localization package: [jie_ware](pi-code/src/jie_ware/)
+
+The **jie_ware** package provides advanced **LIDAR-based localization** capabilities. It allows the robot to automatically localize itself within its operational area, making it highly suitable for autonomous navigation and mapping tasks.
+
+This package was originally developed for **ROS 1** and is available here:  
+ [https://github.com/6-robot/jie_ware](https://github.com/6-robot/jie_ware)  
+It has been successfully **ported to ROS 2** for integration with this project.
+
+---
+
+###  Running the Localization Node
+To use **jie_ware** localization, run the following command:
+
+```bash
+ros2 launch jie_ware lidar_loc.launch.py map:=<map_name>.yaml use_sim_time:=false
+```
+
+Replace `<map_name>.yaml` with the desired map file that you have saved.
+
+When running, the robot will automatically localize itself if it is within its known mapped area.
+
+---
+
+###  Demo Video
+A demonstration of the **jie_ware localization** package can be found here:
+
+ [Watch on YouTube](https://youtu.be/sZ5_NEt1vI4?si=CmsiGj_6Rxt5UtrA)
+
+---
+
+###  Key Features
+- Automatic localization within known mapped environments
+- LIDAR-based positioning for accuracy and robustness
+- Compatible with ROS 2 navigation stacks
+- Fully ported from ROS 1 for better performance and integration
+
 - (on pc or pi, but pc is recommended because of computation limitations on pi) run `ros2 launch jkl navigation_launch.py map_subscribe_transient_local:=true params_file:=./src/jkl/config/nav2_params.yaml use_sim_time:=false`
 - Use rviz to set waypoints either one by one or all points at once. Navigate through poses creates one path across all waypoints while navigate to waypoints moves the robot to each point one-by-one
 
@@ -405,6 +441,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
