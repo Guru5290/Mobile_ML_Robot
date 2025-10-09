@@ -421,8 +421,8 @@ These two nodes will work together — the detector identifies the colour (blue 
 
 # Future
 - Fix weaving. When the path is relatively straight the robot follows a winding path, it weaves left and right, which might cause it to hit an obstacle. In the competition, we reduced the maximum angular velocity to work around this.
-- Make the robot smaller (particularly wheel_separation), like [Atom x RoboQueens robot](atom-roboqueens-robot.png)
-- Isolate the arduino and motor driver, tristate buffer and/or relay?
+- Make the robot smaller (particularly wheel_separation), like [Atom x RoboQueens robot](atom-roboqueens-robot.png)  ---> ✔️
+- Isolate the arduino and motor driver, tristate buffer and/or relay? 
 - Find a way to power lidar motor properly. Why was the USB hub buzzing when switched on? Modify a USB cable, so that an additional power cable is soldered to the 5V line, for simplicity and compactness
 - Get a really good USB PD power bank for the Raspberry Pi
 - Get USB-C trigger boards, or build battery pack with BMS to avoid overdischarging motor power supply like last time
@@ -433,15 +433,16 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Try using a differert fork of supporting packages (like serial and serial motor demo) because the ones used have easy_install deprecation warnings during colcon build --symlink-install
 - Try using very high resolution laser scan and local and global costmaps to see if the bot ever gets stuck (without modifying robot radius that is)
 - Try a different path planner, like [smac](https://docs.nav2.org/configuration/packages/configuring-smac-planner.html) or [thetastar](https://docs.nav2.org/configuration/packages/configuring-thetastar.html), maybe they will perform better with higher resolution costmaps. When tested with resolution 0.05, generated paths were straighter and often passing through the robot radius regions hence the robot would get stuck in recovery easily. Also explore effect of deadband velocity, as well as other params n this file.
-- Try and use `ros2 launch sllidar_ros2 sllidar_a1_launch.py` or `ros2 launch rplidar_ros rplidar_a1_launch.py` instead of jkl rplidar.launch.py to see if the 8kHz and 'Sensitivity' vs 2kHz and 'Standard' makes it better
+- Try and use `ros2 launch sllidar_ros2 sllidar_a1_launch.py` or `ros2 launch rplidar_ros rplidar_a1_launch.py` instead of jkl rplidar.launch.py to see if the 8kHz and 'Sensitivity' vs 2kHz and 'Standard' makes it better ---> ✔️ Used `ros2 launch rplidar_ros rplidar_a1_launch.py frame_id:=laser_frame`
 - Try using a different bt_navigator xml such as the ones in jkl/config/behavior_trees. You specify the one to use in nav2_params.yaml
 - Explore effect of other params in my_controllers.yaml. There's also closed-loop there, might be valuable
 - Make the mapping phase also autonomous
-- Incorporate IMU, maybe this has benefits
+- Incorporate IMU, maybe this has benefits ---> ✔️
 - Try depth camera instead of lidar
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
