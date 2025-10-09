@@ -157,7 +157,92 @@ A future implementation would definitely update state variable as it should be.
 Check out [diffdrive_arduino.cpp](pi-code/src/diffdrive_arduino/src/diffdrive_arduino.cpp) and its .h file
 
 ## Computer Vision
-## [rdj2025_potato_disease_detection](pi-code/src/rdj2025_potato_disease_detection/).
+
+## [rdj2025_potato_disease_detection](pi-code/src/rdj2025_potato_disease_detection/)
+
+###   Project Overview
+This package is part of a computer vision system for detecting **potato leaf diseases** using **deep learning** on a **ROS 2** framework. It supports both **RTSP-based live camera feeds** from a Raspberry Pi Camera Module 2 and **locally saved test images**. The model can classify potato leaf conditions and display the confidence level of each prediction as either early blight, late blight or healthy.
+
+---
+
+###   Requirements / Dependencies
+Before running, ensure the following are installed:
+
+- **Hardware:** Raspberry Pi (with Camera Module 2 - IMX219)
+- **Operating System:** Raspberry Pi OS or Ubuntu 22.04 (with ROS 2 Humble)
+- **Dependencies:**
+  - Python 3.10+
+  - ROS 2 (installed and sourced)
+  - OpenCV (`opencv-python`)
+  - PyTorch (`torch`, `torchvision`)
+  - FFmpeg (for video streaming)
+  - rpicam-vid (camera streaming utility)
+
+Install missing dependencies via:
+
+```bash
+sudo apt install ffmpeg
+pip install torch torchvision opencv-python
+```
+
+---
+
+###   Start Raspberry Pi Camera Stream
+Before running the required nodes, ensure the **Raspberry Pi Camera Module 2** is streaming using:
+
+```bash
+rpicam-vid -t 0 --nopreview --inline --codec mjpeg --width 1920 --height 1080 \
+--framerate 10 --hflip --vflip --awb daylight --autofocus-mode manual \
+-o - | ffmpeg -f mjpeg -i - -c:v copy -f rtsp -rtsp_flags listen rtsp://0.0.0.0:8554/cam
+```
+
+You may modify parameters such as autofocus or white balance, but these defaults provided stable results.
+
+  **Reference:** [Raspberry Pi Camera Software Documentation (IMX219 V2)](https://www.raspberrypi.com/documentation/computers/camera_software.html)
+
+---
+
+###  Running the ROS 2 Nodes
+To run the two nodes, open separate terminals and execute:
+
+1. **Potato Disease Detection Node:**
+   ```bash
+   ros2 run rdj2025_potato_disease_detection potato_disease_detection_node
+   ```
+
+2. **Image Publisher Node:**
+   ```bash
+   ros2 run rdj2025_potato_disease_detection publish_test_image
+   ```
+
+The second node can be configured in `setup.py` to switch between **RTSP streaming** or **local images**.
+
+---
+
+###  Node Locations
+- Detection Node:  
+  `pi-code/src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection/potato_disease_detection_node.py`
+
+- RTSP Image Publisher:  
+  `pi-code/src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection/rtsp_image_publisher.py`
+
+- Test Image Publisher (Local):  
+  `pi-code/src/rdj2025_potato_disease_detection/rdj2025_potato_disease_detection/test_image_publisher.py`
+
+---
+
+###  Model Details
+- **Commented code** in the following files uses the model trained by **RDJ 2025 organizers**:
+  - `inference_engine.py`
+  - `potato_disease_detection_node.py`
+
+    Repository: [https://github.com/roboticsdojo/rdj2025_potato_disease_detection](https://github.com/roboticsdojo/rdj2025_potato_disease_detection)
+
+- **Uncommented sections** use the custom model trained by this team:
+  - `pi-code/src/rdj2025_potato_disease_detection/models/potato_disease_model.pth`
+
+This custom model achieved higher accuracy and provided classification confidence levels for each prediction.
+
 
 ## Note
 - Josh goes over how to obtain wheel diameter, wheel separation and encoder counts per revolution in [this video](https://www.youtube.com/watch?v=4VVrTCnxvSw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT)
@@ -256,5 +341,6 @@ All else is as below
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
