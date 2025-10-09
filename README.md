@@ -156,6 +156,69 @@ A future implementation would definitely update state variable as it should be.
 
 Check out [diffdrive_arduino.cpp](pi-code/src/diffdrive_arduino/src/diffdrive_arduino.cpp) and its .h file
 
+## Note
+- Josh goes over how to obtain wheel diameter, wheel separation and encoder counts per revolution in [this video](https://www.youtube.com/watch?v=4VVrTCnxvSw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT)
+- **online_async_launch.py** **localization_launch.py**, **navigation_launch.py**, **mapper_params_online_async.yaml**, **nav2_params.yaml** were copied from the default slam-toolbox and nav2_bringup directories (/opt/ros/humble/share/nav2-or slam-toolbox...) then slightly modified (for example in localization_launch.py instead of `get_package_share_directory('nav2_bringup')` use `get_package_share_directory('jkl')`) This is the recommended way to do it because, Josh's articubot_one repo uses ROS foxy. Apart from fewer parameters in nav2 and mapper yaml, some problems might come up like failing to launch navigation. Some elements were renamed in ROS Humble, like recoveries->behaviors
+- all instances of serial ports use `dev/serial/by-id` path. This was preferred over `dev/serial/by-path` and `dev/tty*` because it depends on the device ID rather than the port used or connection order
+- Electronic cats provides a [calibration sketch](https://github.com/ElectronicCats/mpu6050/wiki/4.-Examples#zero) for the IMU. This improved accuracy greatly. 
+
+# Usage
+## 
+- Wifi (or ethernet) has to be connected, on both pi and PC whenever you're running ROS, especially if using cyclone DDS as the RMW_IMPLEMENTATION
+## Preliminary
+- [install ros-humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
+- add `source /opt/ros/humble/setup.bash` to ~/.bashrc so you don't have to in every new terminal
+- install [nav2, slam-toolbox](https://roboticsbackend.com/ros2-nav2-generate-a-map-with-slam_toolbox/), colcon, and optionally [change RMW_IMPLEMENTATION to cyclone_dds](https://roboticsbackend.com/ros2-nav2-generate-a-map-with-slam_toolbox/)
+- install controllers, plugins, xacro and twist mux 
+```bash
+sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers && \
+# sudo apt install ros-humble-gazebo-ros2-control && \ # Gazebo Classic went EOL so this won't work, make migration
+# sudo apt install ros-humble-gazebo-ros-pkgs && \ 
+sudo apt install ros-humble-xacro && \
+sudo apt install ros-humble-twist-mux && \
+sudo apt install ros-humble-slam-toolbox && \
+sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup && \
+sudo apt install ros-humble-robot-localization && \
+sudo apt install ros-humble-rplidar-ros && \
+```
+- disable brltty service. This service always takes serial port devices to be braille device, preventing you from accessing your microcontroller. Disable the service
+```bash 
+systemctl stop brltty-udev.service && \
+sudo systemctl mask brltty-udev.service && \
+systemctl stop brltty.service && \
+systemctl disable brltty.service
+```
+- enable read/write to serial port, you can do this by adding yourself to the dialout group `sudo usermod -a -G dialout $USER` **then reboot**
+- clone the repository in both Pi and dev machine
+- cd to the location of src directory in both Pi and dev machine e.g. `cd ~/robotics-dojo-2024/pi-code`
+- edit pi-code/src/jkl/description/ros2_control.xacro line 11 to the appropriate for your microcontroller. You can check which is appropriate by connecting the microcontroller to your machine then running `ls /dev/serial/by-id`. You can then add it as appropriate
+- run `colcon build --symlink-install` in both Pi and dev machine. It may throw a lot of errors and/or warnings on first build, just ignore and run `colcon build --symlink-install` again. This should be fixed in future versions of this project.
+- run `source install/setup.bash` on each terminal (or add `source yourworkspace/install/setup.bash` to ~/.bashrc) in both Pi and dev machine
+
+## Simulation
+Everything is run on pc. Instead of running `ros2 launch jkl launch_robot.launch.py` **and** `ros2 launch jkl rplidar.launch.py`, use `ros2 launch jkl launch_sim.launch.py use_sim_time:=true world:=./src/jkl/worlds/dojo2024` 
+Change every instance of `use_sim_time:=false` to `use_sim_time:=true`
+All else is as below
+
+## Real Robot
+- cd to the location of src directory in both Pi and dev machine e.g. `cd ~/robotics-dojo-2024/pi-code`
+- On PC run `rviz2 -d ./src/comp.rviz`
+- On Pi, run `ros2 launch jkl launch_robot.launch.py`
+- On Pi in another terminal run `ros2 launch jkl rplidar.launch.py`. You may also use `ros2 launch rplidar_ros rplidar_a1_launch.py` or `ros2 launch sllidar_ros2 sllidar_a1_launch.py`. In a few tests, we noticed that the latter two run at 8kHz, instead of the former's 2kHz. Also, these launch files show the lidar is in `Sensitivity` mode rather than `Standard` mode. We're not sure if there are benefits in using these two over Josh's. 
+
+### For mapping phase
+- On PC (Pi is also fine but during competition we found PC was better, did not have the "teleportation" issue) run `ros2 launch jkl online_async_launch.py slam_params_file:=./src/jkl/config/mapper_params_online_async.yaml use_sim_time:=false`
+- On PC or Pi run `ros2 run teleop_twist_keyboard teleop_twist_keyboard`
+- you may also use gamepad instead of keyboard, but you'll have to configure the joystick yaml appropriately. Josh demonstrates the process well [here](https://www.youtube.com/watch?v=F5XlNiCKbrY&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT&index=17). But in short run `ros2 run joy joy_node` in one terminal then `ros2 run joy_tester test_joy` in another. Press a key, identify its id using the GUI and use that id in the jkl/config/joystick.yaml. Having configured the yaml correctly, you can use `ros2 launch jkl joystick.launch.py` in place of or in conjuction with teleop_twist_keyboard. joystick **does not** require its terminal window to be in focus to work
+- With the teleop_twist_keyboard terminal in focus use `u i o j k l m , .` to drive the bot around until a satisfactory map is shown in rviz
+- Open slam toolbox panel in rviz and fill the input boxes with a desired name. Click save map and serialize map. Four map files will be saved in current directory
+
+### For navigation phase
+- (on pc or pi, but pc is more powerful) You may use slam_toolbox or localization_launch for localization. slam_toolbox is not recommended since it (currently) overwrites (or updates) the existing map with new scans. If you wish to proceed anyway, this is how you do it: change `mode: mapping` to `mode: localization` and uncomment `map_file_name:` followed by path to the **serialized** map file (i.e. the file that has .data or .posegraph extension), without extension, in src/jkl/config/mapper_params_online_async.yaml. Then run same command as when mapping `ros2 launch jkl online_async_launch.py slam_params_file:=./src/jkl/config/mapper_params_online_async.yaml`.
+- To use localization_launch, kill online_async if it was running then run  `ros2 launch jkl localization_launch.py map:=path_to_map.yaml use_sim_time:=false`. To set/change pose estimate, you can use rviz
+- (on pc or pi, but pc is recommended because of computation limitations on pi) run `ros2 launch jkl navigation_launch.py map_subscribe_transient_local:=true params_file:=./src/jkl/config/nav2_params.yaml use_sim_time:=false`
+- Use rviz to set waypoints either one by one or all points at once. Navigate through poses creates one path across all waypoints while navigate to waypoints moves the robot to each point one-by-one
+
 ## Computer Vision
 
 ## [rdj2025_potato_disease_detection](pi-code/src/rdj2025_potato_disease_detection/)
@@ -308,72 +371,6 @@ These two nodes will work together — the detector identifies the colour (blue 
 
 ---
 
-
-
-
-## Note
-- Josh goes over how to obtain wheel diameter, wheel separation and encoder counts per revolution in [this video](https://www.youtube.com/watch?v=4VVrTCnxvSw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT)
-- **online_async_launch.py** **localization_launch.py**, **navigation_launch.py**, **mapper_params_online_async.yaml**, **nav2_params.yaml** were copied from the default slam-toolbox and nav2_bringup directories (/opt/ros/humble/share/nav2-or slam-toolbox...) then slightly modified (for example in localization_launch.py instead of `get_package_share_directory('nav2_bringup')` use `get_package_share_directory('jkl')`) This is the recommended way to do it because, Josh's articubot_one repo uses ROS foxy. Apart from fewer parameters in nav2 and mapper yaml, some problems might come up like failing to launch navigation. Some elements were renamed in ROS Humble, like recoveries->behaviors
-- all instances of serial ports use `dev/serial/by-id` path. This was preferred over `dev/serial/by-path` and `dev/tty*` because it depends on the device ID rather than the port used or connection order
-- Electronic cats provides a [calibration sketch](https://github.com/ElectronicCats/mpu6050/wiki/4.-Examples#zero) for the IMU. This improved accuracy greatly. 
-
-# Usage
-## 
-- Wifi (or ethernet) has to be connected, on both pi and PC whenever you're running ROS, especially if using cyclone DDS as the RMW_IMPLEMENTATION
-## Preliminary
-- [install ros-humble](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
-- add `source /opt/ros/humble/setup.bash` to ~/.bashrc so you don't have to in every new terminal
-- install [nav2, slam-toolbox](https://roboticsbackend.com/ros2-nav2-generate-a-map-with-slam_toolbox/), colcon, and optionally [change RMW_IMPLEMENTATION to cyclone_dds](https://roboticsbackend.com/ros2-nav2-generate-a-map-with-slam_toolbox/)
-- install controllers, plugins, xacro and twist mux 
-```bash
-sudo apt install ros-humble-ros2-control ros-humble-ros2-controllers && \
-# sudo apt install ros-humble-gazebo-ros2-control && \ # Gazebo Classic went EOL so this won't work, make migration
-# sudo apt install ros-humble-gazebo-ros-pkgs && \ 
-sudo apt install ros-humble-xacro && \
-sudo apt install ros-humble-twist-mux && \
-sudo apt install ros-humble-slam-toolbox && \
-sudo apt install ros-humble-navigation2 ros-humble-nav2-bringup && \
-sudo apt install ros-humble-robot-localization && \
-sudo apt install ros-humble-rplidar-ros && \
-```
-- disable brltty service. This service always takes serial port devices to be braille device, preventing you from accessing your microcontroller. Disable the service
-```bash 
-systemctl stop brltty-udev.service && \
-sudo systemctl mask brltty-udev.service && \
-systemctl stop brltty.service && \
-systemctl disable brltty.service
-```
-- enable read/write to serial port, you can do this by adding yourself to the dialout group `sudo usermod -a -G dialout $USER` **then reboot**
-- clone the repository in both Pi and dev machine
-- cd to the location of src directory in both Pi and dev machine e.g. `cd ~/robotics-dojo-2024/pi-code`
-- edit pi-code/src/jkl/description/ros2_control.xacro line 11 to the appropriate for your microcontroller. You can check which is appropriate by connecting the microcontroller to your machine then running `ls /dev/serial/by-id`. You can then add it as appropriate
-- run `colcon build --symlink-install` in both Pi and dev machine. It may throw a lot of errors and/or warnings on first build, just ignore and run `colcon build --symlink-install` again. This should be fixed in future versions of this project.
-- run `source install/setup.bash` on each terminal (or add `source yourworkspace/install/setup.bash` to ~/.bashrc) in both Pi and dev machine
-
-## Simulation
-Everything is run on pc. Instead of running `ros2 launch jkl launch_robot.launch.py` **and** `ros2 launch jkl rplidar.launch.py`, use `ros2 launch jkl launch_sim.launch.py use_sim_time:=true world:=./src/jkl/worlds/dojo2024` 
-Change every instance of `use_sim_time:=false` to `use_sim_time:=true`
-All else is as below
-
-## Real Robot
-- cd to the location of src directory in both Pi and dev machine e.g. `cd ~/robotics-dojo-2024/pi-code`
-- On PC run `rviz2 -d ./src/comp.rviz`
-- On Pi, run `ros2 launch jkl launch_robot.launch.py`
-- On Pi in another terminal run `ros2 launch jkl rplidar.launch.py`. You may also use `ros2 launch rplidar_ros rplidar_a1_launch.py` or `ros2 launch sllidar_ros2 sllidar_a1_launch.py`. In a few tests, we noticed that the latter two run at 8kHz, instead of the former's 2kHz. Also, these launch files show the lidar is in `Sensitivity` mode rather than `Standard` mode. We're not sure if there are benefits in using these two over Josh's. 
-
-### For mapping phase
-- On PC (Pi is also fine but during competition we found PC was better, did not have the "teleportation" issue) run `ros2 launch jkl online_async_launch.py slam_params_file:=./src/jkl/config/mapper_params_online_async.yaml use_sim_time:=false`
-- On PC or Pi run `ros2 run teleop_twist_keyboard teleop_twist_keyboard`
-- you may also use gamepad instead of keyboard, but you'll have to configure the joystick yaml appropriately. Josh demonstrates the process well [here](https://www.youtube.com/watch?v=F5XlNiCKbrY&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT&index=17). But in short run `ros2 run joy joy_node` in one terminal then `ros2 run joy_tester test_joy` in another. Press a key, identify its id using the GUI and use that id in the jkl/config/joystick.yaml. Having configured the yaml correctly, you can use `ros2 launch jkl joystick.launch.py` in place of or in conjuction with teleop_twist_keyboard. joystick **does not** require its terminal window to be in focus to work
-- With the teleop_twist_keyboard terminal in focus use `u i o j k l m , .` to drive the bot around until a satisfactory map is shown in rviz
-- Open slam toolbox panel in rviz and fill the input boxes with a desired name. Click save map and serialize map. Four map files will be saved in current directory
-
-### For navigation phase
-- (on pc or pi, but pc is more powerful) You may use slam_toolbox or localization_launch for localization. slam_toolbox is not recommended since it (currently) overwrites (or updates) the existing map with new scans. If you wish to proceed anyway, this is how you do it: change `mode: mapping` to `mode: localization` and uncomment `map_file_name:` followed by path to the **serialized** map file (i.e. the file that has .data or .posegraph extension), without extension, in src/jkl/config/mapper_params_online_async.yaml. Then run same command as when mapping `ros2 launch jkl online_async_launch.py slam_params_file:=./src/jkl/config/mapper_params_online_async.yaml`.
-- To use localization_launch, kill online_async if it was running then run  `ros2 launch jkl localization_launch.py map:=path_to_map.yaml use_sim_time:=false`. To set/change pose estimate, you can use rviz
-- (on pc or pi, but pc is recommended because of computation limitations on pi) run `ros2 launch jkl navigation_launch.py map_subscribe_transient_local:=true params_file:=./src/jkl/config/nav2_params.yaml use_sim_time:=false`
-- Use rviz to set waypoints either one by one or all points at once. Navigate through poses creates one path across all waypoints while navigate to waypoints moves the robot to each point one-by-one
-
 # Misc.
 - the lidar sometimes acts up when attempting to launch. If it fails to launch even after mutliple retries, (1) try **unplug and replug** connections, i.e., usb connection on pi, usb on lidar, the lidar daughter board cables, other daughter board cable motor side and laser side, you get the idea (2) try using a different type-c cable, or different power supply altogether for the raspberry pi. 
 - you can save changes to comp.rviz (or the default rviz config) when you hit Ctrl+S so that you don't have to make the same changes when relaunching rviz
@@ -408,6 +405,7 @@ All else is as below
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
