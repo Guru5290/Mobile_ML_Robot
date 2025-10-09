@@ -1,4 +1,4 @@
-# gemini pro 
+# gemini flash 
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
@@ -13,6 +13,7 @@ class RTSPImagePublisher(Node):
         super().__init__('rtsp_image_publisher')
 
         # Declare parameters (Keep your existing parameter declarations)
+        
         # self.declare_parameter('IP', '10.178.118.67') #b - Fundi
         self.declare_parameter('IP', '10.226.56.67') #Kabbage - Gareth
         # self.declare_parameter('IP', '192.168.0.112') #Gamefield
@@ -64,68 +65,75 @@ class RTSPImagePublisher(Node):
         return max_area
     # ----------------------------------------------------
 
-    # Insert this refined method into your RTSPImagePublisher class
-    # No other changes are needed in your script.
-
     def detect_colour(self, imageFrame):
-        """
-        Detects the dominant blue or white color in an image frame,
-        draws bounding boxes, and prepares the result for publishing.
-        """
-        # Convert the BGR image to the HSV (Hue, Saturation, Value) color space
         hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
 
-        # 1. Define Colour Masks 🎨
+        # 1. Define Colour Masks
         
-        # ---- BLUE MASK ----
-        # Hue: 100-130 is a good range for cyan-to-standard-blue.
-        # Saturation: 150-255 ensures the color is vivid and not grayish.
-        # Value: 50-255 ensures the color is not too dark.
+        # ---- RED ---- (Re-enabled the standard split-hue range for Red)
+        red_lower1 = np.array([0, 120, 70], np.uint8)
+        red_upper1 = np.array([10, 255, 255], np.uint8)
+        red_lower2 = np.array([170, 120, 70], np.uint8)
+        red_upper2 = np.array([180, 255, 255], np.uint8)
+        red_mask = cv2.inRange(hsvFrame, red_lower1, red_upper1) + cv2.inRange(hsvFrame, red_lower2, red_upper2)
+
+        # ---- BLUE ---- (Keep your existing blue range)
         blue_lower = np.array([100, 150, 50], np.uint8)
         blue_upper = np.array([130, 255, 255], np.uint8)
         blue_mask = cv2.inRange(hsvFrame, blue_lower, blue_upper)
         
-        # ---- WHITE / OFF-WHITE MASK ----
-        # Hue: 0-179 covers all possible hues, as white is achromatic.
-        # Saturation: 0-70 is the key. 0 is pure white/gray.
-        #            Allowing up to 70 captures slightly tinted or "off-white" colors.
-        # Value: 110-255 ensures the color is bright (white/light gray) and not dark gray or black.
+        # ---- WHITE ---- (Keep your existing white range, which targets low Saturation, high Value)
         white_lower = np.array([0, 0, 110], np.uint8)
         white_upper = np.array([179, 70, 255], np.uint8)
         white_mask = cv2.inRange(hsvFrame, white_lower, white_upper)
         
-        # 2. Refine Masks with Dilation
-        # This helps close small gaps in the detected areas, making them more robust.
+        # 2. Apply Dilation (Keep your existing kernel for dilation)
         kernel = np.ones((5, 5), "uint8")
-        blue_mask = cv2.dilate(blue_mask, kernel)
-        white_mask = cv2.dilate(white_mask, kernel)
+        red_mask = cv2.dilate(red_mask, kernel) # Dilation applied
+        blue_mask = cv2.dilate(blue_mask, kernel) # Dilation applied
+        white_mask = cv2.dilate(white_mask, kernel) # Dilation applied
 
-        # 3. Find Largest Contour for Each Colour
-        # Use the helper function to find the largest detected area for each color
-        # and draw the corresponding bounding boxes on the imageFrame for visualization.
-        max_blue_area = self._get_max_contour_area_and_draw(blue_mask, imageFrame, (255, 0, 0), "Blue")
-        max_white_area = self._get_max_contour_area_and_draw(white_mask, imageFrame, (230, 230, 230), "White") # Using a light gray for the box
+        # (Optional: Keep your threshold preview window if needed)
+        # thresh_preview_window_name = "white thresh"
+        # cv2.namedWindow(thresh_preview_window_name, cv2.WINDOW_NORMAL)
+        # cv2.resizeWindow(thresh_preview_window_name, 960, 540)
+        # cv2.imshow(thresh_preview_window_name, white_mask)
+
+        # 3. Process Masks and Find Max Area
+        max_areas = {}
         
-        # 4. Determine Dominant Colour 👑
+        # Use the new helper function to calculate the max contour area and draw
+        max_areas["Red"] = self._get_max_contour_area_and_draw(red_mask, imageFrame, (0, 0, 255), "Red")
+        max_areas["White"] = self._get_max_contour_area_and_draw(white_mask, imageFrame, (255, 255, 255), "White")
+        max_areas["Blue"] = self._get_max_contour_area_and_draw(blue_mask, imageFrame, (255, 0, 0), "Blue")
+        
+        # 4. Determine Dominant Colour
+        # Find the colour with the maximum area.
+        # Use a list of colours to prioritize if areas are equal (optional, but good practice)
+        
         dominant_colour = "None"
+        max_area_val = 0
         
-        # Compare the max areas to find the dominant one
-        if max_blue_area > max_white_area and max_blue_area > 0:
-            dominant_colour = "Blue"
-            max_area_val = max_blue_area
-        elif max_white_area > max_blue_area and max_white_area > 0:
-            dominant_colour = "White"
-            max_area_val = max_white_area
-        else:
-            max_area_val = 0 # No dominant color was detected
+        # Check all detected colours and find the absolute largest area
+        for color, area in max_areas.items():
+            if area > max_area_val:
+                max_area_val = area
+                dominant_colour = color
 
-        # 5. Publish Result with Delay
+        # 5. Publish with Delay Enforcement
         now = time.time()
         
-        # Publish only if a dominant color was found and the delay period has passed
-        if max_area_val > 0 and (now - self.last_publish_time) >= self.delay_seconds:
+        # The logic is simpler now: only publish if a colour was detected AND the delay has passed.
+        # We don't need to check for a minimum count, as we already filtered by min_area.
+        
+        # Check if a colour was actually detected (max_area_val > 0) AND the delay has passed
+        if max_area_val > 0 and (self.last_published_colour is None or (now - self.last_publish_time) >= self.delay_seconds):
             self._publish_colour(dominant_colour, max_area_val)
-                
+        
+        # Optional: You could add logic here to *keep* publishing the previously published
+        # colour if it's still the dominant one and the delay is active, but a simple
+        # "publish when delay is over" is generally safer for state changes.
+
     def _publish_colour(self, colour, max_area):
         msg = String()
         msg.data = colour

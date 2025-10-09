@@ -22,8 +22,8 @@ class ColourToDoorPublisher(Node):
         )
 
         # Track last detection times and counts for each color
-        self.last_time = {"red": 0.0, "blue": 0.0}
-        self.counts = {"red": 0, "blue": 0}
+        self.last_time = {"white": 0.0, "blue": 0.0}
+        self.counts = {"white": 0, "blue": 0}
 
         # Ensure servo starts closed
         self._close_servo()
@@ -36,7 +36,7 @@ class ColourToDoorPublisher(Node):
         colour = msg.data.strip().lower()
         now = time.time()
 
-        if colour not in ["red", "blue"]:
+        if colour not in ["white", "blue"]:
             self.get_logger().info(f"Ignoring non-target colour: {colour}")
             return
 
@@ -50,8 +50,8 @@ class ColourToDoorPublisher(Node):
             return
 
         # Check conditions for each color separately
-        if self.counts["red"] >= 2:
-            self._open_servo("red")
+        if self.counts["white"] >= 2:
+            self._open_servo("white")
         elif self.counts["blue"] >= 2:
             self._open_servo("blue")
         else:
@@ -62,14 +62,14 @@ class ColourToDoorPublisher(Node):
         command.data = [90.0]  # OPEN
         self.publisher.publish(command)
 
-        if colour == "red":
-            self.get_logger().info("RED confirmed twice -> OPEN (deposit red cube)")
+        if colour == "white":
+            self.get_logger().info("white confirmed twice -> OPEN (deposit white cube)")
         elif colour == "blue":
             self.get_logger().info("BLUE confirmed twice -> OPEN (deposit blue cube)")
 
         # Reset after action
-        self.counts = {"red": 0, "blue": 0}
-        self.last_time = {"red": 0.0, "blue": 0.0}
+        self.counts = {"white": 0, "blue": 0}
+        self.last_time = {"white": 0.0, "blue": 0.0}
 
     def _close_servo(self):
         """Publish a closed command to ensure servo stays closed by default."""

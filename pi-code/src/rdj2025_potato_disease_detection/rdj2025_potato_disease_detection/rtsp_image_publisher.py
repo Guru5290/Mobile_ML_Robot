@@ -70,7 +70,7 @@ if __name__ == '__main__':
     main()
 
 
-#To run the script with the IP address a parameter:  ros2 run your_package rtsp_image_publisher --ros-args -p pi_ip:=<your_pi_ip>
+# To run the script with the IP address a parameter:  ros2 run your_package rtsp_image_publisher --ros-args -p pi_ip:=<your_pi_ip>
 
 
 
@@ -99,7 +99,7 @@ if __name__ == '__main__':
 #         super().__init__('rtsp_image_publisher')
         
 #         # Declare parameters
-#         self.declare_parameter('IP', '192.168.1.100')
+#         self.declare_parameter('IP', '10.226.56.67')
 #         self.declare_parameter('port', 8554)
 #         self.declare_parameter('stream_name', 'cam')
 #         self.declare_parameter('continuous_mode', True)  # True for continuous, False for manual

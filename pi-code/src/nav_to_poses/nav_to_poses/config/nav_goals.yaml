@@ -70,9 +70,9 @@
 #new orientation game
 goals:
   - name: Potato_disease_detection_pose
-    x: 0.28
-    y: 0.97
-    yaw: 1.57
+    x: 0.27
+    y: 0.85
+    yaw: 1.53  #was 1.50
   - name: point1
     x: 0.0
     y: 0.0
@@ -81,21 +81,21 @@ goals:
     x: 0.53
     y: 0.0
     yaw: 0.0 
-  - name: point2
-    x: 2.38
-    y: 2.01
-    yaw: 3.14
+  # - name: point2
+  #   x: 2.27    #commented to test less points
+  #   y: 1.91
+    # yaw: 3.14
   # - name: point3
   #   x: 1.3
   #   y: -2.7
   #   yaw: 1.57
   - name: point4
-    x: 1.35
-    y: 1.99
-    yaw: -2.49
+    x: 1.2
+    y: 1.96
+    yaw: -2.05
   - name: loading_zone
     x: 1.34
-    y: 0.74
+    y: 0.79
     yaw: 1.53
   # - name: point5
   #   x: 1.3
@@ -125,7 +125,7 @@ goals:
     x: 1.86 
     y: 2.99
     yaw: 1.61
-  - name: offloading_red
+  - name: offloading_white
     x: 2.30
     y: 3.43
     yaw: -3.10

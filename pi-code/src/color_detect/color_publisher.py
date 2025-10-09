@@ -21,9 +21,9 @@ class ColourPublisher(Node):
     def publish_message(self):
         msg = String()
 
-        # Alternate between red and blue for testing
+        # Alternate between white and blue for testing
         if self.counter % 2 == 0:
-            msg.data = "red"
+            msg.data = "white"
         else:
             msg.data = "blue"
 
