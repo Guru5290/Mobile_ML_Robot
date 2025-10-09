@@ -243,6 +243,73 @@ The second node can be configured in `setup.py` to switch between **RTSP streami
 
 This custom model achieved higher accuracy and provided classification confidence levels for each prediction.
 
+## Color Detection
+
+## [colour_door_controller](pi-code/src/colour_door_controller/)
+
+This package is part of the **Computer Vision** system and controls a **servo-driven door mechanism** based on detected colours from a live RTSP video stream.
+
+---
+
+###  Overview
+The package contains two main nodes:
+
+1. **Colour Detector Node** – Publishes the detected colour from the RTSP stream.  
+   Location: `pi-code/src/colour_door_controller/colour_door_controller/colour_detector.py`
+
+2. **Colour to Door Service Node** – Controls the servo motor based on the detected colour (supports **blue** and **white**).  
+   Location: `pi-code/src/colour_door_controller/colour_door_controller/colour_to_door_service.py`
+
+These nodes together enable a door automation mechanism that responds to specific colour detections in real-time.
+
+---
+
+###  Prerequisites
+Before running these nodes, ensure that the **Raspberry Pi Camera Module 2** is streaming using the following command:
+
+```bash
+rpicam-vid -t 0 --nopreview --inline --codec mjpeg --width 1920 --height 1080 \
+--framerate 10 --hflip --vflip --awb daylight --autofocus-mode manual \
+-o - | ffmpeg -f mjpeg -i - -c:v copy -f rtsp -rtsp_flags listen rtsp://0.0.0.0:8554/cam
+```
+
+You may modify the camera parameters (e.g., white balance, autofocus), but the above configuration is recommended for best performance.
+
+---
+
+###  IP Configuration
+To ensure proper RTSP streaming, verify that **all instances of the IP address** in the scripts match your Raspberry Pi's IP address.
+
+In VS Code, you can search for all IP instances using:
+```
+Ctrl + Shift + F
+```
+
+Alternatively, you can pass the IP as a runtime parameter when launching the detector node:
+
+```bash
+ros2 run colour_door_controller colour_detector --ros-args -p IP:=<your_IP>
+```
+
+---
+
+###  Running the Nodes
+1. **Run the Colour Detector Node:**
+   ```bash
+   ros2 run colour_door_controller colour_detector
+   ```
+
+2. **Run the Colour to Door Service Node:**
+   ```bash
+   ros2 run colour_door_controller colour_to_door_service
+   ```
+
+These two nodes will work together — the detector identifies the colour (blue or white), and the service node controls the servo motor accordingly.
+
+---
+
+
+
 
 ## Note
 - Josh goes over how to obtain wheel diameter, wheel separation and encoder counts per revolution in [this video](https://www.youtube.com/watch?v=4VVrTCnxvSw&list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT)
@@ -341,6 +408,7 @@ All else is as below
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
