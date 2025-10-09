@@ -251,6 +251,7 @@ A demonstration of the **jie_ware localization** package can be found here:
 - LIDAR-based positioning for accuracy and robustness
 - Compatible with ROS 2 navigation stacks
 - Fully ported from ROS 1 for better performance and integration
+### Running navigaton
 
 - (on pc or pi, but pc is recommended because of computation limitations on pi) run `ros2 launch jkl navigation_launch.py map_subscribe_transient_local:=true params_file:=./src/jkl/config/nav2_params.yaml use_sim_time:=false`
 - Use rviz to set waypoints either one by one or all points at once. Navigate through poses creates one path across all waypoints while navigate to waypoints moves the robot to each point one-by-one
@@ -441,6 +442,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
