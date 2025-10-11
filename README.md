@@ -163,6 +163,20 @@ Check out [diffdrive_arduino.cpp](pi-code/src/diffdrive_arduino/src/diffdrive_ar
 - all instances of serial ports use `dev/serial/by-id` path. This was preferred over `dev/serial/by-path` and `dev/tty*` because it depends on the device ID rather than the port used or connection order
 - Electronic cats provides a [calibration sketch](https://github.com/ElectronicCats/mpu6050/wiki/4.-Examples#zero) for the IMU. This improved accuracy greatly. 
 
+## Note on Localization
+In testing, it was noted that localization using AMCL (the default for Nav2) was unsatisfactory. The map and laser scan would go out of alignment very quickly, causing navigation to fail. A few attempts were made to tune the [parameters](/pi-code/src/jkl/config/nav2_params.yaml) using [this guide](https://automaticaddison.com/ros-2-navigation-tuning-guide-nav2/) but the performance was still sub-par. A little research showed **many** others shared our discontent and so provided promising alternatives to AMCL:
+1. jie_ware youtube [here](https://youtu.be/sZ5_NEt1vI4?si=0gPA8b-hRr3kHton) and github [here](https://github.com/6-robot/jie_ware) ROS1 :(
+2. als_ros youtube [here](https://youtu.be/wsoXvUgJvWk?si=MrWsakbt202Rw9hv) and github [here](https://github.com/NaokiAkai/als_ros) ROS1 :(
+3. WLOC youtube [here](https://youtu.be/ik6-cSJZV1k?si=ls9vA8XfLilKkfMt) no source could be found :(
+4. rtabmap github [here](https://github.com/introlab/rtabmap/tree/humble-devel) huge and reportedly high compute requirements :( However, it supports mapping with stereo RGB-D cameras, 3D lidar, and [a lot more](https://github.com/introlab/rtabmap/wiki/Tutorials)
+5. GMCL youtube [here](https://youtu.be/J9ZcCon6k-g?si=GTzK6mh_Yn7lSSTg) and github here
+6. neo_localization github [here](https://github.com/neobotix/neo_localization2/tree/humble) docs [here](https://neobotix-docs.de/ros/packages/neo_localization.html)
+
+We only tested neo_localization and jie_ware. Neo_localization was just a drop-in replacement for AMCL, but was indistinguishable from it. Perhaps with a little more tuning and consideration, it could be ironed out. 
+
+Jie_ware was written for ROS1. After a little effort to port it to ROS2, we found it to be very aggressive, exactly what we wanted. We could have tested the others but they either required a lot more effort to integrate. Jie_ware only had 3 source files
+
+
 # Usage
 ## 
 - Wifi (or ethernet) has to be connected, on both pi and PC whenever you're running ROS, especially if using cyclone DDS as the RMW_IMPLEMENTATION
@@ -216,10 +230,10 @@ All else is as below
 
 ### For navigation phase
 - (on pc or pi, but pc is more powerful) You may use slam_toolbox or localization_launch for localization. slam_toolbox is not recommended since it (currently) overwrites (or updates) the existing map with new scans. If you wish to proceed anyway, this is how you do it: change `mode: mapping` to `mode: localization` and uncomment `map_file_name:` followed by path to the **serialized** map file (i.e. the file that has .data or .posegraph extension), without extension, in src/jkl/config/mapper_params_online_async.yaml. Then run same command as when mapping `ros2 launch jkl online_async_launch.py slam_params_file:=./src/jkl/config/mapper_params_online_async.yaml`.
-- To use localization_launch, kill online_async if it was running then run  `ros2 launch jkl localization_launch.py map:=path_to_map.yaml use_sim_time:=false`. To set/change pose estimate, you can use rviz
+- To use localization_launch (AMCL localization), kill online_async if it was running then run  `ros2 launch jkl localization_launch.py map:=path_to_map.yaml use_sim_time:=false`. To set/change pose estimate, you can use rviz
 - To use jie_ware localization package: [jie_ware](pi-code/src/jie_ware/)
 
-The **jie_ware** package provides advanced **LIDAR-based localization** capabilities. It allows the robot to automatically localize itself within its operational area, making it highly suitable for autonomous navigation and mapping tasks.
+The **jie_ware** package provides advanced **LIDAR-based localization** capabilities. It allows the robot to automatically localize itself within its operational area using **only lidar data** and the map, making it highly suitable for autonomous navigation and mapping tasks. That means the odometry need not be precise, or even remotely accurate as [some](https://www.reddit.com/r/ROS/comments/1iwslhb/amcl_alternatives_found_a_lightweight_lidaronly/) have used it with a **static!** odom->base_link TF without trouble. 
 
 This package was originally developed for **ROS 1** and is available here:  
  [https://github.com/6-robot/jie_ware](https://github.com/6-robot/jie_ware)  
