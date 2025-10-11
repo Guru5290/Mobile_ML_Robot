@@ -432,13 +432,13 @@ These two nodes will work together — the detector identifies the colour (blue 
 ---
 
 # Misc.
-- the lidar sometimes acts up when attempting to launch. If it fails to launch even after mutliple retries, (1) try **unplug and replug** connections, i.e., usb connection on pi, usb on lidar, the lidar daughter board cables, other daughter board cable motor side and laser side, you get the idea (2) try using a different type-c cable, or different power supply altogether for the raspberry pi. 
+- the lidar sometimes acts up when attempting to launch. If it fails to launch even after mutliple retries, (1) try **unplug and replug** connections, i.e., usb connection on pi, usb on lidar, the lidar daughter board cables, other daughter board cable motor side and laser side, you get the idea (2) try using a different type-c cable, or different power supply altogether for the raspberry pi. This was an issue in 2024 but not 2025.
 - you can save changes to comp.rviz (or the default rviz config) when you hit Ctrl+S so that you don't have to make the same changes when relaunching rviz
 - for simulations, slow computers may produce unrealistic navigation behaviours, like aborting too soon. Gazebo is a resource hog. So try to launch launch_sim in one pc then everything else in another pc configured in the same way, connected in the same network 
 - use float where float is used in yaml files, otherwise stuff may fail to launch
-- sometimes things don't work very well, relaunch and reboot are a must
+- sometimes things don't work very well, relaunch and reboot are a must for both Pi and PC
 - rplidar.launch.py sometimes takes a few tries to get working, also try disconnecting arduino then launch lidar first
-- use `export ROS_DOMAIN_ID=some-number-that-is-not-the-default-0` per terminal or in bashrc to avoid communicating with other people's ROS environments
+- use `export ROS_DOMAIN_ID=some-number-that-is-not-the-default-0` per terminal or in bashrc to avoid communicating with other people's ROS environments. Do this for both your PC and PI
 - cyclonedds is recommended over fastrtps because ["it doesn't work well with nav2"](https://roboticsbackend.com/ros2-nav2-tutorial/). Install using `sudo apt install ros-humble-rmw-cyclonedds-cpp` and then per terminal or in bashrc `export RMW_IMPLEMENTATION=rmw_cyclonedds_cpp`
 - Raspberry running ubuntu 22.04 sometimes takes a long time to boot. Using `systemd-analyze blame`, it seems to be caused by `systemd-networkd-wait-online.service`. A workaround is turning `optional` to `false` in `/etc/netplan/50-cloud-init.yaml`. A better fix should be identified. 
 
@@ -465,6 +465,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
