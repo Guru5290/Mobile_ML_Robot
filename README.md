@@ -23,9 +23,9 @@ Project for [Robotics Dojo 2025](https://roboticsdojo.github.io/competition2025.
 - [serial](https://github.com/joshnewans/serial) is from Josh
 - [serial_motor_demo](https://github.com/joshnewans/serial_motor_demo) is from Josh
 - [rosArduinoBridge](https://github.com/joshnewans/ros_arduino_bridge) is Josh's fork of [hrobotics work](https://github.com/hbrobotics/ros_arduino_bridge)
+  
+Our [technical design paper](Technical%20paper%20Team_1%20Knights%20RDJ%202025.pdf), [technical presentation slides](Robotics%20Dojo%202025%20Knights%20Presentation.pdf), and [project poster](knights_poster%20RDJ%202025.pdf) may have a few more details on this project.
 
-
-Our [technical design paper](Technical%20paper%20Team_1%20Knights%20RDJ%202025.pdf) and [technical presentation slides](Robotics%20Dojo%202025%20Knights%20Presentation.pdf) may have a few more details on this project.
 
 
 # Hardware Configuration
@@ -465,6 +465,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
