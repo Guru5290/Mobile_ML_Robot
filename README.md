@@ -6,6 +6,7 @@ Project for [Robotics Dojo 2025](https://roboticsdojo.github.io/competition2025.
 * [Software Dependencies](#software-dependencies)
 * [Modified Parameters](#modified-parameters)
     * [Note](#note)
+    * [Note on Localization](#note-on-localization)
 * [Usage](#usage)
     * [Prerequisites](#preliminary)
     * [Simulation](#simulation)
@@ -469,7 +470,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Restore the original ISR in ROSArduinoBridge using the newfound knowledge in register operations. Should have a small speed boost.
 - Try using a differert fork of supporting packages (like serial and serial motor demo) because the ones used have easy_install deprecation warnings during colcon build --symlink-install
 - Try using very high resolution laser scan and local and global costmaps to see if the bot ever gets stuck (without modifying robot radius that is)
-- Try a different path planner, like [smac](https://docs.nav2.org/configuration/packages/configuring-smac-planner.html) or [thetastar](https://docs.nav2.org/configuration/packages/configuring-thetastar.html), maybe they will perform better with higher resolution costmaps. When tested with resolution 0.05, generated paths were straighter and often passing through the robot radius regions hence the robot would get stuck in recovery easily. Also explore effect of deadband velocity, as well as other params n this file.
+- Try a different path planner, like [smac](https://docs.nav2.org/configuration/packages/configuring-smac-planner.html) or [thetastar](https://docs.nav2.org/configuration/packages/configuring-thetastar.html), maybe they will perform better with higher resolution costmaps. When thete-star was tested with resolution 0.05, generated paths were straighter and often passing through the robot radius regions hence the robot would get stuck in recovery easily. It also fixed the weaving issue mentioned earlier in this section. Also explore effect of deadband velocity, as well as other params n this file.
 - Try and use `ros2 launch sllidar_ros2 sllidar_a1_launch.py` or `ros2 launch rplidar_ros rplidar_a1_launch.py` instead of jkl rplidar.launch.py to see if the 8kHz and 'Sensitivity' vs 2kHz and 'Standard' makes it better ---> ✔️ Used `ros2 launch rplidar_ros rplidar_a1_launch.py frame_id:=laser_frame`
 - Try using a different bt_navigator xml such as the ones in jkl/config/behavior_trees. You specify the one to use in nav2_params.yaml
 - Explore effect of other params in my_controllers.yaml. There's also closed-loop there, might be valuable
