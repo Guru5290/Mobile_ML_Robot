@@ -1,4 +1,4 @@
-Project for [robotics dojo 2024](https://roboticsdojo.github.io/competition2024.html). A few mods to Josh Newans' articubot_one project documented on [github](https://github.com/joshnewans/articubot_one) and [youtube](https://www.youtube.com/playlist?list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT). 
+Project for [robotics dojo 2024](https://roboticsdojo.github.io/competition2025.html). A few mods to Josh Newans' articubot_one project documented on [github](https://github.com/joshnewans/articubot_one) and [youtube](https://www.youtube.com/playlist?list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT). 
 
 # Quick Links
 * [Sources](#sources)
@@ -15,7 +15,7 @@ Project for [robotics dojo 2024](https://roboticsdojo.github.io/competition2024.
 * [Future](#future)
 
 # Sources
-- Simulation map obtained from [Brian Macharia's repo](https://github.com/ru3ll/dojo/blob/main/worlds/dojo2024). Slightly modified to remove one wall which was not present in the real gamefield
+- Simulation world obtained from the stl file sent by Lenny Ng'ang'a by converting it to a COLLADA file and importing it in Gazebo Fortress then saving it with the robot spawned in it.
 - Map evaluation script obtained from [Dr. Shohei Aoki's repo](https://github.com/shohei/Map_Evaluation)
 - diffDriveArduino from [RedstoneGithub's fork](https://github.com/RedstoneGithub/diffdrive_arduino) of Josh's diffdrive arduino
 - [sllidar](https://github.com/Slamtec/sllidar_ros2) and [rplidar](https://docs.ros.org/en/ros2_packages/humble/api/rplidar_ros/) from those links
@@ -464,6 +464,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
