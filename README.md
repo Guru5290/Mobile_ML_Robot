@@ -253,8 +253,30 @@ A demonstration of the **jie_ware localization** package can be found here:
 - Fully ported from ROS 1 for better performance and integration
 ### Running navigaton
 
-- (on pc or pi, but pc is recommended because of computation limitations on pi) run `ros2 launch jkl navigation_launch.py map_subscribe_transient_local:=true params_file:=./src/jkl/config/nav2_params.yaml use_sim_time:=false`
-- Use rviz to set waypoints either one by one or all points at once. Navigate through poses creates one path across all waypoints while navigate to waypoints moves the robot to each point one-by-one
+* **(On PC or Raspberry Pi — though PC is recommended due to the Pi’s computational limitations)** run the following command to launch navigation:
+
+  ```bash
+  ros2 launch jkl navigation_launch.py map_subscribe_transient_local:=true params_file:=./src/jkl/config/nav2_params.yaml use_sim_time:=false
+  ```
+
+* Instead of using the RViz navigation plugin to set waypoints, **PyTrees** was adopted, following Dr. Aoki’s tutorial: [PyTrees Navigation Tutorial](https://youtu.be/EqSgKu8-xEU?si=lQmXRzx3Bd9OWw90).
+
+* The script `pi-code/src/nav_to_poses/nav_to_poses/nav_to_poses.py` was used to execute the navigation tasks defined in the YAML configuration file:
+
+  ```
+  pi-code/src/nav_to_poses/nav_to_poses/config/nav_goals.yaml
+  ```
+
+* After launching navigation, the script was executed using:
+
+  ```bash
+  ros2 run nav_to_poses nav_to_poses
+  ```
+
+* Tasks requiring external script execution from within `nav_to_poses.py` were handled using Python’s `subprocess.run()` method, as described in the [official documentation](https://docs.python.org/3/library/subprocess.html).
+
+* For full autonomy, the **Raspberry Pi Camera 2 (picamera2)** stream was continuously active on the Raspberry Pi. Frames were captured on-demand for specific tasks, including **potato leaf disease detection** and **color detection** of the white and blue cubes.
+
 
 ## Computer Vision
 
@@ -442,6 +464,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
