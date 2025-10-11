@@ -1,4 +1,4 @@
-Project for [robotics dojo 2024](https://roboticsdojo.github.io/competition2025.html). A few mods to Josh Newans' articubot_one project documented on [github](https://github.com/joshnewans/articubot_one) and [youtube](https://www.youtube.com/playlist?list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT). 
+Project for [Robotics Dojo 2025](https://roboticsdojo.github.io/competition2025.html). A few mods to Josh Newans' articubot_one project documented on [github](https://github.com/joshnewans/articubot_one) and [youtube](https://www.youtube.com/playlist?list=PLunhqkrRNRhYAffV8JDiFOatQXuU-NnxT). 
 
 # Quick Links
 * [Sources](#sources)
@@ -25,7 +25,8 @@ Project for [robotics dojo 2024](https://roboticsdojo.github.io/competition2025.
 - [rosArduinoBridge](https://github.com/joshnewans/ros_arduino_bridge) is Josh's fork of [hrobotics work](https://github.com/hbrobotics/ros_arduino_bridge)
 
 
-Our [technical design paper](Technical_Design_Paper_Joint_Team_3_Knights_and_Pentagon.pdf) and [technical presentation slides](Robotics_Dojo_2025_Knights_Presentation.pdf) may have a few more details on this project.
+Our [technical design paper](Technical%20paper%20Team_1%20Knights%20RDJ%202025.pdf) and [technical presentation slides](Robotics%20Dojo%202025%20Knights%20Presentation.pdf) may have a few more details on this project.
+
 
 # Hardware Configuration
 - Raspberry Pi running Ubuntu 22.04, dev machine running Ubuntu 22.04
@@ -464,6 +465,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
