@@ -36,7 +36,7 @@ Our [technical design paper](Technical%20paper%20Team_1%20Knights%20RDJ%202025.p
 - DRV8833 motor driver, with motor controls connected as shown in [motor_driver.h](arduino-code/ROSArduinoBridge/motor_driver.h)
 - MPU6050 over I2C. The arduino sketch enables the DMP for great IMU performance. Also, a calibration sketch is provided by the [electronic cats library](https://github.com/ElectronicCats/mpu6050/wiki).
 
-Here's the bot [here](our-robot1.png), [here](our-robot2.png)
+Here's the bot [here](1L9A4192.JPG), [here](our-robot2.png)
 
 
 # Software Dependencies
@@ -465,6 +465,7 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+
 
 
 
