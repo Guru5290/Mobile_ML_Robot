@@ -480,6 +480,9 @@ These two nodes will work together — the detector identifies the colour (blue 
 - Make a simple BMS, can add a simple MOSFET switch to prevent overdischarge from battery. Can also configure battery pack to be able to charge using LiPo charger, something like 3s 2p config?
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
+- Have an mini PC as part of the robot to run all needed software to do away with WIFI & Hotspot problems during the competition. Maybe this might do [HP EliteDesk 705 G4 Microtower PC - Ryzen 5 Pro 2400GE 3.2GHz, 8 CPUs, 8GB RAM, 256GB NVMe M.2 SSD, Radeon RX Vega 11 Graphics, DP, Gigabit LAN](https://bestsella.co.ke/product/hp-elitedesk-705-g4-microtower-pc-ryzen-5-pro-2400ge-3-2ghz-8-cpus-8gb-256gb-nvme-m-2-ssd-radeon-rx-vega-11-graphics-dp-gigabit-lan/)
+
+
 
 
 
