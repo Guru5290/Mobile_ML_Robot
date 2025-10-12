@@ -54,6 +54,8 @@ The URDF was built using simple shapes. URDF using meshes was attempted [see kni
 
 Important to note is that the IMU on the actual robot was mounted such that X and Y axes did not match the X and Y axes of the robot. So in the URDF, the IMU was rotated about the Z axis to fix this. This also has implications for the [EKF configuration file](#ekfyaml)
 
+The URDF features an offset value for the centre of rotation. When the robot spins in place, it rotates about `base_link` (because the odom TF is odom->base_link). Therefore, it is important to match the centre of rotation of the real robot (or gazebo simulated robot) with the centre of rotation in Rviz. That's the role of `centre_of_rot_offset_x`. Getting this value right greatly improves odometry: when you set the fixed frame to odom in rviz, the laser frame will not drift. 
+
 ### gazebo_control.xacro (although not used)
 ```xml
 <wheel_separation>0.207</wheel_separation>
