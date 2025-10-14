@@ -52,7 +52,12 @@ Here's the bot [here](1L9A4192.JPG), [here](IMG_6601.jpeg)
 ### robot.urdf.xacro
 The URDF was built using simple shapes. URDF using meshes was attempted [see knight.xacro](pi-code/src/jkl/description/urdf/knight.xacro). The benefit was the mesh was derived from the actual CAD of the robot. However, it was too laggy to update pose, etc. It was suspected that computing collisions using meshes was the cause, hence the creation of the [current URDF](pi-code/src/jkl/description/urdf/simple.xacro). 
 
-Important to note is that the IMU on the actual robot was mounted such that X and Y axes did not match the X and Y axes of the robot. So in the URDF, the IMU was rotated about the Z axis to fix this. This also has implications for the [EKF configuration file](#ekfyaml)
+Important to note is that the IMU on the actual robot was mounted such that X and Y axes did not match the X and Y axes of the robot. Also please note that for this manufacturer the axes drawn on the module are actually -X and -Y. Verify with your IMU's raw data if you plan to replicate this
+
+![full circuit with axes](full-circuit-with-axes-ms.png)
+
+So in the URDF, the IMU was rotated about the Z axis to match. This also affects the [EKF configuration file](#ekfyaml): we fuse the Y acceleration instead of X because Y is our axis of interest i.e. robot-forward axis. A justifiable assumption is that the imu_link->...->base_link TF's would account for this behind the scenes with the robot_localization package but no it does not at the time of writing. 
+Had this been foreseen, the IMU would have been mounted x on X and y on Y. 
 
 The URDF features an offset value for the centre of rotation. When the robot spins in place, it rotates about `base_link` (because the odom TF is odom->base_link). Therefore, it is important to match the centre of rotation of the real robot (or gazebo simulated robot) with the centre of rotation in Rviz. That's the role of `centre_of_rot_offset_x`. Getting this value right greatly improves odometry: when you set the fixed frame to odom in rviz, the laser frame will not drift. 
 
@@ -293,7 +298,7 @@ A demonstration of the **jie_ware localization** package can be found here:
 
 * Tasks requiring external script execution from within `nav_to_poses.py` were handled using Python’s `subprocess.run()` method, as described in the [official documentation](https://docs.python.org/3/library/subprocess.html).
 
-* For full autonomy, the **Raspberry Pi Camera 2 (picamera2)** stream was continuously active on the Raspberry Pi. Frames were captured on-demand for specific tasks, including **potato leaf disease detection** and **color detection** of the white and blue cubes.
+* For full autonomy, the **Raspberry Pi Camera 2 (picamera2)** stream was continuously active on the Raspberry Pi. Frames were captured on-demand for specific tasks, including **potato leaf disease detection** and **colour detection** of the white and blue cubes.
 
 
 ## Computer Vision
@@ -383,7 +388,7 @@ The second node can be configured in `setup.py` to switch between **RTSP streami
 
 This custom model achieved higher accuracy and provided classification confidence levels for each prediction.
 
-## Color Detection
+## Colour Detection
 
 ## [colour_door_controller](pi-code/src/colour_door_controller/)
 
@@ -447,6 +452,9 @@ ros2 run colour_door_controller colour_detector --ros-args -p IP:=<your_IP>
 These two nodes will work together — the detector identifies the colour (blue or white), and the service node controls the servo motor accordingly.
 
 ---
+
+### Notes
+The current implementation is a little biased toward white detection. A gentle blur before processing might help. 
 
 # Misc.
 - the lidar sometimes acts up when attempting to launch. If it fails to launch even after mutliple retries, (1) try **unplug and replug** connections, i.e., usb connection on pi, usb on lidar, the lidar daughter board cables, other daughter board cable motor side and laser side, you get the idea (2) try using a different type-c cable, or different power supply altogether for the raspberry pi. This was an issue in 2024 but not 2025.
