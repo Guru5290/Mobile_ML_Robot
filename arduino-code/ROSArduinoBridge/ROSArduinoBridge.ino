@@ -295,8 +295,9 @@ void runCommand() {
 void setup() {
   Serial.begin(BAUDRATE);
 
-  // for detecting dfu mode
-  pinMode(PC13, OUTPUT);
+  pinMode(PC13, OUTPUT);     // for detecting dfu mode
+  pinMode(PC15, OUTPUT);     // for pump
+  digitalWrite(PC15, HIGH);  // turn off pump by default
   digitalWrite(PC13, LOW);
 
 // Initialize the motor controller if used */

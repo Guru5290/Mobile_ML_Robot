@@ -12,7 +12,7 @@ void initMotorController() {
   pinMode(REAR_LEFT_MOTOR_FORWARD, OUTPUT);
   pinMode(REAR_LEFT_MOTOR_BACKWARD, OUTPUT);
 
-  analogWriteFrequency(50000);
+  analogWriteFrequency(30000);
   if (MAX_PWM == 15) analogWriteResolution(4);
   else if (MAX_PWM == 255) analogWriteResolution(8);
   else if (MAX_PWM == 1023) analogWriteResolution(10);
