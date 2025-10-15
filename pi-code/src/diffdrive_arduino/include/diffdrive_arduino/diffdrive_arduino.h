@@ -54,6 +54,9 @@ private:
   double servo_angle_cmd_{170.0};  // 170 degrees is closed position
   double servo_angle_state_{170.0};  // track last set position
 
+  double pump_cmd_ = 1; // 
+  double pump_state_ = 1; //  
+
   /* strictly speaking the state should be read from the servo, 
   but we need to track last set position more than knowing actual position
   */

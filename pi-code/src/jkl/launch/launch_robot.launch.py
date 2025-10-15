@@ -102,6 +102,12 @@ def generate_launch_description():
         executable="spawner",
         arguments=["servo_controller"],
     )
+
+    pump_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gpio_controller"],
+    )
     
 
     # Code for delaying a node (I haven't tested how effective it is)
@@ -132,5 +138,6 @@ def generate_launch_description():
         delayed_joint_broad_spawner,
         ekf_localization,
         imu_broadcaster_spawner, 
-        servo_spawner
+        servo_spawner,
+        pump_spawner
     ])

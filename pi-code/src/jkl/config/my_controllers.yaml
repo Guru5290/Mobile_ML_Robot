@@ -14,6 +14,9 @@ controller_manager:
     servo_controller:
       type: position_controllers/JointGroupPositionController # https://control.ros.org/humble/doc/ros2_controllers/position_controllers/doc/userdoc.html
 
+    gpio_controller:
+      type: gpio_controllers/GpioCommandController # https://control.ros.org/humble/doc/ros2_control/hardware_interface/doc/hardware_interface_types_userdoc.html#gpios
+
 imu_broadcaster:
   ros__parameters:
     sensor_name: imu_sensor # specified in HW interface
@@ -34,6 +37,14 @@ servo_controller:
     joints:
       - servo # specified in HW interface
 
+gpio_controller:
+  ros__parameters:
+    gpios:
+      - pump_io 
+    command_interfaces:
+      pump_io:
+        - interfaces:
+          - pump_off
 
 diff_cont:
   ros__parameters:

@@ -58,6 +58,13 @@ void ArduinoComms::setServoAngle(int servo, int angle)
     sendMsg(ss.str());
 }
 
+void ArduinoComms::setPumpState(int state)
+{
+    std::stringstream ss;
+    ss << "w " << 33 << " " << state << "\r"; // 33 is PC15
+    sendMsg(ss.str());
+}
+
 std::string ArduinoComms::sendMsg(const std::string &msg_to_send, bool print_output)
 {
     serial_conn_.write(msg_to_send);

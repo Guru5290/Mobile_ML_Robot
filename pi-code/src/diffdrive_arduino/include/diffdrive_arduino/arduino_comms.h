@@ -28,6 +28,8 @@ public:
 
   void setServoAngle(int servo, int angle);
 
+  void setPumpState(int state);
+
   bool connected() const { return serial_conn_.isOpen(); }
 
   std::string sendMsg(const std::string &msg_to_send, bool print_output = false);

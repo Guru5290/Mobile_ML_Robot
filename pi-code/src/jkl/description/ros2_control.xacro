@@ -50,6 +50,10 @@
                 <state_interface name="velocity"/>
                 <state_interface name="position"/>
             </joint>
+            <gpio name="pump_io">
+                <command_interface name="pump_off"/>
+                <state_interface name="pump_off"/>
+            </gpio>
         </ros2_control>
     </xacro:unless>
 
