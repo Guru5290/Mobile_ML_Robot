@@ -458,6 +458,15 @@ The current implementation is a little biased toward white detection. A gentle b
 
 # Misc.
 - the lidar sometimes acts up when attempting to launch. If it fails to launch even after mutliple retries, (1) try **unplug and replug** connections, i.e., usb connection on pi, usb on lidar, the lidar daughter board cables, other daughter board cable motor side and laser side, you get the idea (2) try using a different type-c cable, or different power supply altogether for the raspberry pi. This was an issue in 2024 but not 2025.
+- Update on above issue: Josh posted [a video](https://youtu.be/PddIeZP-wgw?si=uCTXcbRP3fAoC-ss) about power supplies for Pi. He suggested this change as one fix at timestamp 5:45.
+```bash
+sudo rpi-eeprom-config --edit
+```
+A file will open with nano-like editor. Add this line to it
+```
+PSU_MAX_CURRENT=5000
+```
+Tried 3000 (coz its Pi 4), Josh tried 4000 on his Pi 5 but it would not work in both cases, even though it seemingly should. But 5000 seems a little reliable for both. 
 - you can save changes to comp.rviz (or the default rviz config) when you hit Ctrl+S so that you don't have to make the same changes when relaunching rviz
 - for simulations, slow computers may produce unrealistic navigation behaviours, like aborting too soon. Gazebo is a resource hog. So try to launch launch_sim in one pc then everything else in another pc configured in the same way, connected in the same network 
 - use float where float is used in yaml files, otherwise stuff may fail to launch
@@ -491,6 +500,7 @@ The current implementation is a little biased toward white detection. A gentle b
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
 - Have an mini PC as part of the robot to run all needed software to do away with WIFI & Hotspot problems during the competition. Maybe this might do [HP EliteDesk 705 G4 Microtower PC - Ryzen 5 Pro 2400GE 3.2GHz, 8 CPUs, 8GB RAM, 256GB NVMe M.2 SSD, Radeon RX Vega 11 Graphics, DP, Gigabit LAN](https://bestsella.co.ke/product/hp-elitedesk-705-g4-microtower-pc-ryzen-5-pro-2400ge-3-2ghz-8-cpus-8gb-256gb-nvme-m-2-ssd-radeon-rx-vega-11-graphics-dp-gigabit-lan/)
+
 
 
 
