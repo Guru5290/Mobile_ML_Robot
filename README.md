@@ -154,8 +154,8 @@ It is critical that enable_odom_tf in diff_cont should be false because ros2_con
 [This config file](pi-code/src/jkl/config/ekf.yaml) is for sensor fusion using the [robot_localization](https://docs.ros.org/en/noetic/api/robot_localization/html/configuring_robot_localization.html) package. The configuration was largely based on the DOCS with one difference: The IMU on the robot was rotated 90 degrees about X axis wrt to the robot axes. So in order to fuse the acceleration along X axis, we actually fuse the reported acceleration of Y axis. 
 #### Notes
 * `publish_tf` is true. This is because ros2_control is no longer publishing the tf. 
-* `imu0_relative` is true. We are only interested in the change in angular rotation about Z, not absolute change. Otherwise the orientation in RVIZ will be inconsistent per-run
-* `imu0_remove_gravitational_acceleration` is true. The IMU reports absolute accelerations without subtracting gravity
+* `imu0_relative` is true. We are only interested in the change in angular rotation about Z, not absolute angle value. Otherwise the orientation in RVIZ will be inconsistent per-run
+* `imu0_remove_gravitational_acceleration` is true, the IMU reports absolute accelerations without subtracting gravity
 
 ## src/jkl/launch/
 ### rplidar.launch.py
