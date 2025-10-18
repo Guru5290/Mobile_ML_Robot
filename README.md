@@ -35,10 +35,22 @@ Our [technical design paper](Technical%20paper%20Team_1%20Knights%20RDJ%202025.p
 - STM32F401 running [ROSArduinoBridge.ino](arduino-code/ROSArduinoBridge/ROSArduinoBridge.ino), connected to Pi USB
 - 4 200 RPM motors with built-in encoders, with the encoders connected as shown in [encoder_driver.h](arduino-code/ROSArduinoBridge/encoder_driver.h)
 - DRV8833 motor driver, with motor controls connected as shown in [motor_driver.h](arduino-code/ROSArduinoBridge/motor_driver.h)
-- MPU6050 over I2C. The arduino sketch enables the DMP for great IMU performance. Also, a calibration sketch is provided by the [electronic cats library](https://github.com/ElectronicCats/mpu6050/wiki).
+- MPU6050 over I2C. The arduino sketch enables the DMP for great IMU performance. Also, a calibration sketch is provided by the [electronic cats library](https://github.com/ElectronicCats/mpu6050/wiki). This improved accuracy greatly. 
 
 Here's the bot [here](1L9A4192.JPG), [here](IMG_6601.jpeg)
+Here's a simple  overview of the circuit. 
+![circuit overview](circuit-overview.png)
 
+[This pdf](MCU-circuit.pdf) shows the MCU circuit in detail. The STM32 ships with a USB bootloader, allowing programming using DFU over usb. The configuration used in Arduino IDE is as below, STM32 boards can be added using this URL [https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json](https://github.com/stm32duino/BoardManagerFiles/raw/main/package_stmicroelectronics_index.json):
+```
+board manager entry - STM32 Based Boards by STMicroelectronics 
+board - generic stm32f4 series
+board part number - blackpill F401CC
+Upload method - STM32Cube DFU
+USB support - generic CDC Serial supercede U(S)ART
+```
+
+It is important to avoid using pins PA8-PA12. They're shown in blue on [the pinout diagram](STM32F401-pinout.jpg). These 5 pins have USB alternate functions and so misbehave when used as GPIO. Emphasis on PA11 (USB D-) and PA12 (USB D+). If you somehow get stuck unable to program the MCU over USB, you can recover by uploading a blank sketch using an FTDI, or ST-Link. 
 
 # Software Dependencies
 - Ubuntu 22.04 - ROS2 Humble pair was used here. Docker on windows is not recommended by us because of network woes. The WSL network is isolated from the system network, so ROS on Pi does not communicate with ROS on Docker by default. We were not able to get it working in time. Apart from that, native Ubuntu has way higher performance.
