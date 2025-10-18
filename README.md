@@ -35,7 +35,8 @@ Our [technical design paper](Technical%20paper%20Team_1%20Knights%20RDJ%202025.p
 - STM32F401 running [ROSArduinoBridge.ino](arduino-code/ROSArduinoBridge/ROSArduinoBridge.ino), connected to Pi USB
 - 4 200 RPM motors with built-in encoders, with the encoders connected as shown in [encoder_driver.h](arduino-code/ROSArduinoBridge/encoder_driver.h)
 - DRV8833 motor driver, with motor controls connected as shown in [motor_driver.h](arduino-code/ROSArduinoBridge/motor_driver.h)
-- MPU6050 over I2C. The arduino sketch enables the DMP for great IMU performance. Also, a calibration sketch is provided by the [electronic cats library](https://github.com/ElectronicCats/mpu6050/wiki). This improved accuracy greatly. 
+- MPU6050 over I2C. The arduino sketch enables the DMP for great IMU performance. Also, a calibration sketch is provided by the [electronic cats library](https://github.com/ElectronicCats/mpu6050/wiki). This improved accuracy greatly.
+- MG996R servo motor for bed actuation
 
 Here's the bot [here](1L9A4192.JPG), [here](IMG_6601.jpeg)
 Here's a simple  overview of the circuit. 
@@ -512,6 +513,7 @@ Tried 3000 (coz its Pi 4), Josh tried 4000 on his Pi 5 but it would not work in 
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? :)
 - Have an mini PC as part of the robot to run all needed software to do away with WIFI & Hotspot problems during the competition. Maybe this might do [HP EliteDesk 705 G4 Microtower PC - Ryzen 5 Pro 2400GE 3.2GHz, 8 CPUs, 8GB RAM, 256GB NVMe M.2 SSD, Radeon RX Vega 11 Graphics, DP, Gigabit LAN](https://bestsella.co.ke/product/hp-elitedesk-705-g4-microtower-pc-ryzen-5-pro-2400ge-3-2ghz-8-cpus-8gb-256gb-nvme-m-2-ssd-radeon-rx-vega-11-graphics-dp-gigabit-lan/)
+
 
 
 
