@@ -13,7 +13,7 @@ controller_manager:
 
     servo_controller:
       type: position_controllers/JointGroupPositionController # https://control.ros.org/humble/doc/ros2_controllers/position_controllers/doc/userdoc.html
-
+    # https://github.com/ros-controls/ros2_control_demos/blob/humble/example_10/bringup/config/rrbot_controllers.yaml
     gpio_controller:
       type: gpio_controllers/GpioCommandController # https://control.ros.org/humble/doc/ros2_control/hardware_interface/doc/hardware_interface_types_userdoc.html#gpios
 
