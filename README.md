@@ -513,7 +513,8 @@ Tried 3000 (coz its Pi 4), Josh tried 4000 on his Pi 5 but it would not work in 
 - a guest on Tech Expo said we should check AWS Deepracer 
 - Maybe explore [Ackermann](https://en.wikipedia.org/wiki/Ackermann_steering_geometry) steering? with 4WD and ability to use diffdrive in tight spots :)
 - Have an mini PC as part of the robot to run all needed software to do away with WIFI & Hotspot problems during the competition. Maybe this might do [HP EliteDesk 705 G4 Microtower PC - Ryzen 5 Pro 2400GE 3.2GHz, 8 CPUs, 8GB RAM, 256GB NVMe M.2 SSD, Radeon RX Vega 11 Graphics, DP, Gigabit LAN](https://bestsella.co.ke/product/hp-elitedesk-705-g4-microtower-pc-ryzen-5-pro-2400ge-3-2ghz-8-cpus-8gb-256gb-nvme-m-2-ssd-radeon-rx-vega-11-graphics-dp-gigabit-lan/), Minisforum [EM680](https://www.youtube.com/watch?v=2nI25tk-NMM)?
-- Add Apriltag for precise parking/parking
+- Add Apriltag for precise docking/parking
+
 
 
 
